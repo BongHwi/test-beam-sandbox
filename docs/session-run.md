@@ -22,7 +22,7 @@ To operate the beam, use `scripts/session_control.sh public-session off`, `on`, 
 
 ## Default detector mapping
 
-The default analysis mapping associates the following identifiers and positions. `mapping.json` supplies the analysis section name; the geometry `position_mm`, `pixels`, and `pitch_um` map to `position`, `number_of_pixels`, and `pixel_pitch`. Generating an acquisition-only layout leaves any existing analysis geometry unchanged.
+The default analysis mapping associates the following identifiers and positions. `mapping.json` supplies the analysis section name; the geometry `position_mm`, `pixels`, and `pitch_um` map to `position`, `number_of_pixels`, and `pixel_pitch`. Every plane also gets `spatial_resolution` = pitch/√12 for each axis (for example `8.660um, 8.660um` for a 30 µm pitch) and `material_budget = 0.00106724`, the 100 µm of silicon per plane that the simulation uses. Generating an acquisition-only layout leaves any existing analysis geometry unchanged.
 
 | serial | producer / plane | geometry | analysis detector | z (mm) |
 |---|---|---|---|---:|

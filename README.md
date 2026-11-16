@@ -68,8 +68,8 @@ scripts/analyze_session.sh public-session
 QA ends with lines like these (the numbers vary):
 
 ```text
-  Events: Ev: 10.3k Px: 115.5k Tr: 7.2k (0.704/ev) t = 48.6715s
-  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.446(+0.148435 -0.163065)%, measured with 6842/6950 matched/total tracks
+  Events: Ev: 10.1k Px: 113.3k Tr: 7.1k (0.703/ev) t = 47.6141s
+  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.4446(+0.149964 -0.164889)%, measured with 6709/6815 matched/total tracks
 ```
 
 Alignment prints the corrections it found and the tracks per event before and after. QA prints the event count, the track count and the efficiency of each DUT; its first line names the result directory in the container, whose `analysis/output/histograms.root` holds the histograms. Both name the Corryvreckan configuration they used ([operator screen guide](docs/operator-screen.md)). The DUT is named `MSENSOR_0` in the DAQ, after its producer, and `MSENSOR_6` in the analysis, after its plane number.

@@ -3,10 +3,12 @@
 import argparse
 import hashlib
 import json
+import math
 from pathlib import Path
 
 # Generated files and their SHA-256 are recorded here so a later generation
 # never silently replaces a file that was edited by hand.
+SILICON_X0_MM = 93.70  # same as tracksim/src/tracksim/beam.py
 MANIFEST = '.generated-files.json'
 ALPIDE_DEFAULTS = {'ithr': 0, 'strobe_length': 40}
 MSENSOR_DEFAULTS = {'threshold_dac': 100, 'readout': 'continuous', 'window_length_ns': 1000000,
@@ -123,7 +125,7 @@ def generate(layout, root, *, analysis=False, mode='single', options=None, extra
         'events':5000,'seed':0,'device_seed':0,'workers':1,
         'beam':{'particle':beam_options['particle'],'kinetic_energy_gev':beam_options['energy_gev'],'position_mm':[0,0,-20],
                 'direction':[0,0,1],'phase_space_covariance':[[0]*5 for _ in range(5)]},
-        'transport':{'scattering':False,'air':False,'extra_layers':[]},
+        'transport':{'scattering':True,'air':True,'extra_layers':[]},
         'timeline':{'rate_hz':10,'duration_s':10,'tail_padding_ps':100000000,'clock_hz':10000000},
         'detectors':detector_rows}
     geometry={'settings':settings,'participants':participants,'clock':'paced'}
@@ -194,6 +196,9 @@ def generate(layout, root, *, analysis=False, mode='single', options=None, extra
             role='role = "reference"' if d is reference else 'role = "dut"' if d['kind']=='msensor' and roles.get(label(d),'dut')=='dut' else ''
             pos=', '.join(str(x)+'mm' for x in d['position_mm'])
             pitch=', '.join(str(x)+'um' for x in d['pitch_um'])
+            resolution=', '.join(f'{p / math.sqrt(12):.3f}um' for p in d['pitch_um'])
+            detector=next(row for row in detector_rows if row['id']==detid(d))
+            material=(detector['active_um'] + detector['passive_um']) / 1000 / SILICON_X0_MM
             mask=''
             chosen=dict(MSENSOR_DEFAULTS,**device_settings.get(label(d),{})) if d['kind']=='msensor' else None
             if chosen and chosen['tiles_off']:
@@ -203,7 +208,7 @@ def generate(layout, root, *, analysis=False, mode='single', options=None, extra
                        for r in range(ranges[t][2],ranges[t][2]+ranges[t][3])]
                 files[name+'-tiles-off.txt']=('\n'.join(lines)+'\n').encode()
                 mask=f'# tiles off: {", ".join(map(str,sorted(chosen["tiles_off"])))}\nmask_file = "{name}-tiles-off.txt"\n'
-            text+=f'[{name}]\ntype = "{d["kind"]}"\nnumber_of_pixels = {d["pixels"][0]}, {d["pixels"][1]}\npixel_pitch = {pitch}\nposition = {pos}\norientation = 0deg, 0deg, 0deg\norientation_mode = "xyz"\nspatial_resolution = 10um, 10um\nmaterial_budget = 0.001\ntime_resolution = 100ns\n{mask}{role}\n'
+            text+=f'[{name}]\ntype = "{d["kind"]}"\nnumber_of_pixels = {d["pixels"][0]}, {d["pixels"][1]}\npixel_pitch = {pitch}\nposition = {pos}\norientation = 0deg, 0deg, 0deg\norientation_mode = "xyz"\nspatial_resolution = {resolution}\nmaterial_budget = {material:.6g}\ntime_resolution = 100ns\n{mask}{role}\n'
         files['analysis-geometry.conf']=text.encode()
     files.update(extra or {})
     _write_all(root, files)

@@ -12,7 +12,7 @@
 
 ## 取得と解析
 
-ビルド、起動、取得、停止、解析には[開始ガイド](../../README.ja.md)のコマンドを使います。セッションのビームは最初はオフです。解析には公開 EUDAQ 変換器、EventLoaderEUDAQ2、clustering、tracking、DUT association、efficiency、出力モジュールを使います。固定した Corryvreckan revision では補助の 30 µm ピッチヒストグラムで ROOT bin の警告が 1 回出る場合があります。他の変換エラーは失敗です。データイベントのない raw は解析しないでください。
+ビルド、起動、取得、停止、解析には[開始ガイド](../../README.ja.md)のコマンドを使います。セッションのビームは最初はオフです。解析には公開 EUDAQ 変換器、EventLoaderEUDAQ2、clustering、tracking、DUT association、efficiency、出力モジュールを使います。固定した Corryvreckan revision では補助の 30 µm ピッチヒストグラムで ROOT bin の警告が 1 回出る場合があります。他の変換エラーは失敗です。データイベントのない raw ファイルは解析しないでください。
 
 ![ターミナルで実行中のセッションをアライメントし解析します。](../images/terminal-analysis.png)
 
@@ -22,7 +22,7 @@
 
 ## 既定の detector 対応
 
-既定の解析対応の識別子と位置は次のとおりです。`mapping.json` は解析 section 名を提供します。ジオメトリの `position_mm`、`pixels`、`pitch_um` はそれぞれ `position`、`number_of_pixels`、`pixel_pitch` に対応します。取得専用の配置を生成しても既存の解析ジオメトリは変更しません。
+既定の解析対応の識別子と位置は次のとおりです。`mapping.json` は解析 section 名を提供します。ジオメトリの `position_mm`、`pixels`、`pitch_um` はそれぞれ `position`、`number_of_pixels`、`pixel_pitch` に対応します。すべての面には、軸ごとに `spatial_resolution` = pitch/√12（例: pitch 30 µm なら `8.660um, 8.660um`）と、シミュレーションが使う面ごとのシリコン 100 µm に当たる `material_budget = 0.00106724` も入ります。取得専用の配置を生成しても既存の解析ジオメトリは変更しません。
 
 | serial | producer / plane | geometry | analysis detector | z (mm) |
 |---|---|---|---|---:|

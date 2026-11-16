@@ -68,8 +68,8 @@ scripts/analyze_session.sh public-session
 QA는 다음과 같은 줄로 끝납니다(숫자는 달라집니다):
 
 ```text
-  Events: Ev: 10.3k Px: 115.5k Tr: 7.2k (0.704/ev) t = 48.6715s
-  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.446(+0.148435 -0.163065)%, measured with 6842/6950 matched/total tracks
+  Events: Ev: 10.1k Px: 113.3k Tr: 7.1k (0.703/ev) t = 47.6141s
+  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.4446(+0.149964 -0.164889)%, measured with 6709/6815 matched/total tracks
 ```
 
 정렬은 찾은 보정량과 정렬 전후의 event당 track 수를 출력합니다. QA는 event 수, track 수, DUT마다의 효율을 출력합니다. 첫 줄은 컨테이너 안의 결과 디렉터리를 알려 주며, 그 안의 `analysis/output/histograms.root`에 histogram이 있습니다. 둘 다 쓴 Corryvreckan 설정을 알려 줍니다([운영 화면 안내](docs/ko/operator-screen.md)). DUT는 DAQ에서 producer 이름을 따라 `MSENSOR_0`, 분석에서는 plane 번호를 따라 `MSENSOR_6`으로 불립니다.

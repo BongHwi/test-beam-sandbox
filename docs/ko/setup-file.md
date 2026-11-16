@@ -48,9 +48,11 @@
 
 `N`은 장치 종류마다 `0`부터 빠짐없이 셉니다. ALPIDE는 기준면이고 msensor는 `role`을 따릅니다. 빔의 위치, 퍼짐과 rate는 명목값입니다. 세션마다 비공개로 조금씩 달라지므로 분석에서 실제 빔을 찾아야 합니다. 유한 예제(`--example`)는 source가 끝나면 종료되며 `events`를 쓰지 않습니다.
 
+세션은 전자 하나하나를 빔 source에서 면들을 지나 일정한 운동량으로 따라갑니다. 모든 면(면마다 실리콘 100 µm)과 source에서 마지막 면까지의 공기에서 Highland 공식에 따른 가우스 분포의 산란각을 더해 다중 산란을 넣습니다. 에너지 손실, 제동 복사, 2차 입자는 시뮬레이션하지 않습니다. 신틸레이터는 trigger만 정하고 물질을 더하지 않습니다.
+
 `--setup`으로 시작해 실행 중인 세션에서는 run 길이와 장치 설정 `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns`, `strobe_length_ns`를 `scripts/session_control.sh NAME set`으로 다음 run부터 바꿀 수 있습니다([운영자 화면 설명](operator-screen.md)). 다른 항목은 세션을 시작한 그대로입니다.
 
-기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.1` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`, 위치 어긋남 없음입니다.
+기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.3` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`, 위치 어긋남 없음입니다.
 
 | 절 | 항목 | 기본값 | 받는 값 |
 |---|---|---|---|
