@@ -96,9 +96,9 @@ def with_energy(value) -> dict:
 
 def b2():
     accepted = {str(v): error_of(lambda v=v: specs_module.normalize_config(with_energy(v)))[0]
-                for v in (3.0, 4.2, 6.0)}
+                for v in (1.0, 4.2, 6.0)}
     rejected, messages = {}, {}
-    for v in (2.999, 6.001, 6.5, 100.0):
+    for v in (0.999, 6.001, 6.5, 100.0):
         kind, message = error_of(lambda v=v: specs_module.normalize_config(with_energy(v)))
         rejected[str(v)] = kind
         messages[str(v)] = message

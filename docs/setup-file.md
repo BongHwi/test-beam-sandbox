@@ -22,7 +22,8 @@ A setup file describes one session: which devices sit where, their settings, the
 |---|---|---|---|
 | `[run]` | `events` | `60000` | events per run before the next run starts, `1` to `1000000000` |
 | `[beam]` | `particle` | `e-` | `e-` |
-| `[beam]` | `energy_gev` | `4` | `3` to `6` |
+| `[beam]` | `energy_gev` | `4` | `1` to `6` |
+| `[beam]` | `profile` | `gaussian` | `gaussian`, `kek-2gev` or `kek-4gev` |
 | `[beam]` | `position_mm` | `1.1, -2.1, -20` | nominal x, y and source z; the source must be upstream of every device |
 | `[beam]` | `spread_mm2` | `25, 25` | nominal variance in x and y, `0.000001` to `10000` |
 | `[beam]` | `rate_hz` | `220` | nominal rate, `1` to `1000` |
@@ -49,6 +50,8 @@ A setup file describes one session: which devices sit where, their settings, the
 `N` counts from `0` for each device kind without gaps. ALPIDE planes are reference planes; msensor planes follow their `role`. The beam position, spread and rate are nominal: each session varies them privately by a small amount, so the analysis has to find the actual beam. The finite example (`--example`) ends when its source finishes and does not use `events`.
 
 The session follows each electron with a constant momentum from the beam source through the planes. It adds multiple scattering in every plane (100 µm of silicon each) and in the air between the source and the last plane, as Gaussian scattering angles from the Highland formula. Energy loss, bremsstrahlung and secondary particles are not simulated. The scintillators only decide the trigger and add no material.
+
+`profile` sets the beam angles. `gaussian`, the default, sends every electron along the beam axis. `kek-2gev` and `kek-4gev` add Gaussian angles with the widths measured at a KEK test beam line at 2 and 4 GeV, including the slight growth of the angle with the distance from the beam axis; the mean angle is 0. The position spread still comes from `spread_mm2`. The session does not scale the angles with `energy_gev`, so use a profile at the energy it was measured at. The angle spread may be at most 7.5 mrad in x and in y; `check` rejects a `profile` and `spread_mm2` above it.
 
 In a running session started with `--setup`, the run length and the device settings `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns` and `strobe_length_ns` can be changed for the next run with `scripts/session_control.sh NAME set` ([operator screen guide](operator-screen.md)); the other items stay as the session started.
 

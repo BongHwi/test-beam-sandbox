@@ -22,7 +22,8 @@
 |---|---|---|---|
 | `[run]` | `events` | `60000` | 次の run が始まるまでの run あたりのイベント数、`1`–`1000000000` |
 | `[beam]` | `particle` | `e-` | `e-` |
-| `[beam]` | `energy_gev` | `4` | `3`–`6` |
+| `[beam]` | `energy_gev` | `4` | `1`–`6` |
+| `[beam]` | `profile` | `gaussian` | `gaussian`、`kek-2gev`、`kek-4gev` のいずれか |
 | `[beam]` | `position_mm` | `1.1, -2.1, -20` | 公称の x、y と source の z、source はすべてのデバイスより上流 |
 | `[beam]` | `spread_mm2` | `25, 25` | x と y の公称分散、`0.000001`–`10000` |
 | `[beam]` | `rate_hz` | `220` | 公称 rate、`1`–`1000` |
@@ -49,6 +50,8 @@
 `N` はデバイスの種類ごとに `0` から欠番なく数えます。ALPIDE は基準面で、msensor は `role` に従います。ビームの位置、広がり、rate は公称値です。セッションごとに非公開で少しずつ変わるため、解析で実際のビームを求める必要があります。有限サンプル（`--example`）は source が終わると終了し、`events` を使いません。
 
 セッションは各電子を、ビーム源から各面を通って一定の運動量で追跡します。すべての面（面ごとにシリコン 100 µm）と、ビーム源から最後の面までの空気で、Highland の式によるガウス分布の散乱角を加えて多重散乱を入れます。エネルギー損失、制動放射、二次粒子はシミュレーションしません。シンチレーターは trigger を決めるだけで、物質を加えません。
+
+`profile` はビームの角度を決めます。既定値の `gaussian` はすべての電子をビーム軸の向きに送ります。`kek-2gev` と `kek-4gev` は、KEK のテストビームで 2 GeV と 4 GeV で測った幅のガウス分布の角度を加え、ビーム軸から離れるほど角度が少し大きくなることも入れます。平均の角度は 0 です。位置の広がりは引き続き `spread_mm2` が決めます。セッションは角度を `energy_gev` に合わせて変えないため、プロファイルは測定したエネルギーで使います。角度の広がりは x と y それぞれ 7.5 mrad までです。`check` はこれを超える `profile` と `spread_mm2` を拒否します。
 
 `--setup` で開始して動作中のセッションでは、run の長さとデバイス設定 `ithr`、`strobe_length`、`threshold_dac`、`readout`、`window_length_ns`、`strobe_delay_ns`、`strobe_length_ns` を `scripts/session_control.sh NAME set` で次の run から変更できます（[オペレーター画面の説明](operator-screen.md)）。他の項目はセッション開始時のままです。
 

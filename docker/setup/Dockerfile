@@ -17,6 +17,7 @@ COPY session_core /opt/public-work/session_core
 COPY tracksim/src /opt/public-work/tracksim-src
 COPY integration /opt/public-work/integration
 COPY session_setup /opt/public-work/session_setup
+COPY configs/beam-profiles /opt/public-work/configs/beam-profiles
 COPY tests/e2e/integration_analysis.py /opt/public-work/session_setup/integration_analysis.py
 COPY eudaq_module /opt/eudaq-src/user/msensor
 COPY docker/base/build-user-module.sh /tmp/build-user-module.sh

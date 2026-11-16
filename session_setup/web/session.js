@@ -282,6 +282,7 @@ function renderEditor() {
     const known = itemsOf(section);
     const rows = [];
     for (const item of known) {
+      if (!(item.item in values) && section === 'beam' && item.item === 'profile') values[item.item] = item.default;
       if (!(item.item in values) && !item.required) continue;
       rows.push(el('div', { class: 'item' }, el('label', {}, el('code', {}, item.item)), input(section, item, values),
                    el('small', {}, `${item.help}; ${item.accepted}`)));

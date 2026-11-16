@@ -23,7 +23,7 @@ from .specs import (
 from .registry import TransportContext
 
 # Supported kinetic-energy domain of the analytic model, in GeV.
-SUPPORTED_KINETIC_ENERGY_GEV = (3, 6)
+SUPPORTED_KINETIC_ENERGY_GEV = (1, 6)
 
 
 def _names(names) -> str:
@@ -115,7 +115,7 @@ def normalize_v4(settings: dict) -> RunSpec:
         tuple((float(raw[i][j]) + float(raw[j][i])) / 2 for j in range(5))
         for i in range(5)
     )
-    maxima = (1000, 1000, 0.005, 0.005, 0.05)
+    maxima = (1000, 1000, 0.0075, 0.0075, 0.05)
     if any(math.sqrt(covariance[i][i]) > maxima[i] for i in range(5)):
         raise ValueError(
             "electron source covariance exceeds the spatial/slope/momentum domain"

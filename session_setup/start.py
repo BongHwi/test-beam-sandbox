@@ -49,17 +49,20 @@ sock=str(root/'source.sock')
 # are never placed on a command line, in a generated layout, or in a log.
 # A session started from a setup file keeps its normalized copy; its beam
 # values are the nominal centre of the private draw (defaults otherwise).
+from session_setup.setupfile import beam_covariance
+
 nominal={'position_mm':[1.1,-2.1,-20.0],'spread_mm2':[0.003,0.004],'rate_hz':220}
 if (root/'setup.json').is_file():
     beam=json.loads((root/'setup.json').read_text())['beam']
     nominal={'position_mm':[beam['position_mm'][0],beam['position_mm'][1],float(beam['position_mm'][2])],
-             'spread_mm2':beam['spread_mm2'],'rate_hz':beam['rate_hz']}
+             'spread_mm2':beam['spread_mm2'],'rate_hz':beam['rate_hz'],'profile_values':beam.get('profile_values')}
 x,y,z=nominal['position_mm'];vx,vy=nominal['spread_mm2']
 private={'seed':10_000_000+secrets.randbelow(2**31-10_000_000),'device_seed':10_000_000+secrets.randbelow(2**31-10_000_000),
  'beam':{'position_mm':[x+secrets.randbelow(1000000)/10000000, y-secrets.randbelow(1000000)/10000000,z],
          'direction':[0.0001+secrets.randbelow(100000)/1000000000,0,1],
-         'phase_space_covariance':[[vx+secrets.randbelow(10000)/1000000000,0,0,0,0],
-                                   [0,vy+secrets.randbelow(10000)/1000000000,0,0,0]]+[[0]*5 for _ in range(3)]},
+         'phase_space_covariance':beam_covariance(vx+secrets.randbelow(10000)/1000000000,
+                                                  vy+secrets.randbelow(10000)/1000000000,
+                                                  nominal.get('profile_values'))},
  'rate_hz':nominal['rate_hz']+secrets.randbelow(2000000)/100000}
 env=dict(os.environ,SESSION_SOURCE_CONFIG_JSON=json.dumps(private),
          MSENSOR_SOURCE_CONFIG_JSON=json.dumps({'seed':10_000_000+secrets.randbelow(2**31-10_000_000)}),

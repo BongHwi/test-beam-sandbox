@@ -1,4 +1,4 @@
-a96775b8351d002218c1a1451f5165ea554a4e1aeb9b24907a555df7b22ddf93  ./tracksim/README.md
+4450893b6a2dd28513bbe7a043dcb6747dc39d13add1f45b82b9ab33fad4c2a8  ./tracksim/README.md
 2540f336945bcbcce41de6bbc1f5a23a17d396d92c8b917198885a106f41400b  ./tracksim/examples/three-plane-dark.json
 8cd8744089d54e7f0307c15c147f6bb0b030478ef49f633e083f1a7cfc4d8aad  ./tracksim/examples/three-plane.json
 8d14e185592a69e275eebe9153594ace14c062c1a91373620e24ff2e8c3ae8c2  ./tracksim/pyproject.toml
@@ -6,7 +6,7 @@ a96775b8351d002218c1a1451f5165ea554a4e1aeb9b24907a555df7b22ddf93  ./tracksim/REA
 54eed601556621d2c272afd84da599eecaaa3c34bd08e34aa0e7cc577716f6f8  ./tracksim/src/tracksim/__main__.py
 bfb0d0fb86c695c72a6b5b9fc55a1c50f4c10cdbcae10e5873b77156e2523506  ./tracksim/src/tracksim/beam.py
 78f7db46ceb19c9032cc9f4df1d4ab8ca627cfffcfee2a21f34eb94076fd1259  ./tracksim/src/tracksim/cli.py
-9c70a3463aecc5db6c68560916201458d0a521248956bace1aacbe8cea5e5cc4  ./tracksim/src/tracksim/configuration_v4.py
+d5a0f722f5f75e23c38017e90507e13f0a0e7d1add1680e9ef0c737ecb385979  ./tracksim/src/tracksim/configuration_v4.py
 ae0cab84d6202b0f2e74f9932ddc125f117f5d5c49db5de67569ffa1b017db0d  ./tracksim/src/tracksim/contracts.py
 5e63b12232cfeec97dcc9a7fea89a02746b6d8fb8622426c3b7e6aeff7eae8a7  ./tracksim/src/tracksim/errors.py
 8c44937c7125be1b4dea0a6cc1114cd0ea30882b871397a96f893338cd86bf57  ./tracksim/src/tracksim/events.py
@@ -28,7 +28,7 @@ b08eafe0b47dc984de48a7a8659783b742e791907f5979840f2906901860da24  ./tracksim/src
 f86c38dc7a43173d4f1f5ce944287878971a7a8e899541491f5e43dd0482bdb9  ./tracksim/src/tracksim/writers.py
 43e48ac6343c358b8df459a79983faf0e8e016198022fc6b65a5045fcad9b9c0  ./tracksim/tests/e2e/_support.py
 b74a4b4b77a111c364fd5cdfeb64313a1a5b065c30ed8961bd8454b821e2b0d6  ./tracksim/tests/e2e/cli_lifecycle.py
-b89211b386e45e0421ccdde91e6be2d3962cb81b30969d6723cf181b7d44439e  ./tracksim/tests/e2e/contract_checks.py
+9e5f5df8ff28e84a34d450f2c3afcabfc3176e1c4761948b79fb6d15a74700d2  ./tracksim/tests/e2e/contract_checks.py
 ff8f6c47b2f3fd3537cd39a7dc154df4779fd0ce585304ef66cdb771240f5bed  ./tracksim/tests/e2e/determinism.py
 e62bc8d25c242d3ad0c90468df141a4e3c5c29a6481909d8e5ddd06d177a7a68  ./tracksim/tests/e2e/examples_check.py
 aa4c20accb52ecba30ab114abe9068b4c05adfb67892ec61af5bc900626842d0  ./tracksim/tests/e2e/golden/examples.json

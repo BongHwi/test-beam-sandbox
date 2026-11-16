@@ -22,7 +22,8 @@
 |---|---|---|---|
 | `[run]` | `events` | `60000` | 다음 run이 시작되기 전까지의 run당 event 수, `1`–`1000000000` |
 | `[beam]` | `particle` | `e-` | `e-` |
-| `[beam]` | `energy_gev` | `4` | `3`–`6` |
+| `[beam]` | `energy_gev` | `4` | `1`–`6` |
+| `[beam]` | `profile` | `gaussian` | `gaussian`, `kek-2gev`, `kek-4gev` 중 하나 |
 | `[beam]` | `position_mm` | `1.1, -2.1, -20` | 명목 x, y와 source z, source는 모든 장치보다 상류 |
 | `[beam]` | `spread_mm2` | `25, 25` | x와 y의 명목 분산, `0.000001`–`10000` |
 | `[beam]` | `rate_hz` | `220` | 명목 rate, `1`–`1000` |
@@ -49,6 +50,8 @@
 `N`은 장치 종류마다 `0`부터 빠짐없이 셉니다. ALPIDE는 기준면이고 msensor는 `role`을 따릅니다. 빔의 위치, 퍼짐과 rate는 명목값입니다. 세션마다 비공개로 조금씩 달라지므로 분석에서 실제 빔을 찾아야 합니다. 유한 예제(`--example`)는 source가 끝나면 종료되며 `events`를 쓰지 않습니다.
 
 세션은 전자 하나하나를 빔 source에서 면들을 지나 일정한 운동량으로 따라갑니다. 모든 면(면마다 실리콘 100 µm)과 source에서 마지막 면까지의 공기에서 Highland 공식에 따른 가우스 분포의 산란각을 더해 다중 산란을 넣습니다. 에너지 손실, 제동 복사, 2차 입자는 시뮬레이션하지 않습니다. 신틸레이터는 trigger만 정하고 물질을 더하지 않습니다.
+
+`profile`은 빔의 각도를 정합니다. 기본값인 `gaussian`은 모든 전자를 빔 축 방향으로 보냅니다. `kek-2gev`와 `kek-4gev`는 KEK 빔 테스트에서 2 GeV와 4 GeV로 잰 폭의 가우스 분포 각도를 더하며, 빔 축에서 멀어질수록 각도가 조금 커지는 것도 넣습니다. 평균 각도는 0입니다. 위치의 퍼짐은 그대로 `spread_mm2`가 정합니다. 세션은 각도를 `energy_gev`에 맞춰 바꾸지 않으므로 프로파일은 잰 에너지에서 씁니다. 각도의 퍼짐은 x와 y 각각 7.5 mrad까지만 됩니다. `check`는 이를 넘는 `profile`과 `spread_mm2`를 거절합니다.
 
 `--setup`으로 시작해 실행 중인 세션에서는 run 길이와 장치 설정 `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns`, `strobe_length_ns`를 `scripts/session_control.sh NAME set`으로 다음 run부터 바꿀 수 있습니다([운영자 화면 설명](operator-screen.md)). 다른 항목은 세션을 시작한 그대로입니다.
 

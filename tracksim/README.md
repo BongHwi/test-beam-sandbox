@@ -65,10 +65,10 @@ A configuration is one JSON object. Unknown keys are rejected. Lengths are in mi
 | key | meaning | domain |
 |---|---|---|
 | `particle` | particle name | `"e-"` |
-| `kinetic_energy_gev` | kinetic energy in GeV | 3 to 6 (the supported domain of the analytic model) |
+| `kinetic_energy_gev` | kinetic energy in GeV | 1 to 6 (the supported domain of the analytic model) |
 | `position_mm` | source position | three numbers, each at most 10 000 in magnitude |
 | `direction` | beam direction | three numbers, forward, polar angle below 0.05 rad |
-| `phase_space_covariance` | 5x5 covariance of (x, y, slope x, slope y, relative momentum) | symmetric, positive semi-definite; standard deviations at most 1000 mm, 0.005, 0.005 and 0.05 |
+| `phase_space_covariance` | 5x5 covariance of (x, y, slope x, slope y, relative momentum) | symmetric, positive semi-definite; standard deviations at most 1000 mm, 0.0075, 0.0075 and 0.05 |
 
 ### `transport`
 
@@ -233,7 +233,7 @@ Response kernels are registered per instance: `ResponseRegistry().register(name,
 - Center-footprint silicon and extra thin sheets with configured paraxial air.
 - Empirical nominal-MIP sensor response; the intrinsic energy dependence is not predicted. Deposited charge is not modelled (`deposited_e` is `null`).
 - Structural consistency checks only; this is not a physics validation.
-- The supported domain is 3 to 6 GeV electrons and paraxial beams.
+- The supported domain is 1 to 6 GeV electrons and paraxial beams.
 
 ## Running the end-to-end suite
 

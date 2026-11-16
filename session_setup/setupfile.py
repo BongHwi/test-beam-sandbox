@@ -100,7 +100,8 @@ RUN = {'events': Item('int', OPERATOR_EVENTS, 'events per run (NEVENTS) before R
 BEAM = {
     'particle': Item('choice', BEAM_DEFAULTS['particle'], 'beam particle; the session core simulates electrons only',
                      choices=('e-',)),
-    'energy_gev': Item('number', BEAM_DEFAULTS['energy_gev'], 'kinetic energy in GeV', 3, 6),
+    'energy_gev': Item('number', BEAM_DEFAULTS['energy_gev'], 'kinetic energy in GeV', 1, 6),
+    'profile': Item('choice', 'gaussian', 'beam angles: gaussian has none; kek-2gev and kek-4gev use the angle widths measured at a KEK test beam line at 2 and 4 GeV', choices=('gaussian', 'kek-2gev', 'kek-4gev')),
     'position_mm': Item('number', BEAM_NOMINAL['position_mm'], 'nominal beam centre x, y and source z in mm; '
                         'the session varies x and y privately by up to 0.1 mm', -10000, 10000, count=3),
     'spread_mm2': Item('number', BEAM_NOMINAL['spread_mm2'], 'nominal variance of the beam position in x and y '
@@ -304,8 +305,40 @@ def from_layout(text, name):
     return setup
 
 
+def profile_values(name):
+    if name == 'gaussian':
+        return None
+    if name not in ('kek-2gev', 'kek-4gev'):
+        raise ValueError('unknown beam profile')
+    path = Path(__file__).resolve().parents[1] / 'configs' / 'beam-profiles' / (name + '.json')
+    values = json.loads(path.read_text())
+    return {key: values[key] for key in ('slope_sigma_mrad', 'slope_per_position_mrad_per_mm')}
+
+
+def beam_covariance(vx, vy, values):
+    covariance = [[0] * 5 for _ in range(5)]
+    covariance[0][0], covariance[1][1] = vx, vy
+    if values is not None:
+        for axis, variance in enumerate((vx, vy)):
+            sigma = values['slope_sigma_mrad'][axis] / 1000
+            slope = values['slope_per_position_mrad_per_mm'][axis] / 1000
+            covariance[axis + 2][axis + 2] = sigma ** 2 + slope ** 2 * variance
+            covariance[axis][axis + 2] = covariance[axis + 2][axis] = slope * variance
+    return covariance
+
+
 def validate(setup, errors):
     devices = setup['devices']
+    beam = setup['beam']
+    if beam['profile'] != 'gaussian':
+        values = profile_values(beam['profile'])
+        vx, vy = beam['spread_mm2']
+        covariance = beam_covariance(vx, vy, values)
+        for axis, index in (('x', 2), ('y', 3)):
+            spread = math.sqrt(covariance[index][index])
+            if spread > 0.0075:
+                errors.append(f'[beam]: profile = {beam["profile"]} with spread_mm2 = {_text(vx)}, {_text(vy)} gives an angle spread of {spread * 1000:.2f} mrad in {axis}, above the simulation limit 7.50 mrad; use a smaller spread_mm2')
+                break
     plates = setup.get('scintillators', [])
     nums = sorted(p['number'] for p in plates)
     if len(plates) > 4 or nums != list(range(len(plates))):
@@ -477,7 +510,10 @@ def layout_and_options(setup):
 
 
 def normalized(setup):
-    return {'run': setup['run'], 'beam': setup['beam'], 'positions': setup['positions'],
+    beam = dict(setup['beam'])
+    if beam['profile'] != 'gaussian':
+        beam['profile_values'] = profile_values(beam['profile'])
+    return {'run': setup['run'], 'beam': beam, 'positions': setup['positions'],
             'devices': [{k: v for k, v in d.items() if k != 'given'} for d in setup['devices']],
             **({'scintillators': setup['scintillators'], 'trigger': setup['trigger']} if setup.get('scintillators') else {})}
 
@@ -884,7 +920,7 @@ def main(argv=None):
     new.add_argument('--dut', choices=('msensor', 'none'), default='msensor', help='DUT kind (default msensor)')
     new.add_argument('--dut-z', type=float, help='DUT z in mm (default: the gap in the middle)')
     new.add_argument('--events', type=int, default=OPERATOR_EVENTS, help='events per run (default 60000)')
-    new.add_argument('--energy-gev', type=float, help='beam energy, 3 to 6 GeV (default 4)')
+    new.add_argument('--energy-gev', type=float, help='beam energy, 1 to 6 GeV (default 4)')
     new.add_argument('--rate-hz', type=float, help='nominal beam rate, 1 to 1000 Hz (default 220)')
     new.add_argument('--alpide-ithr', type=int, help='ITHR of every ALPIDE plane (default 0)')
     new.add_argument('--msensor-threshold', type=int, help='msensor threshold_dac (default 100)')

@@ -1,0 +1,6 @@
+{
+  "description": "Beam angles measured at a KEK test beam line at the telescope; Gaussian widths, mean angle 0.",
+  "measured_kinetic_energy_gev": 4,
+  "slope_sigma_mrad": [1.789, 1.059],
+  "slope_per_position_mrad_per_mm": [0.158, 0.002]
+}
