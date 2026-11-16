@@ -14,6 +14,8 @@ import textwrap
 from integration.layout import (ALPIDE_DEFAULTS, BEAM_DEFAULTS, MSENSOR_DEFAULTS, OPERATOR_EVENTS,
                                 EditedFilesError, generate)
 
+from integration.resolution import BUDGET_LIMIT, estimate, material_budget
+
 KINDS = ('alpide', 'msensor')
 # QA reconstructs tracks from the setup's reference planes.
 QA_MIN_REFERENCE_PLANES = 3
@@ -399,6 +401,10 @@ def validate(setup, errors):
                               + ('triggered' if d['readout'] == 'continuous' else 'continuous')
                               + f' readout, but readout = {d["readout"]}')
     zs = [d['position_mm'][2] for d in devices if isinstance(d.get('position_mm'), list)]
+    if len(zs) == len(devices) and zs and setup['beam']['position_mm'][2] < min(zs):
+        total = material_budget(devices, setup['beam']['position_mm'][2])
+        if total > BUDGET_LIMIT:
+            errors.append(f'[devices]: the planes and the air add up to {total:.5f} X0, above the simulation limit {BUDGET_LIMIT:.5f} X0; use fewer planes or a shorter distance from the beam source')
     if zs and setup['beam']['position_mm'][2] >= min(zs):
         errors.append(f'[beam] position_mm: the beam source z = {_text(setup["beam"]["position_mm"][2])} mm must '
                       f'be upstream of every device (below z = {_text(min(zs))} mm)')
@@ -649,6 +655,17 @@ def show(setup):
                else 'Positions: actual positions equal the setup (no offsets)')
     out.append(f'Beam: {b["particle"]} {_text(b["energy_gev"])} GeV, {_text(b["rate_hz"])} Hz, '
                f'centre {_text(b["position_mm"])} mm, variance {_text(b["spread_mm2"])} mm2')
+    out.append('Track resolution at each DUT (estimate; see the setup file reference):')
+    duts = [d for d in devices if d['kind'] == 'msensor' and d.get('role', 'dut') == 'dut']
+    refs = [d for d in devices if d['kind'] == 'alpide' or d.get('role') == 'reference']
+    if not duts:
+        out.append('  no DUT in this setup')
+    elif len(refs) < 2:
+        out.append('  needs at least 2 reference planes')
+    else:
+        for r in estimate(devices, b['position_mm'][2], b['energy_gev']):
+            x, y = r['track_um']; rx, ry = r['residual_um']
+            out.extend(textwrap.wrap(f'  {r["label"]}, z {_text(r["z_mm"])} mm: track {x:.2f} x {y:.2f} um, residual {rx:.2f} x {ry:.2f} um', WIDTH, subsequent_indent='    '))
     out.append('')
     out += side_view(setup)
     long = [line for index, line in enumerate(out) if index not in table_lines and len(line) > WIDTH]

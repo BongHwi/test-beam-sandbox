@@ -275,6 +275,9 @@ def view(name):
     return out
 
 
+from integration.resolution import intrinsic_um
+
+
 def setup_layout(setup, analysis=None):
     """The view of a setup (session copy or a setup being edited): surveyed positions and the setup's beam only.
 
@@ -289,7 +292,8 @@ def setup_layout(setup, analysis=None):
     for d in setup.get('devices', []):
         label = ('ALPIDE_plane_' if d['kind'] == 'alpide' else 'MSENSOR_') + str(d['number'])
         row = {'label': label, 'name': analysis.get(label, label), 'kind': d['kind'], 'number': d['number'],
-               'plane': d['plane'], 'position_mm': d['position_mm'], 'pixels': d['pixels'], 'pitch_um': d['pitch_um']}
+               'plane': d['plane'], 'position_mm': d['position_mm'], 'pixels': d['pixels'], 'pitch_um': d['pitch_um'],
+               'resolution_um': intrinsic_um(d['kind'], d['pitch_um'], d.get('ithr', 0))}
         if d['kind'] == 'msensor':
             row['settings_all'] = {k: d.get(k) for k in ('threshold_dac', 'readout', 'window_length_ns', 'strobe_delay_ns', 'strobe_length_ns')}
             row.update(tiles=d.get('tiles'), tile_pixels=d.get('tile_pixels'), tiles_off=d.get('tiles_off', []),

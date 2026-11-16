@@ -3,12 +3,12 @@
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
 # Generated files and their SHA-256 are recorded here so a later generation
 # never silently replaces a file that was edited by hand.
-SILICON_X0_MM = 93.70  # same as tracksim/src/tracksim/beam.py
+from integration.resolution import SILICON_X0_MM, intrinsic_um
+
 MANIFEST = '.generated-files.json'
 ALPIDE_DEFAULTS = {'ithr': 0, 'strobe_length': 40}
 MSENSOR_DEFAULTS = {'threshold_dac': 100, 'readout': 'continuous', 'window_length_ns': 1000000,
@@ -196,7 +196,8 @@ def generate(layout, root, *, analysis=False, mode='single', options=None, extra
             role='role = "reference"' if d is reference else 'role = "dut"' if d['kind']=='msensor' and roles.get(label(d),'dut')=='dut' else ''
             pos=', '.join(str(x)+'mm' for x in d['position_mm'])
             pitch=', '.join(str(x)+'um' for x in d['pitch_um'])
-            resolution=', '.join(f'{p / math.sqrt(12):.3f}um' for p in d['pitch_um'])
+            chosen_ithr=dict(ALPIDE_DEFAULTS, **device_settings.get(label(d), {}))['ithr'] if d['kind']=='alpide' else 0
+            resolution=', '.join(f'{p:.3f}um' for p in intrinsic_um(d['kind'], d['pitch_um'], chosen_ithr))
             detector=next(row for row in detector_rows if row['id']==detid(d))
             material=(detector['active_um'] + detector['passive_um']) / 1000 / SILICON_X0_MM
             mask=''

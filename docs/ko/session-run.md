@@ -22,7 +22,7 @@
 
 ## 기본 detector 대응
 
-기본 분석 대응의 식별자와 위치는 다음과 같습니다. `mapping.json`은 분석 section 이름을 제공합니다. geometry의 `position_mm`, `pixels`, `pitch_um`은 각각 `position`, `number_of_pixels`, `pixel_pitch`에 대응합니다. 모든 면에는 축마다 `spatial_resolution` = pitch/√12(예: pitch 30 µm면 `8.660um, 8.660um`)와, 시뮬레이션이 쓰는 면마다 실리콘 100 µm에 해당하는 `material_budget = 0.00106724`도 들어갑니다. 취득 전용 배치를 생성하면 기존 분석 geometry는 그대로 둡니다.
+기본 분석 대응의 식별자와 위치는 다음과 같습니다. `mapping.json`은 분석 section 이름을 제공합니다. geometry의 `position_mm`, `pixels`, `pitch_um`은 각각 `position`, `number_of_pixels`, `pixel_pitch`에 대응합니다. 모든 면에는 [셋업 파일 설명](setup-file.md)의 고유 해상도인 `spatial_resolution`(예: `ithr = 0`인 ALPIDE 면은 `4.517um, 4.517um`, 기본 msensor는 `6.640um, 6.062um`)과, 시뮬레이션이 쓰는 면마다 실리콘 100 µm에 해당하는 `material_budget = 0.00106724`도 들어갑니다. 취득 전용 배치를 생성하면 기존 분석 geometry는 그대로 둡니다.
 
 | serial | producer / plane | geometry | analysis detector | z (mm) |
 |---|---|---|---|---:|

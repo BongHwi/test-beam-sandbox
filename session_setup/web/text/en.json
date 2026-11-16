@@ -197,7 +197,7 @@
   "optimiser_before": "Track resolution: open in the telescope optimiser for",
   "optimiser_or": "or",
   "optimiser_after": ".",
-  "optimiser_note": "External page by Magnus Mager (CERN). The link carries the planes, the beam momentum, pitch/√12 as resolution and 0.107 % X/X0 (100 µm silicon) per plane.",
+  "optimiser_note": "External page by Magnus Mager (CERN). The link carries the planes, the beam momentum, the intrinsic resolution of each plane (setup file reference) and 0.107 % X/X0 (100 µm silicon) per plane. Its fit is optimal and has no air, so its value can be a little smaller than this sandbox's estimate, which follows the straight-line fit of the analysis.",
   "trigger_settings": "Trigger settings",
   "filter": "Filter",
   "show_all": "Show all {n}",

@@ -75,8 +75,15 @@ Settings that the virtual devices do not react to are not offered: other ALPIDE 
 
 ## Track resolution
 
-The setup tab opens the external telescope optimiser by Magnus Mager (CERN) for either x or y; it requires internet access. The link sends the beam momentum `sqrt(T² + 2 T m)` in GeV/c, with `T` the kinetic energy and `m = 0.00051099895` GeV, and the device planes in z order. Each plane has resolution pitch/√12 for the selected axis and material 100 µm of silicon, or 0.107 % X/X0. The DUT scatters without a measurement; scintillators are omitted. Endpoints sit 10 mm before and after the devices, without material or measurement.
+`scripts/setup_session.sh show` and the summary in the setup tab estimate how precisely the track position is known at each DUT. The estimate follows the simulation and the analysis of this sandbox:
 
-[Open the default setup in x](https://mmager.web.cern.ch/telescope/tracking.html#part=e&p=4.0005&x=[-1,0,2,4,6,8,10,12,13]&XX0=[,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,]&sy=[,0.000866,0.000866,0.000866,0.000658,0.000866,0.000866,0.000866,]&en=[0,1,1,1,0,1,1,1,0]).
+- Intrinsic resolution for each axis. An msensor plane fires one pixel, so its resolution is pitch/√12: `6.640` x `6.062` µm for the default `23 x 21` µm pitch. An ALPIDE plane fires both pixels when the particle crosses within a band around a pixel border; the band widens as `ithr` falls (cluster mean `2 − ithr/255`), so the resolution for the `30` µm pitch is `4.517` µm at `ithr = 0` and `8.660` µm at `ithr = 255`.
+- Multiple scattering in every plane (100 µm of silicon, `0.00106724` X0) and in the air from the beam source to the last plane, with the Highland formula; its logarithmic term is taken once from the total material, as in the simulation.
+- A straight line fitted through the reference planes, weighted by their intrinsic resolution, as the analysis does. The DUT is not part of the fit.
 
-This sandbox's simulation does not include multiple scattering, so the optimiser's value estimates a real telescope with the same arrangement.
+For each DUT, `show` prints the track resolution (the spread of the fitted position at the DUT) and the expected residual (track and DUT resolution together) in x and y. For `default.ini` at 4 GeV the estimate is track `2.97 x 2.97` µm and residual `7.27 x 6.75` µm; one run gave residuals of `7.21 x 6.84` µm. The estimate describes this simulation, not a real telescope. The planes and the air together may hold at most `0.01998` X0, the limit of the simulation; `check` rejects a setup above it.
+
+The setup tab also opens the external telescope optimiser by Magnus Mager (CERN) for either x or y; it requires internet access. The link sends the beam momentum `sqrt(T² + 2 T m)` in GeV/c, with `T` the kinetic energy and `m = 0.00051099895` GeV, and the device planes in z order. Each plane has the intrinsic resolution above for the selected axis and material 100 µm of silicon, or 0.107 % X/X0. The DUT scatters without a measurement; scintillators are omitted. Endpoints sit 10 mm before and after the devices, without material or measurement. The optimiser fits the track optimally and has no air, so its value can be a little smaller than the estimate of `show`.
+
+[Open the default setup in x](https://mmager.web.cern.ch/telescope/tracking.html#part=e&p=4.0005&x=[-1,0,2,4,6,8,10,12,13]&XX0=[,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,]&sy=[,0.000452,0.000452,0.000452,0.000664,0.000452,0.000452,0.000452,]&en=[0,1,1,1,0,1,1,1,0])
+

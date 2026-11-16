@@ -197,7 +197,7 @@
   "optimiser_before": "トラック分解能: telescope optimiser で",
   "optimiser_or": "または",
   "optimiser_after": " 軸を開きます。",
-  "optimiser_note": "Magnus Mager（CERN）による外部ページです。リンクは各面、ビームの運動量、分解能として pitch/√12、各面に 0.107 % X/X0（100 µm のシリコン）を渡します。",
+  "optimiser_note": "Magnus Mager（CERN）による外部ページです。リンクは各面、ビームの運動量、各面の固有分解能（セットアップファイルの説明を参照）、各面に 0.107 % X/X0（100 µm のシリコン）を渡します。optimiser は最適な fit を使い空気を含めないため、解析の直線 fit に従うこの sandbox の推定より値が少し小さくなることがあります。",
   "trigger_settings": "trigger 設定",
   "filter": "絞り込み",
   "show_all": "全 {n} 件を表示",

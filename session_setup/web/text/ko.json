@@ -197,7 +197,7 @@
   "optimiser_before": "track 분해능: telescope optimiser에서",
   "optimiser_or": "또는",
   "optimiser_after": " 축을 엽니다.",
-  "optimiser_note": "Magnus Mager(CERN)의 외부 페이지입니다. 링크는 판, 빔 운동량, 분해능으로 pitch/√12, 판마다 0.107 % X/X0(100 µm 실리콘)을 전달합니다.",
+  "optimiser_note": "Magnus Mager(CERN)의 외부 페이지입니다. 링크는 판, 빔 운동량, 판마다의 고유 분해능(셋업 파일 설명 참고), 판마다 0.107 % X/X0(100 µm 실리콘)을 전달합니다. optimiser는 최적 fit을 쓰고 공기를 넣지 않으므로, 분석의 직선 fit을 따르는 이 sandbox의 추정보다 값이 조금 작을 수 있습니다.",
   "trigger_settings": "trigger 설정",
   "filter": "걸러 보기",
   "show_all": "전체 {n}개 보기",

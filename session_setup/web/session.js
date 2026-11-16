@@ -187,7 +187,7 @@ function renderCheck() {
     const energy = r.view.beam.energy_gev;
     const momentum = number(Math.sqrt(energy * energy + 2 * energy * 0.00051099895), 4);
     for (const [axis, index] of [['x', 0], ['y', 1]]) {
-      const resolution = ['', ...devices.map(d => number(d.pitch_um[index] / Math.sqrt(12) / 10000, 6)), ''];
+      const resolution = ['', ...devices.map(d => number(d.resolution_um[index] / 10000, 6)), ''];
       document.getElementById('optimiser-' + axis).href = 'https://mmager.web.cern.ch/telescope/tracking.html#' +
         `part=e&p=${momentum}&x=[${positions}]&XX0=[${material}]&sy=[${resolution}]&en=[${enabled}]`;
     }
