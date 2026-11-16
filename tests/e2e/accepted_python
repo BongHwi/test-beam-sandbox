@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: LGPL-3.0-or-later
+set -euo pipefail
+if [[ "${1:-}" == */ITS3DataCollector.py ]]; then shift; exec python /tmp/accepted_collector.py "$@"; fi
+if [[ "${1:-}" == -m && "${2:-}" == session_core.server ]]; then shift 2; exec python /tmp/accepted_core.py "$@"; fi
+exec python "$@"

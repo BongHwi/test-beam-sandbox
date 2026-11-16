@@ -1,0 +1,3 @@
+# Public immutable native ROOT base images. amd64 has not been built or run here.
+ROOT_IMAGE_arm64='rootproject/root@sha256:200ae4092d3dd079dc9dc131e743634f01eeb4a88fc4b50f149a0154bfdabb54'
+ROOT_IMAGE_amd64='rootproject/root@sha256:b07bf891c90a3f3a0be8dc0e36689815192aa03cfdefb74014a309305498a105'

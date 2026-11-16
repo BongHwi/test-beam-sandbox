@@ -1,0 +1,144 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: LGPL-3.0-or-later -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title></title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-drawn="0" data-empty="0" data-failed="0" data-planned="0" data-ready="no">
+<header>
+  <div class="brand"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M2 12h20M6 6v12M11 5v14M16 6v12M20 10l2 2-2 2"></path></svg><h1 data-t="title"></h1></div>
+  <nav class="tabs" role="tablist">
+    <button data-tab="setup" data-t="tab_setup"></button>
+    <button data-tab="view" data-t="tab_view"></button>
+    <button data-tab="qa" class="active" data-t="tab_qa"></button>
+    <button data-tab="browse" data-t="tab_browse"></button>
+    <button data-tab="daq" data-t="tab_daq"></button>
+  </nav>
+  <div class="header-right"><label class="session-pick"><span data-t="session"></span> <select id="session-pick"></select></label>
+  <div class="languages"><button data-lang="en">EN</button><button data-lang="ko">KO</button><button data-lang="ja">JA</button></div></div>
+</header>
+<main>
+  <section id="setup" class="tab">
+    <div class="setup">
+      <div class="setup-files">
+        <h2 data-t="setup_files"></h2>
+        <p class="note"><span data-t="setup_folder"></span> <code>configs/setups/</code></p>
+        <ul id="setup-files"></ul>
+        <button id="setup-new" class="edit" type="button" data-t="setup_new"></button>
+      </div>
+      <div class="setup-edit">
+        <h2 data-t="setup_edit"></h2>
+        <nav class="section-links" id="setup-links"></nav><div id="setup-editor"></div>
+      </div>
+      <div class="setup-side">
+        <div class="setup-preview-card">
+        <h2 data-t="setup_preview"></h2>
+        <div class="viewbar">
+          <button data-view="reset" data-t="view_reset"></button><button data-view="side" data-t="view_side"></button><button data-view="top" data-t="view_top"></button><button data-view="beam" data-t="view_beam"></button>
+          <button id="preview-expand" class="preview-icon" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"></path></svg></button><button id="preview-close" class="preview-icon" type="button" hidden><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"></path></svg></button>
+        </div>
+        <div id="setup-scene" class="scene"><div id="setup-scene-labels" class="scene-labels"></div></div>
+        <div id="setup-renderer"></div><p class="note" data-t="scint_legend"></p>
+        <div id="setup-optimiser" hidden><p><span data-t="optimiser_before"></span> <a id="optimiser-x" target="_blank" rel="noopener noreferrer">x</a> <span data-t="optimiser_or"></span> <a id="optimiser-y" target="_blank" rel="noopener noreferrer">y</a><span data-t="optimiser_after"></span></p><p class="note" data-t="optimiser_note"></p></div>
+        </div>
+        <div class="setup-check-card">
+        <h2><span data-t="setup_check_title"></span> <code id="check-command"></code></h2>
+        <span id="check-badge" class="check-badge" data-t="check_pass" hidden></span>
+        <pre id="setup-check" class="screen"></pre>
+        </div>
+        <div class="setup-actions">
+        <div id="setup-save" class="controls" hidden>
+          <h2 data-t="setup_save_title"></h2>
+          <div class="op-row"><label><span data-t="setup_file_name"></span> <input id="setup-name" type="text" spellcheck="false"></label> <span id="setup-state" class="badge"></span></div>
+          <p class="note"><span data-t="setup_save_note"></span> <code>configs/setups/</code></p>
+          <div class="op-row"><button id="save-button" class="op" type="button" data-t="setup_save"></button></div>
+          <div id="save-confirm" class="confirm" hidden></div>
+          <div class="hint"></div>
+          <div id="save-result" class="op-result"></div>
+        </div>
+        <div id="session-start" class="controls" hidden>
+          <h2 data-t="start_title"></h2>
+          <div class="op-row"><label><span data-t="start_name"></span> <input id="start-name" type="text" value="public-session" spellcheck="false"></label></div>
+          <div class="op-row"><label><span data-t="start_alignment"></span> <select id="start-alignment"></select></label> <code>configs/alignments/</code></div>
+          <p class="note" id="start-needs-save" data-t="start_needs_save"></p>
+          <div id="start-image"></div>
+          <div class="op-row"><button id="start-button" class="op" type="button" data-t="start_button"></button></div>
+          <div class="hint"></div>
+          <div id="start-result" class="op-result"></div>
+        </div>
+        <div hidden><code id="save-command-source" data-command-source></code><code id="start-command" data-command-source></code></div>
+        <div class="shared-command"><code class="cmd" id="setup-shared-command" data-shared-command="setup"></code></div>
+        </div>
+        <h2><span data-t="setup_show_title"></span> <code id="show-command"></code></h2>
+        <pre id="setup-show" class="screen"></pre>
+      </div>
+    </div>
+  </section>
+  <section id="view" class="tab">
+    <div class="experiment">
+      <div class="stage">
+        <div class="viewbar">
+          <button data-view="reset" data-t="view_reset"></button><button data-view="side" data-t="view_side"></button><button data-view="top" data-t="view_top"></button><button data-view="beam" data-t="view_beam"></button>
+          <label id="aligned-toggle" style="display:none"><input type="checkbox" id="show-aligned"> <span data-t="show_aligned"></span></label>
+        </div>
+        <div id="scene"><div id="scene-labels"></div><div id="scene-message"></div></div>
+        <div id="view-renderer"></div>
+        <div class="stage-footer"><div class="stage-legend"><span class="legend-chip" data-t="legend_tile_on"></span><span class="legend-chip" data-t="legend_tile_off"></span><span class="legend-chip" data-t="legend_scintillator"></span><span class="legend-chip" data-t="legend_particles"></span></div><div class="stage-hint"><span data-t="controls_help"></span> <span data-t="axis_note"></span></div><span data-t="tile_legend" hidden></span><span data-t="scint_legend" hidden></span></div>
+      </div>
+      <aside class="panel">
+        <div class="status-card"><div class="status-top"><div id="beam-badge" class="beam-badge none"></div><div class="rc-status"><span data-t="rc_state"></span> <span id="v-rc"></span></div></div>
+        <div id="beam-note"></div>
+        <div id="run-table"><span id="v-session" hidden></span><div class="event-heading"><span data-t="events_run"></span><span id="event-percent"></span></div><div class="event-value"><span id="v-events"></span> <span id="v-target"></span></div>
+        <div id="run-progress" class="run-progress"><span></span></div>
+        <div class="status-metrics"><div class="metric"><span data-t="rate"></span><strong id="v-rate"></strong></div><div class="metric"><span data-t="run"></span><strong id="v-run"></strong></div></div></div>
+        <p class="note" id="read-every"></p></div>
+        <div id="view-controls" class="controls"></div>
+        <div class="beam-card"><h2 data-t="beam_settings"></h2>
+        <table id="beam-table"></table>
+        <div id="layout-source"></div></div>
+        <div class="device-card"><h2 data-t="devices"></h2><div id="device-summary"></div></div>
+      </aside>
+    </div>
+    <h2 data-t="devices"></h2>
+    <div class="wide"><table id="devices-table"></table></div>
+    <h2 data-t="scintillators"></h2><div id="scintillators-table" class="wide"></div>
+    <div id="next-settings" class="controls"></div>
+  </section>
+  <section id="qa" class="tab active">
+    <div class="qa-overview"><div id="status" class="cards"></div><div id="qa-controls" class="controls"></div></div>
+    <div id="alert"></div>
+    <nav class="section-links" id="qa-links"></nav>
+    <div class="qa-pair"><section class="qa-card"><h2 data-t="alignment"></h2><div id="alignment"></div></section>
+    <section class="qa-card"><h2 data-t="numbers"></h2><div id="numbers"></div></section></div>
+    <h2 data-t="hitmaps"></h2><div id="hitmaps" class="grid"></div>
+    <h2 data-t="correlations"></h2><div id="correlations" class="grid"></div>
+    <h2 data-t="tracks"></h2><div id="tracks" class="grid"></div>
+    <h2 data-t="dut"></h2><div id="dut" class="grid"></div>
+    <h2 data-t="history"></h2><div id="history" class="grid"></div>
+  </section>
+  <section id="browse" class="tab">
+    <p data-t="browse_help"></p>
+    <div class="browser"><div class="tree-card"><div class="tree-heading"><h2 data-t="qa_root_file"></h2><span id="browse-run" class="note"></span></div><label for="tree-filter" data-t="filter"></label><input id="tree-filter" type="search" data-placeholder="filter" autocomplete="off"><ul id="tree"></ul></div><div class="browser-card"><div class="browser-heading"><code id="browse-path"></code><span id="browse-type" class="badge"></span></div><div id="browse-view" class="plot large"><div class="empty" data-t="choose_histogram"></div></div></div></div>
+  </section>
+  <section id="daq" class="tab">
+    <p id="daq-none" class="alert warn" data-t="no_session_note"></p>
+    <div id="daq-body" class="daq">
+      <div class="daq-screen">
+        <div class="terminal-head"><div id="window-bar" class="viewbar"></div><span class="note" data-t="live_readonly"></span></div>
+        <pre id="screen" class="screen terminal"></pre>
+        <p class="note"><span data-t="daq_read_note"></span> <span id="screen-read"></span></p>
+      </div>
+      <aside class="panel">
+        <div id="key-controls" class="controls"></div>
+        <div id="end-controls" class="controls"></div>
+      </aside>
+    </div>
+  </section>
+</main>
+<div id="preview-dialog" class="preview-backdrop" role="dialog" aria-modal="true" hidden></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

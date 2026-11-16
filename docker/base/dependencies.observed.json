@@ -1,0 +1,2164 @@
+{
+  "python_distributions": [
+    {
+      "name": "anyio",
+      "version": "4.1.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/anyio-4.1.0.dist-info"
+    },
+    {
+      "name": "archspec",
+      "version": "0.2.2",
+      "license": "Apache-2.0 OR MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/archspec-0.2.2.dist-info"
+    },
+    {
+      "name": "argon2-cffi",
+      "version": "23.1.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/argon2_cffi-23.1.0.dist-info"
+    },
+    {
+      "name": "argon2-cffi-bindings",
+      "version": "21.2.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/argon2_cffi_bindings-21.2.0.dist-info"
+    },
+    {
+      "name": "arrow",
+      "version": "1.3.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/arrow-1.3.0.dist-info"
+    },
+    {
+      "name": "astroid",
+      "version": "4.3.4",
+      "license": "LGPL-2.1-or-later",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/astroid-4.3.4.dist-info"
+    },
+    {
+      "name": "asttokens",
+      "version": "2.4.1",
+      "license": "Apache 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/asttokens-2.4.1.dist-info"
+    },
+    {
+      "name": "async-lru",
+      "version": "2.0.4",
+      "license": "MIT License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/async_lru-2.0.4.dist-info"
+    },
+    {
+      "name": "attrs",
+      "version": "23.1.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/attrs-23.1.0.dist-info"
+    },
+    {
+      "name": "autopep8",
+      "version": "2.3.2",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/autopep8-2.3.2.dist-info"
+    },
+    {
+      "name": "Babel",
+      "version": "2.13.1",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/Babel-2.13.1.dist-info"
+    },
+    {
+      "name": "beautifulsoup4",
+      "version": "4.12.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/beautifulsoup4-4.12.2.dist-info"
+    },
+    {
+      "name": "bleach",
+      "version": "6.1.0",
+      "license": "Apache Software License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/bleach-6.1.0.dist-info"
+    },
+    {
+      "name": "boltons",
+      "version": "23.0.0",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/boltons-23.0.0.dist-info"
+    },
+    {
+      "name": "Brotli",
+      "version": "1.1.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/Brotli-1.1.0.dist-info"
+    },
+    {
+      "name": "cached-property",
+      "version": "1.5.2",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/cached_property-1.5.2.dist-info"
+    },
+    {
+      "name": "certifi",
+      "version": "2023.11.17",
+      "license": "MPL-2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/certifi-2023.11.17.dist-info"
+    },
+    {
+      "name": "cffi",
+      "version": "1.16.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/cffi-1.16.0.dist-info"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.2.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/charset_normalizer-3.2.0.dist-info"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/colorama-0.4.6.dist-info"
+    },
+    {
+      "name": "comm",
+      "version": "0.1.4",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2022, Jupyter\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/comm-0.1.4.dist-info"
+    },
+    {
+      "name": "conda",
+      "version": "23.11.0",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2012, Anaconda, Inc.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the copyright holder nor the names of its\n      contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n---\n\nConda incorporates the following libraries into its distributed code:\n\n* appdirs, licensed as MIT\n* auxlib, licensed as ISC\n* boltons, licensed as BSD-3-Clause\n* py-cpuinfo, licensed as MIT\n* distro, licensed as Apache-2.0\n* frozendict, license as LGPL-3.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/conda-23.11.0.dist-info"
+    },
+    {
+      "name": "conda-libmamba-solver",
+      "version": "23.11.1",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2022, Anaconda, Inc.\nCopyright (c) 2023, conda\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of the copyright holder nor the names of its\n      contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n---\n\nThis work also includes code borrowed from mamba.utils v0.19, licensed as BSD 3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/conda_libmamba_solver-23.11.1.dist-info"
+    },
+    {
+      "name": "conda-package-handling",
+      "version": "2.2.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/conda_package_handling-2.2.0.dist-info"
+    },
+    {
+      "name": "conda_package_streaming",
+      "version": "0.9.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/conda_package_streaming-0.9.0.dist-info"
+    },
+    {
+      "name": "cryptography",
+      "version": "41.0.7",
+      "license": "Apache-2.0 OR BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/cryptography-41.0.7.dist-info"
+    },
+    {
+      "name": "debugpy",
+      "version": "1.8.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/debugpy-1.8.0.dist-info"
+    },
+    {
+      "name": "decorator",
+      "version": "5.1.1",
+      "license": "new BSD License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/decorator-5.1.1.dist-info"
+    },
+    {
+      "name": "defusedxml",
+      "version": "0.7.1",
+      "license": "PSFL",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/defusedxml-0.7.1.dist-info"
+    },
+    {
+      "name": "dill",
+      "version": "0.4.1",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/dill-0.4.1.dist-info"
+    },
+    {
+      "name": "distro",
+      "version": "1.8.0",
+      "license": "Apache License, Version 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/distro-1.8.0.dist-info"
+    },
+    {
+      "name": "entrypoints",
+      "version": "0.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/entrypoints-0.4.dist-info"
+    },
+    {
+      "name": "exceptiongroup",
+      "version": "1.2.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/exceptiongroup-1.2.0.dist-info"
+    },
+    {
+      "name": "executing",
+      "version": "2.0.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/executing-2.0.1.dist-info"
+    },
+    {
+      "name": "fastjsonschema",
+      "version": "2.19.0",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/fastjsonschema-2.19.0.dist-info"
+    },
+    {
+      "name": "fqdn",
+      "version": "1.5.1",
+      "license": "MPL 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/fqdn-1.5.1.dist-info"
+    },
+    {
+      "name": "gazpacho",
+      "version": "1.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/gazpacho-1.1.dist-info"
+    },
+    {
+      "name": "idna",
+      "version": "3.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/idna-3.4.dist-info"
+    },
+    {
+      "name": "importlib-metadata",
+      "version": "7.0.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/importlib_metadata-7.0.0.dist-info"
+    },
+    {
+      "name": "importlib-resources",
+      "version": "6.1.1",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/importlib_resources-6.1.1.dist-info"
+    },
+    {
+      "name": "iniconfig",
+      "version": "2.3.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/iniconfig-2.3.1.dist-info"
+    },
+    {
+      "name": "ipykernel",
+      "version": "6.26.0",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2015, IPython Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ipykernel-6.26.0.dist-info"
+    },
+    {
+      "name": "ipyparallel",
+      "version": "8.6.1",
+      "license": "# Licensing terms\n\nTraitlets is adapted from enthought.traits, Copyright (c) Enthought, Inc.,\nunder the terms of the Modified BSD License.\n\nThis project is licensed under the terms of the Modified BSD License\n(also known as New or Revised or 3-Clause BSD), as follows:\n\n- Copyright (c) 2001-, IPython Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this\nlist of conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the IPython Development Team nor the names of its\ncontributors may be used to endorse or promote products derived from this\nsoftware without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n## About the IPython Development Team\n\nThe IPython Development Team is the set of all contributors to the IPython project.\nThis includes all of the IPython subprojects.\n\nThe core team that coordinates development on GitHub can be found here:\nhttps://github.com/jupyter/.\n\n## Our Copyright Policy\n\nIPython uses a shared copyright model. Each contributor maintains copyright\nover their contributions to IPython. But, it is important to note that these\ncontributions are typically only changes to the repositories. Thus, the IPython\nsource code, in its entirety is not the copyright of any single person or\ninstitution. Instead, it is the collective copyright of the entire IPython\nDevelopment Team. If individual contributors want to maintain a record of what\nchanges/contributions they have specific copyright on, they should indicate\ntheir copyright in the commit message of the change, when they commit the\nchange to one of the IPython repositories.\n\nWith this in mind, the following banner should be used in any source code file\nto indicate the copyright and license terms:\n\n    # Copyright (c) IPython Development Team.\n    # Distributed under the terms of the Modified BSD License.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ipyparallel-8.6.1.dist-info"
+    },
+    {
+      "name": "ipython",
+      "version": "8.18.1",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ipython-8.18.1.dist-info"
+    },
+    {
+      "name": "isoduration",
+      "version": "20.11.0",
+      "license": "UNKNOWN",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/isoduration-20.11.0.dist-info"
+    },
+    {
+      "name": "isort",
+      "version": "9.0.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/isort-9.0.2.dist-info"
+    },
+    {
+      "name": "jedi",
+      "version": "0.19.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jedi-0.19.1.dist-info"
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.2",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/Jinja2-3.1.2.dist-info"
+    },
+    {
+      "name": "json5",
+      "version": "0.9.14",
+      "license": "Apache",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/json5-0.9.14.dist-info"
+    },
+    {
+      "name": "jsonpatch",
+      "version": "1.32",
+      "license": "Modified BSD License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jsonpatch-1.32.dist-info"
+    },
+    {
+      "name": "jsonpointer",
+      "version": "2.0",
+      "license": "Modified BSD License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jsonpointer-2.0-py3.6.egg-info"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.20.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jsonschema-4.20.0.dist-info"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2023.11.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jsonschema_specifications-2023.11.2.dist-info"
+    },
+    {
+      "name": "jupyter-events",
+      "version": "0.9.0",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2022-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_events-0.9.0.dist-info"
+    },
+    {
+      "name": "jupyter-lsp",
+      "version": "2.2.1",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_lsp-2.2.1.dist-info"
+    },
+    {
+      "name": "jupyter_client",
+      "version": "8.6.0",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-2015, IPython Development Team\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_client-8.6.0.dist-info"
+    },
+    {
+      "name": "jupyter_core",
+      "version": "5.5.0",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_core-5.5.0.dist-info"
+    },
+    {
+      "name": "jupyter_server",
+      "version": "2.12.1",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-2015, IPython Development Team\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_server-2.12.1.dist-info"
+    },
+    {
+      "name": "jupyter_server_terminals",
+      "version": "0.4.4",
+      "license": "# Licensing terms\n\nThis project is licensed under the terms of the Modified BSD License\n(also known as New or Revised or 3-Clause BSD), as follows:\n\n- Copyright (c) 2021-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\nRedistributions of source code must retain the above copyright notice, this\nlist of conditions and the following disclaimer.\n\nRedistributions in binary form must reproduce the above copyright notice, this\nlist of conditions and the following disclaimer in the documentation and/or\nother materials provided with the distribution.\n\nNeither the name of the Jupyter Development Team nor the names of its\ncontributors may be used to endorse or promote products derived from this\nsoftware without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n## About the Jupyter Development Team\n\nThe Jupyter Development Team is the set of all contributors to the Jupyter project.\nThis includes all of the Jupyter subprojects.\n\nThe core team that coordinates development on GitHub can be found here:\nhttps://github.com/jupyter/.\n\n## Our Copyright Policy\n\nJupyter uses a shared copyright model. Each contributor maintains copyright\nover their contributions to Jupyter. But, it is important to note that these\ncontributions are typically only changes to the repositories. Thus, the Jupyter\nsource code, in its entirety is not the copyright of any single person or\ninstitution. Instead, it is the collective copyright of the entire Jupyter\nDevelopment Team. If individual contributors want to maintain a record of what\nchanges/contributions they have specific copyright on, they should indicate\ntheir copyright in the commit message of the change, when they commit the\nchange to one of the Jupyter repositories.\n\nWith this in mind, the following banner should be used in any source code file\nto indicate the copyright and license terms:\n\n    # Copyright (c) Jupyter Development Team.\n    # Distributed under the terms of the Modified BSD License.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyter_server_terminals-0.4.4.dist-info"
+    },
+    {
+      "name": "jupyterlab",
+      "version": "4.0.9",
+      "license": "Copyright (c) 2015-2022 Project Jupyter Contributors\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\nSemver File License\n===================\n\nThe semver.py file is from https://github.com/podhmo/python-semver\nwhich is licensed under the \"MIT\" license.  See the semver.py file for details.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyterlab-4.0.9.dist-info"
+    },
+    {
+      "name": "jupyterlab_pygments",
+      "version": "0.3.0",
+      "license": "Copyright (c) 2015 Project Jupyter Contributors\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyterlab_pygments-0.3.0.dist-info"
+    },
+    {
+      "name": "jupyterlab_server",
+      "version": "2.25.2",
+      "license": "Copyright (c) 2015-2017, Project Jupyter Contributors\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/jupyterlab_server-2.25.2.dist-info"
+    },
+    {
+      "name": "libmambapy",
+      "version": "1.5.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/libmambapy-1.5.4.dist-info"
+    },
+    {
+      "name": "libtmux",
+      "version": "0.62.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/libtmux-0.62.0.dist-info"
+    },
+    {
+      "name": "llvmlite",
+      "version": "0.41.1",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/llvmlite-0.41.1-py3.11.egg-info"
+    },
+    {
+      "name": "mamba",
+      "version": "1.5.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/mamba-1.5.4.dist-info"
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/markdown_it_py-4.2.0.dist-info"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "2.1.3",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/MarkupSafe-2.1.3.dist-info"
+    },
+    {
+      "name": "matplotlib-inline",
+      "version": "0.1.6",
+      "license": "BSD 3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/matplotlib_inline-0.1.6.dist-info"
+    },
+    {
+      "name": "mccabe",
+      "version": "0.7.0",
+      "license": "Expat license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/mccabe-0.7.0.dist-info"
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/mdurl-0.1.2.dist-info"
+    },
+    {
+      "name": "menuinst",
+      "version": "2.0.0",
+      "license": "(c) 2016 Continuum Analytics, Inc. / http://continuum.io\nAll Rights Reserved\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n    * Redistributions of source code must retain the above copyright\n      notice, this list of conditions and the following disclaimer.\n    * Redistributions in binary form must reproduce the above copyright\n      notice, this list of conditions and the following disclaimer in the\n      documentation and/or other materials provided with the distribution.\n    * Neither the name of Continuum Analytics, Inc. nor the\n      names of its contributors may be used to endorse or promote products\n      derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND\nANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED\nWARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL CONTINUUM ANALYTICS BE LIABLE FOR ANY\nDIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES\n(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;\nLOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND\nON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS\nSOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/menuinst-2.0.0.dist-info"
+    },
+    {
+      "name": "metakernel",
+      "version": "0.30.1",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/metakernel-0.30.1.dist-info"
+    },
+    {
+      "name": "mistune",
+      "version": "3.0.2",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/mistune-3.0.2.dist-info"
+    },
+    {
+      "name": "mypy_extensions",
+      "version": "1.2.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/mypy_extensions-1.2.0.dist-info"
+    },
+    {
+      "name": "nbclient",
+      "version": "0.8.0",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2020-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/nbclient-0.8.0.dist-info"
+    },
+    {
+      "name": "nbconvert",
+      "version": "7.12.0",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-2015, IPython Development Team\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/nbconvert-7.12.0.dist-info"
+    },
+    {
+      "name": "nbformat",
+      "version": "5.9.2",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-2015, IPython Development Team\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/nbformat-5.9.2.dist-info"
+    },
+    {
+      "name": "nest-asyncio",
+      "version": "1.5.8",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/nest_asyncio-1.5.8.dist-info"
+    },
+    {
+      "name": "notebook",
+      "version": "7.0.6",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-2015, IPython Development Team\n- Copyright (c) 2015-, Jupyter Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/notebook-7.0.6.dist-info"
+    },
+    {
+      "name": "notebook_shim",
+      "version": "0.2.3",
+      "license": "BSD 3-Clause License\n\nCopyright (c) 2022 Project Jupyter Contributors\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/notebook_shim-0.2.3.dist-info"
+    },
+    {
+      "name": "numba",
+      "version": "0.58.1",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/numba-0.58.1.dist-info"
+    },
+    {
+      "name": "numpy",
+      "version": "1.26.2",
+      "license": "Copyright (c) 2005-2023, NumPy Developers.\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are\nmet:\n\n    * Redistributions of source code must retain the above copyright\n       notice, this list of conditions and the following disclaimer.\n\n    * Redistributions in binary form must reproduce the above\n       copyright notice, this list of conditions and the following\n       disclaimer in the documentation and/or other materials provided\n       with the distribution.\n\n    * Neither the name of the NumPy Developers nor the names of any\n       contributors may be used to endorse or promote products derived\n       from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS\n\"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT\nLIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR\nA PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT\nOWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,\nSPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT\nLIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\nDATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\nTHEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/numpy-1.26.2.dist-info"
+    },
+    {
+      "name": "overrides",
+      "version": "7.4.0",
+      "license": "Apache License, Version 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/overrides-7.4.0.dist-info"
+    },
+    {
+      "name": "packaging",
+      "version": "23.1",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/packaging-23.1.dist-info"
+    },
+    {
+      "name": "pandocfilters",
+      "version": "1.5.0",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pandocfilters-1.5.0.dist-info"
+    },
+    {
+      "name": "parso",
+      "version": "0.8.3",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/parso-0.8.3.dist-info"
+    },
+    {
+      "name": "pexpect",
+      "version": "4.8.0",
+      "license": "ISC license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pexpect-4.8.0.dist-info"
+    },
+    {
+      "name": "pickleshare",
+      "version": "0.7.5",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pickleshare-0.7.5.dist-info"
+    },
+    {
+      "name": "pip",
+      "version": "23.2.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pip-23.2.1-py3.11.egg-info"
+    },
+    {
+      "name": "pkgutil_resolve_name",
+      "version": "1.3.10",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pkgutil_resolve_name-1.3.10.dist-info"
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.1.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/platformdirs-4.1.0.dist-info"
+    },
+    {
+      "name": "pluggy",
+      "version": "1.7.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pluggy-1.7.0.dist-info"
+    },
+    {
+      "name": "portalocker",
+      "version": "2.8.2",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/portalocker-2.8.2.dist-info"
+    },
+    {
+      "name": "prometheus-client",
+      "version": "0.19.0",
+      "license": "Apache Software License 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/prometheus_client-0.19.0.dist-info"
+    },
+    {
+      "name": "prompt-toolkit",
+      "version": "3.0.41",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/prompt_toolkit-3.0.41.dist-info"
+    },
+    {
+      "name": "psutil",
+      "version": "5.9.5",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/psutil-5.9.5.dist-info"
+    },
+    {
+      "name": "ptyprocess",
+      "version": "0.7.0",
+      "license": "UNKNOWN",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ptyprocess-0.7.0.dist-info"
+    },
+    {
+      "name": "pure-eval",
+      "version": "0.2.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pure_eval-0.2.2.dist-info"
+    },
+    {
+      "name": "pycodestyle",
+      "version": "2.15.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pycodestyle-2.15.0.dist-info"
+    },
+    {
+      "name": "pycosat",
+      "version": "0.6.6",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pycosat-0.6.6.dist-info"
+    },
+    {
+      "name": "pycparser",
+      "version": "2.21",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pycparser-2.21.dist-info"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.17.2",
+      "license": "BSD-2-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pygments-2.17.2.dist-info"
+    },
+    {
+      "name": "pylint",
+      "version": "4.1.3",
+      "license": "GPL-2.0-or-later",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pylint-4.1.3.dist-info"
+    },
+    {
+      "name": "pyOpenSSL",
+      "version": "23.2.0",
+      "license": "Apache License, Version 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pyOpenSSL-23.2.0.dist-info"
+    },
+    {
+      "name": "PySocks",
+      "version": "1.7.1",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/PySocks-1.7.1.dist-info"
+    },
+    {
+      "name": "pytest",
+      "version": "8.4.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pytest-8.4.2.dist-info"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "2.8.2",
+      "license": "Dual License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/python_dateutil-2.8.2.dist-info"
+    },
+    {
+      "name": "python-json-logger",
+      "version": "2.0.7",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/python_json_logger-2.0.7.dist-info"
+    },
+    {
+      "name": "pytz",
+      "version": "2023.3.post1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pytz-2023.3.post1.dist-info"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pyyaml-6.0.3.dist-info"
+    },
+    {
+      "name": "pyzmq",
+      "version": "25.1.2",
+      "license": "LGPL+BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/pyzmq-25.1.2.dist-info"
+    },
+    {
+      "name": "quote",
+      "version": "3.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/quote-3.0.dist-info"
+    },
+    {
+      "name": "random_word",
+      "version": "1.0.13",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/random_word-1.0.13.dist-info"
+    },
+    {
+      "name": "referencing",
+      "version": "0.31.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/referencing-0.31.1.dist-info"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2",
+      "license": "Apache-2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/requests-2.34.2.dist-info"
+    },
+    {
+      "name": "rfc3339-validator",
+      "version": "0.1.4",
+      "license": "MIT license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/rfc3339_validator-0.1.4.dist-info"
+    },
+    {
+      "name": "rfc3986-validator",
+      "version": "0.1.1",
+      "license": "MIT license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/rfc3986_validator-0.1.1.dist-info"
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/rich-15.0.0.dist-info"
+    },
+    {
+      "name": "rpds-py",
+      "version": "0.13.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/rpds_py-0.13.2.dist-info"
+    },
+    {
+      "name": "ruamel.yaml",
+      "version": "0.18.5",
+      "license": "MIT license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ruamel.yaml-0.18.5.dist-info"
+    },
+    {
+      "name": "ruamel.yaml.clib",
+      "version": "0.2.7",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/ruamel.yaml.clib-0.2.7.dist-info"
+    },
+    {
+      "name": "Send2Trash",
+      "version": "1.8.2",
+      "license": "BSD License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/Send2Trash-1.8.2.dist-info"
+    },
+    {
+      "name": "setuptools",
+      "version": "68.1.2",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/setuptools-68.1.2-py3.11.egg-info"
+    },
+    {
+      "name": "six",
+      "version": "1.16.0",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/six-1.16.0.dist-info"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.0",
+      "license": "MIT OR Apache-2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/sniffio-1.3.0.dist-info"
+    },
+    {
+      "name": "soupsieve",
+      "version": "2.5",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/soupsieve-2.5.dist-info"
+    },
+    {
+      "name": "stack-data",
+      "version": "0.6.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/stack_data-0.6.2.dist-info"
+    },
+    {
+      "name": "terminado",
+      "version": "0.18.0",
+      "license": "BSD 2-Clause License\n\n- Copyright (c) 2014-, Jupyter development team\n- Copyright (c) 2014, Ramalingam Saravanan <sarava@sarava.net>\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/terminado-0.18.0.dist-info"
+    },
+    {
+      "name": "timeout-decorator",
+      "version": "0.5.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/timeout_decorator-0.5.0.dist-info"
+    },
+    {
+      "name": "tinycss2",
+      "version": "1.2.1",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/tinycss2-1.2.1.dist-info"
+    },
+    {
+      "name": "tomli",
+      "version": "2.0.1",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/tomli-2.0.1.dist-info"
+    },
+    {
+      "name": "tomlkit",
+      "version": "0.15.2",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/tomlkit-0.15.2.dist-info"
+    },
+    {
+      "name": "toolz",
+      "version": "0.12.0",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/toolz-0.12.0.dist-info"
+    },
+    {
+      "name": "tornado",
+      "version": "6.3.3",
+      "license": "Apache-2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/tornado-6.3.3.dist-info"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.66.1",
+      "license": "MPL-2.0 AND MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/tqdm-4.66.1.dist-info"
+    },
+    {
+      "name": "traitlets",
+      "version": "5.14.0",
+      "license": "BSD 3-Clause License\n\n- Copyright (c) 2001-, IPython Development Team\n\nAll rights reserved.\n\nRedistribution and use in source and binary forms, with or without\nmodification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this\n   list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice,\n   this list of conditions and the following disclaimer in the documentation\n   and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its\n   contributors may be used to endorse or promote products derived from\n   this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\"\nAND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE\nIMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE\nDISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE\nFOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL\nDAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR\nSERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER\nCAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,\nOR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\nOF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/traitlets-5.14.0.dist-info"
+    },
+    {
+      "name": "truststore",
+      "version": "0.8.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/truststore-0.8.0.dist-info"
+    },
+    {
+      "name": "types-python-dateutil",
+      "version": "2.8.19.14",
+      "license": "Apache-2.0 license",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/types_python_dateutil-2.8.19.14.dist-info"
+    },
+    {
+      "name": "typing-utils",
+      "version": "0.1.0",
+      "license": "Apache License 2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/typing_utils-0.1.0.dist-info"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.8.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/typing_extensions-4.8.0.dist-info"
+    },
+    {
+      "name": "uri-template",
+      "version": "1.3.0",
+      "license": "MIT License",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/uri_template-1.3.0.dist-info"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.0.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/urllib3-2.0.4.dist-info"
+    },
+    {
+      "name": "urwid",
+      "version": "5.1.0",
+      "license": "LGPL-2.1-only",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/urwid-5.1.0.dist-info"
+    },
+    {
+      "name": "urwid-timed-progress",
+      "version": "1.1.1",
+      "license": "MIT",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/urwid_timed_progress-1.1.1.dist-info"
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.9.4",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/wcwidth-0.9.4.dist-info"
+    },
+    {
+      "name": "webcolors",
+      "version": "1.13",
+      "license": "BSD-3-Clause",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/webcolors-1.13.dist-info"
+    },
+    {
+      "name": "webencodings",
+      "version": "0.5.1",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/webencodings-0.5.1.dist-info"
+    },
+    {
+      "name": "websocket-client",
+      "version": "1.7.0",
+      "license": "Apache-2.0",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/websocket_client-1.7.0.dist-info"
+    },
+    {
+      "name": "wheel",
+      "version": "0.41.2",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/wheel-0.41.2.dist-info"
+    },
+    {
+      "name": "xrootd",
+      "version": "5.6.2",
+      "license": "LGPLv3+",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/xrootd-5.6.2.dist-info"
+    },
+    {
+      "name": "zipp",
+      "version": "3.17.0",
+      "license": null,
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/zipp-3.17.0.dist-info"
+    },
+    {
+      "name": "zstandard",
+      "version": "0.22.0",
+      "license": "BSD",
+      "metadata_path": "/opt/conda/lib/python3.11/site-packages/zstandard-0.22.0-py3.11.egg-info"
+    }
+  ],
+  "dpkg_packages": [
+    {
+      "package": "adduser",
+      "version": "3.118ubuntu2",
+      "license_path": "/usr/share/doc/adduser/copyright"
+    },
+    {
+      "package": "apt",
+      "version": "2.0.10",
+      "license_path": "/usr/share/doc/apt/copyright"
+    },
+    {
+      "package": "base-files",
+      "version": "11ubuntu5.7",
+      "license_path": "/usr/share/doc/base-files/copyright"
+    },
+    {
+      "package": "base-passwd",
+      "version": "3.5.47",
+      "license_path": "/usr/share/doc/base-passwd/copyright"
+    },
+    {
+      "package": "bash",
+      "version": "5.0-6ubuntu1.2",
+      "license_path": "/usr/share/doc/bash/copyright"
+    },
+    {
+      "package": "binutils",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/binutils/copyright"
+    },
+    {
+      "package": "binutils-aarch64-linux-gnu",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/binutils-aarch64-linux-gnu/copyright"
+    },
+    {
+      "package": "binutils-common",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/binutils-common/copyright"
+    },
+    {
+      "package": "bsdutils",
+      "version": "1:2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/bsdutils/copyright"
+    },
+    {
+      "package": "bzip2",
+      "version": "1.0.8-2",
+      "license_path": "/usr/share/doc/bzip2/copyright"
+    },
+    {
+      "package": "ca-certificates",
+      "version": "20240203~20.04.1",
+      "license_path": "/usr/share/doc/ca-certificates/copyright"
+    },
+    {
+      "package": "cmake",
+      "version": "3.16.3-1ubuntu1.20.04.1",
+      "license_path": "/usr/share/doc/cmake/copyright"
+    },
+    {
+      "package": "cmake-data",
+      "version": "3.16.3-1ubuntu1.20.04.1",
+      "license_path": "/usr/share/doc/cmake-data/copyright"
+    },
+    {
+      "package": "coreutils",
+      "version": "8.30-3ubuntu2",
+      "license_path": "/usr/share/doc/coreutils/copyright"
+    },
+    {
+      "package": "cpp",
+      "version": "4:9.3.0-1ubuntu2",
+      "license_path": "/usr/share/doc/cpp/copyright"
+    },
+    {
+      "package": "cpp-9",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/cpp-9/copyright"
+    },
+    {
+      "package": "curl",
+      "version": "7.68.0-1ubuntu2.25",
+      "license_path": "/usr/share/doc/curl/copyright"
+    },
+    {
+      "package": "dash",
+      "version": "0.5.10.2-6",
+      "license_path": "/usr/share/doc/dash/copyright"
+    },
+    {
+      "package": "debconf",
+      "version": "1.5.73",
+      "license_path": "/usr/share/doc/debconf/copyright"
+    },
+    {
+      "package": "debianutils",
+      "version": "4.9.1",
+      "license_path": "/usr/share/doc/debianutils/copyright"
+    },
+    {
+      "package": "diffutils",
+      "version": "1:3.7-3",
+      "license_path": "/usr/share/doc/diffutils/copyright"
+    },
+    {
+      "package": "dpkg",
+      "version": "1.19.7ubuntu3.2",
+      "license_path": "/usr/share/doc/dpkg/copyright"
+    },
+    {
+      "package": "e2fsprogs",
+      "version": "1.45.5-2ubuntu1.1",
+      "license_path": "/usr/share/doc/e2fsprogs/copyright"
+    },
+    {
+      "package": "fdisk",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/fdisk/copyright"
+    },
+    {
+      "package": "findutils",
+      "version": "4.7.0-1ubuntu1",
+      "license_path": "/usr/share/doc/findutils/copyright"
+    },
+    {
+      "package": "freeglut3",
+      "version": "2.8.1-3",
+      "license_path": "/usr/share/doc/freeglut3/copyright"
+    },
+    {
+      "package": "freeglut3-dev",
+      "version": "2.8.1-3",
+      "license_path": "/usr/share/doc/freeglut3-dev/copyright"
+    },
+    {
+      "package": "g++",
+      "version": "4:9.3.0-1ubuntu2",
+      "license_path": "/usr/share/doc/g++/copyright"
+    },
+    {
+      "package": "g++-9",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/g++-9/copyright"
+    },
+    {
+      "package": "gcc",
+      "version": "4:9.3.0-1ubuntu2",
+      "license_path": "/usr/share/doc/gcc/copyright"
+    },
+    {
+      "package": "gcc-10-base",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/gcc-10-base/copyright"
+    },
+    {
+      "package": "gcc-9",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/gcc-9/copyright"
+    },
+    {
+      "package": "gcc-9-base",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/gcc-9-base/copyright"
+    },
+    {
+      "package": "git",
+      "version": "1:2.25.1-1ubuntu3.14",
+      "license_path": "/usr/share/doc/git/copyright"
+    },
+    {
+      "package": "git-man",
+      "version": "1:2.25.1-1ubuntu3.11",
+      "license_path": "/usr/share/doc/git-man/copyright"
+    },
+    {
+      "package": "gpgv",
+      "version": "2.2.19-3ubuntu2.2",
+      "license_path": "/usr/share/doc/gpgv/copyright"
+    },
+    {
+      "package": "grep",
+      "version": "3.4-1",
+      "license_path": "/usr/share/doc/grep/copyright"
+    },
+    {
+      "package": "gzip",
+      "version": "1.10-0ubuntu4.1",
+      "license_path": "/usr/share/doc/gzip/copyright"
+    },
+    {
+      "package": "hostname",
+      "version": "3.23",
+      "license_path": "/usr/share/doc/hostname/copyright"
+    },
+    {
+      "package": "init-system-helpers",
+      "version": "1.57",
+      "license_path": "/usr/share/doc/init-system-helpers/copyright"
+    },
+    {
+      "package": "libacl1",
+      "version": "2.2.53-6",
+      "license_path": "/usr/share/doc/libacl1/copyright"
+    },
+    {
+      "package": "libapt-pkg6.0",
+      "version": "2.0.10",
+      "license_path": "/usr/share/doc/libapt-pkg6.0/copyright"
+    },
+    {
+      "package": "libarchive13",
+      "version": "3.4.0-2ubuntu1.5",
+      "license_path": "/usr/share/doc/libarchive13/copyright"
+    },
+    {
+      "package": "libasan5",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libasan5/copyright"
+    },
+    {
+      "package": "libasn1-8-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libasn1-8-heimdal/copyright"
+    },
+    {
+      "package": "libatomic1",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libatomic1/copyright"
+    },
+    {
+      "package": "libattr1",
+      "version": "1:2.4.48-5",
+      "license_path": "/usr/share/doc/libattr1/copyright"
+    },
+    {
+      "package": "libaudit-common",
+      "version": "1:2.8.5-2ubuntu6",
+      "license_path": "/usr/share/doc/libaudit-common/copyright"
+    },
+    {
+      "package": "libaudit1",
+      "version": "1:2.8.5-2ubuntu6",
+      "license_path": "/usr/share/doc/libaudit1/copyright"
+    },
+    {
+      "package": "libbinutils",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/libbinutils/copyright"
+    },
+    {
+      "package": "libblkid1",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/libblkid1/copyright"
+    },
+    {
+      "package": "libbrotli1",
+      "version": "1.0.7-6ubuntu0.1",
+      "license_path": "/usr/share/doc/libbrotli1/copyright"
+    },
+    {
+      "package": "libbsd0",
+      "version": "0.10.0-1",
+      "license_path": "/usr/share/doc/libbsd0/copyright"
+    },
+    {
+      "package": "libbz2-1.0",
+      "version": "1.0.8-2",
+      "license_path": "/usr/share/doc/libbz2-1.0/copyright"
+    },
+    {
+      "package": "libc-bin",
+      "version": "2.31-0ubuntu9.12",
+      "license_path": "/usr/share/doc/libc-bin/copyright"
+    },
+    {
+      "package": "libc-dev-bin",
+      "version": "2.31-0ubuntu9.18",
+      "license_path": "/usr/share/doc/libc-dev-bin/copyright"
+    },
+    {
+      "package": "libc6",
+      "version": "2.31-0ubuntu9.18",
+      "license_path": "/usr/share/doc/libc6/copyright"
+    },
+    {
+      "package": "libc6-dev",
+      "version": "2.31-0ubuntu9.18",
+      "license_path": "/usr/share/doc/libc6-dev/copyright"
+    },
+    {
+      "package": "libcap-ng0",
+      "version": "0.7.9-2.1build1",
+      "license_path": "/usr/share/doc/libcap-ng0/copyright"
+    },
+    {
+      "package": "libcc1-0",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libcc1-0/copyright"
+    },
+    {
+      "package": "libcom-err2",
+      "version": "1.45.5-2ubuntu1.1",
+      "license_path": "/usr/share/doc/libcom-err2/copyright"
+    },
+    {
+      "package": "libcrypt-dev",
+      "version": "1:4.4.10-10ubuntu4",
+      "license_path": "/usr/share/doc/libcrypt-dev/copyright"
+    },
+    {
+      "package": "libcrypt1",
+      "version": "1:4.4.10-10ubuntu4",
+      "license_path": "/usr/share/doc/libcrypt1/copyright"
+    },
+    {
+      "package": "libctf-nobfd0",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/libctf-nobfd0/copyright"
+    },
+    {
+      "package": "libctf0",
+      "version": "2.34-6ubuntu1.11",
+      "license_path": "/usr/share/doc/libctf0/copyright"
+    },
+    {
+      "package": "libcurl3-gnutls",
+      "version": "7.68.0-1ubuntu2.20",
+      "license_path": "/usr/share/doc/libcurl3-gnutls/copyright"
+    },
+    {
+      "package": "libcurl4",
+      "version": "7.68.0-1ubuntu2.25",
+      "license_path": "/usr/share/doc/libcurl4/copyright"
+    },
+    {
+      "package": "libdb5.3",
+      "version": "5.3.28+dfsg1-0.6ubuntu2",
+      "license_path": "/usr/share/doc/libdb5.3/copyright"
+    },
+    {
+      "package": "libdebconfclient0",
+      "version": "0.251ubuntu1",
+      "license_path": "/usr/share/doc/libdebconfclient0/copyright"
+    },
+    {
+      "package": "libdpkg-perl",
+      "version": "1.19.7ubuntu3.2",
+      "license_path": "/usr/share/doc/libdpkg-perl/copyright"
+    },
+    {
+      "package": "libdrm-amdgpu1",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-amdgpu1/copyright"
+    },
+    {
+      "package": "libdrm-common",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-common/copyright"
+    },
+    {
+      "package": "libdrm-dev",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-dev/copyright"
+    },
+    {
+      "package": "libdrm-etnaviv1",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-etnaviv1/copyright"
+    },
+    {
+      "package": "libdrm-freedreno1",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-freedreno1/copyright"
+    },
+    {
+      "package": "libdrm-nouveau2",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-nouveau2/copyright"
+    },
+    {
+      "package": "libdrm-radeon1",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-radeon1/copyright"
+    },
+    {
+      "package": "libdrm-tegra0",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm-tegra0/copyright"
+    },
+    {
+      "package": "libdrm2",
+      "version": "2.4.107-8ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libdrm2/copyright"
+    },
+    {
+      "package": "libedit2",
+      "version": "3.1-20191231-1",
+      "license_path": "/usr/share/doc/libedit2/copyright"
+    },
+    {
+      "package": "libeigen3-dev",
+      "version": "3.3.7-2",
+      "license_path": "/usr/share/doc/libeigen3-dev/copyright"
+    },
+    {
+      "package": "libelf1",
+      "version": "0.176-1.1ubuntu0.1",
+      "license_path": "/usr/share/doc/libelf1/copyright"
+    },
+    {
+      "package": "liberror-perl",
+      "version": "0.17029-1",
+      "license_path": "/usr/share/doc/liberror-perl/copyright"
+    },
+    {
+      "package": "libexpat1",
+      "version": "2.2.9-1ubuntu0.6",
+      "license_path": "/usr/share/doc/libexpat1/copyright"
+    },
+    {
+      "package": "libext2fs2",
+      "version": "1.45.5-2ubuntu1.1",
+      "license_path": "/usr/share/doc/libext2fs2/copyright"
+    },
+    {
+      "package": "libfdisk1",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/libfdisk1/copyright"
+    },
+    {
+      "package": "libffi7",
+      "version": "3.3-4",
+      "license_path": "/usr/share/doc/libffi7/copyright"
+    },
+    {
+      "package": "libgcc-9-dev",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libgcc-9-dev/copyright"
+    },
+    {
+      "package": "libgcc-s1",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libgcc-s1/copyright"
+    },
+    {
+      "package": "libgcrypt20",
+      "version": "1.8.5-5ubuntu1.1",
+      "license_path": "/usr/share/doc/libgcrypt20/copyright"
+    },
+    {
+      "package": "libgdbm-compat4",
+      "version": "1.18.1-5",
+      "license_path": "/usr/share/doc/libgdbm-compat4/copyright"
+    },
+    {
+      "package": "libgdbm6",
+      "version": "1.18.1-5",
+      "license_path": "/usr/share/doc/libgdbm6/copyright"
+    },
+    {
+      "package": "libgl-dev",
+      "version": "1.3.2-1~ubuntu0.20.04.2",
+      "license_path": "/usr/share/doc/libgl-dev/copyright"
+    },
+    {
+      "package": "libgl1",
+      "version": "1.3.2-1~ubuntu0.20.04.2",
+      "license_path": "/usr/share/doc/libgl1/copyright"
+    },
+    {
+      "package": "libgl1-mesa-dri",
+      "version": "21.2.6-0ubuntu0.1~20.04.2",
+      "license_path": "/usr/share/doc/libgl1-mesa-dri/copyright"
+    },
+    {
+      "package": "libglapi-mesa",
+      "version": "21.2.6-0ubuntu0.1~20.04.2",
+      "license_path": "/usr/share/doc/libglapi-mesa/copyright"
+    },
+    {
+      "package": "libglib2.0-0",
+      "version": "2.64.6-1~ubuntu20.04.9",
+      "license_path": "/usr/share/doc/libglib2.0-0/copyright"
+    },
+    {
+      "package": "libglu1-mesa",
+      "version": "9.0.1-1build1",
+      "license_path": "/usr/share/doc/libglu1-mesa/copyright"
+    },
+    {
+      "package": "libglu1-mesa-dev",
+      "version": "9.0.1-1build1",
+      "license_path": "/usr/share/doc/libglu1-mesa-dev/copyright"
+    },
+    {
+      "package": "libglvnd0",
+      "version": "1.3.2-1~ubuntu0.20.04.2",
+      "license_path": "/usr/share/doc/libglvnd0/copyright"
+    },
+    {
+      "package": "libglx-dev",
+      "version": "1.3.2-1~ubuntu0.20.04.2",
+      "license_path": "/usr/share/doc/libglx-dev/copyright"
+    },
+    {
+      "package": "libglx-mesa0",
+      "version": "21.2.6-0ubuntu0.1~20.04.2",
+      "license_path": "/usr/share/doc/libglx-mesa0/copyright"
+    },
+    {
+      "package": "libglx0",
+      "version": "1.3.2-1~ubuntu0.20.04.2",
+      "license_path": "/usr/share/doc/libglx0/copyright"
+    },
+    {
+      "package": "libgmp10",
+      "version": "2:6.2.0+dfsg-4ubuntu0.1",
+      "license_path": "/usr/share/doc/libgmp10/copyright"
+    },
+    {
+      "package": "libgnutls30",
+      "version": "3.6.13-2ubuntu1.9",
+      "license_path": "/usr/share/doc/libgnutls30/copyright"
+    },
+    {
+      "package": "libgomp1",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libgomp1/copyright"
+    },
+    {
+      "package": "libgpg-error0",
+      "version": "1.37-1",
+      "license_path": "/usr/share/doc/libgpg-error0/copyright"
+    },
+    {
+      "package": "libgssapi-krb5-2",
+      "version": "1.17-6ubuntu4.4",
+      "license_path": "/usr/share/doc/libgssapi-krb5-2/copyright"
+    },
+    {
+      "package": "libgssapi3-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libgssapi3-heimdal/copyright"
+    },
+    {
+      "package": "libhcrypto4-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libhcrypto4-heimdal/copyright"
+    },
+    {
+      "package": "libheimbase1-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libheimbase1-heimdal/copyright"
+    },
+    {
+      "package": "libheimntlm0-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libheimntlm0-heimdal/copyright"
+    },
+    {
+      "package": "libhogweed5",
+      "version": "3.5.1+really3.5.1-2ubuntu0.2",
+      "license_path": "/usr/share/doc/libhogweed5/copyright"
+    },
+    {
+      "package": "libhx509-5-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libhx509-5-heimdal/copyright"
+    },
+    {
+      "package": "libice-dev",
+      "version": "2:1.0.10-0ubuntu1",
+      "license_path": "/usr/share/doc/libice-dev/copyright"
+    },
+    {
+      "package": "libice6",
+      "version": "2:1.0.10-0ubuntu1",
+      "license_path": "/usr/share/doc/libice6/copyright"
+    },
+    {
+      "package": "libicu66",
+      "version": "66.1-2ubuntu2.1",
+      "license_path": "/usr/share/doc/libicu66/copyright"
+    },
+    {
+      "package": "libidn2-0",
+      "version": "2.2.0-2",
+      "license_path": "/usr/share/doc/libidn2-0/copyright"
+    },
+    {
+      "package": "libisl22",
+      "version": "0.22.1-1",
+      "license_path": "/usr/share/doc/libisl22/copyright"
+    },
+    {
+      "package": "libitm1",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libitm1/copyright"
+    },
+    {
+      "package": "libjsoncpp1",
+      "version": "1.7.4-3.1ubuntu2",
+      "license_path": "/usr/share/doc/libjsoncpp1/copyright"
+    },
+    {
+      "package": "libk5crypto3",
+      "version": "1.17-6ubuntu4.4",
+      "license_path": "/usr/share/doc/libk5crypto3/copyright"
+    },
+    {
+      "package": "libkeyutils1",
+      "version": "1.6-6ubuntu1.1",
+      "license_path": "/usr/share/doc/libkeyutils1/copyright"
+    },
+    {
+      "package": "libkrb5-26-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libkrb5-26-heimdal/copyright"
+    },
+    {
+      "package": "libkrb5-3",
+      "version": "1.17-6ubuntu4.4",
+      "license_path": "/usr/share/doc/libkrb5-3/copyright"
+    },
+    {
+      "package": "libkrb5support0",
+      "version": "1.17-6ubuntu4.4",
+      "license_path": "/usr/share/doc/libkrb5support0/copyright"
+    },
+    {
+      "package": "libldap-2.4-2",
+      "version": "2.4.49+dfsg-2ubuntu1.9",
+      "license_path": "/usr/share/doc/libldap-2.4-2/copyright"
+    },
+    {
+      "package": "libldap-common",
+      "version": "2.4.49+dfsg-2ubuntu1.9",
+      "license_path": "/usr/share/doc/libldap-common/copyright"
+    },
+    {
+      "package": "libllvm12",
+      "version": "1:12.0.0-3ubuntu1~20.04.5",
+      "license_path": "/usr/share/doc/libllvm12/copyright"
+    },
+    {
+      "package": "liblsan0",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/liblsan0/copyright"
+    },
+    {
+      "package": "liblz4-1",
+      "version": "1.9.2-2ubuntu0.20.04.1",
+      "license_path": "/usr/share/doc/liblz4-1/copyright"
+    },
+    {
+      "package": "liblzma5",
+      "version": "5.2.4-1ubuntu1.1",
+      "license_path": "/usr/share/doc/liblzma5/copyright"
+    },
+    {
+      "package": "libmount1",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/libmount1/copyright"
+    },
+    {
+      "package": "libmpc3",
+      "version": "1.1.0-1",
+      "license_path": "/usr/share/doc/libmpc3/copyright"
+    },
+    {
+      "package": "libmpfr6",
+      "version": "4.0.2-1",
+      "license_path": "/usr/share/doc/libmpfr6/copyright"
+    },
+    {
+      "package": "libncurses6",
+      "version": "6.2-0ubuntu2.1",
+      "license_path": "/usr/share/doc/libncurses6/copyright"
+    },
+    {
+      "package": "libncursesw6",
+      "version": "6.2-0ubuntu2.1",
+      "license_path": "/usr/share/doc/libncursesw6/copyright"
+    },
+    {
+      "package": "libnettle7",
+      "version": "3.5.1+really3.5.1-2ubuntu0.2",
+      "license_path": "/usr/share/doc/libnettle7/copyright"
+    },
+    {
+      "package": "libnghttp2-14",
+      "version": "1.40.0-1ubuntu0.2",
+      "license_path": "/usr/share/doc/libnghttp2-14/copyright"
+    },
+    {
+      "package": "libp11-kit0",
+      "version": "0.23.20-1ubuntu0.1",
+      "license_path": "/usr/share/doc/libp11-kit0/copyright"
+    },
+    {
+      "package": "libpam-modules",
+      "version": "1.3.1-5ubuntu4.6",
+      "license_path": "/usr/share/doc/libpam-modules/copyright"
+    },
+    {
+      "package": "libpam-modules-bin",
+      "version": "1.3.1-5ubuntu4.6",
+      "license_path": "/usr/share/doc/libpam-modules-bin/copyright"
+    },
+    {
+      "package": "libpam-runtime",
+      "version": "1.3.1-5ubuntu4.6",
+      "license_path": "/usr/share/doc/libpam-runtime/copyright"
+    },
+    {
+      "package": "libpam0g",
+      "version": "1.3.1-5ubuntu4.6",
+      "license_path": "/usr/share/doc/libpam0g/copyright"
+    },
+    {
+      "package": "libpciaccess-dev",
+      "version": "0.16-0ubuntu1",
+      "license_path": "/usr/share/doc/libpciaccess-dev/copyright"
+    },
+    {
+      "package": "libpciaccess0",
+      "version": "0.16-0ubuntu1",
+      "license_path": "/usr/share/doc/libpciaccess0/copyright"
+    },
+    {
+      "package": "libpcre2-8-0",
+      "version": "10.34-7ubuntu0.1",
+      "license_path": "/usr/share/doc/libpcre2-8-0/copyright"
+    },
+    {
+      "package": "libpcre3",
+      "version": "2:8.39-12ubuntu0.1",
+      "license_path": "/usr/share/doc/libpcre3/copyright"
+    },
+    {
+      "package": "libperl5.30",
+      "version": "5.30.0-9ubuntu0.5",
+      "license_path": "/usr/share/doc/libperl5.30/copyright"
+    },
+    {
+      "package": "libprocps8",
+      "version": "2:3.3.16-1ubuntu2.4",
+      "license_path": "/usr/share/doc/libprocps8/copyright"
+    },
+    {
+      "package": "libpsl5",
+      "version": "0.21.0-1ubuntu1",
+      "license_path": "/usr/share/doc/libpsl5/copyright"
+    },
+    {
+      "package": "libpthread-stubs0-dev",
+      "version": "0.4-1",
+      "license_path": "/usr/share/doc/libpthread-stubs0-dev/copyright"
+    },
+    {
+      "package": "librhash0",
+      "version": "1.3.9-1",
+      "license_path": "/usr/share/doc/librhash0/copyright"
+    },
+    {
+      "package": "libroken18-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libroken18-heimdal/copyright"
+    },
+    {
+      "package": "librtmp1",
+      "version": "2.4+20151223.gitfa8646d.1-2build1",
+      "license_path": "/usr/share/doc/librtmp1/copyright"
+    },
+    {
+      "package": "libsasl2-2",
+      "version": "2.1.27+dfsg-2ubuntu0.1",
+      "license_path": "/usr/share/doc/libsasl2-2/copyright"
+    },
+    {
+      "package": "libsasl2-modules-db",
+      "version": "2.1.27+dfsg-2ubuntu0.1",
+      "license_path": "/usr/share/doc/libsasl2-modules-db/copyright"
+    },
+    {
+      "package": "libseccomp2",
+      "version": "2.5.1-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libseccomp2/copyright"
+    },
+    {
+      "package": "libselinux1",
+      "version": "3.0-1build2",
+      "license_path": "/usr/share/doc/libselinux1/copyright"
+    },
+    {
+      "package": "libsemanage-common",
+      "version": "3.0-1build2",
+      "license_path": "/usr/share/doc/libsemanage-common/copyright"
+    },
+    {
+      "package": "libsemanage1",
+      "version": "3.0-1build2",
+      "license_path": "/usr/share/doc/libsemanage1/copyright"
+    },
+    {
+      "package": "libsensors-config",
+      "version": "1:3.6.0-2ubuntu1.1",
+      "license_path": "/usr/share/doc/libsensors-config/copyright"
+    },
+    {
+      "package": "libsensors5",
+      "version": "1:3.6.0-2ubuntu1.1",
+      "license_path": "/usr/share/doc/libsensors5/copyright"
+    },
+    {
+      "package": "libsepol1",
+      "version": "3.0-1ubuntu0.1",
+      "license_path": "/usr/share/doc/libsepol1/copyright"
+    },
+    {
+      "package": "libsm-dev",
+      "version": "2:1.2.3-1",
+      "license_path": "/usr/share/doc/libsm-dev/copyright"
+    },
+    {
+      "package": "libsm6",
+      "version": "2:1.2.3-1",
+      "license_path": "/usr/share/doc/libsm6/copyright"
+    },
+    {
+      "package": "libsmartcols1",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/libsmartcols1/copyright"
+    },
+    {
+      "package": "libsqlite3-0",
+      "version": "3.31.1-4ubuntu0.5",
+      "license_path": "/usr/share/doc/libsqlite3-0/copyright"
+    },
+    {
+      "package": "libss2",
+      "version": "1.45.5-2ubuntu1.1",
+      "license_path": "/usr/share/doc/libss2/copyright"
+    },
+    {
+      "package": "libssh-4",
+      "version": "0.9.3-2ubuntu2.3",
+      "license_path": "/usr/share/doc/libssh-4/copyright"
+    },
+    {
+      "package": "libssl1.1",
+      "version": "1.1.1f-1ubuntu2.20",
+      "license_path": "/usr/share/doc/libssl1.1/copyright"
+    },
+    {
+      "package": "libstdc++-9-dev",
+      "version": "9.4.0-1ubuntu1~20.04.2",
+      "license_path": "/usr/share/doc/libstdc++-9-dev/copyright"
+    },
+    {
+      "package": "libstdc++6",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libstdc++6/copyright"
+    },
+    {
+      "package": "libsystemd0",
+      "version": "245.4-4ubuntu3.22",
+      "license_path": "/usr/share/doc/libsystemd0/copyright"
+    },
+    {
+      "package": "libtasn1-6",
+      "version": "4.16.0-2",
+      "license_path": "/usr/share/doc/libtasn1-6/copyright"
+    },
+    {
+      "package": "libtinfo6",
+      "version": "6.2-0ubuntu2.1",
+      "license_path": "/usr/share/doc/libtinfo6/copyright"
+    },
+    {
+      "package": "libtsan0",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libtsan0/copyright"
+    },
+    {
+      "package": "libubsan1",
+      "version": "10.5.0-1ubuntu1~20.04",
+      "license_path": "/usr/share/doc/libubsan1/copyright"
+    },
+    {
+      "package": "libudev1",
+      "version": "245.4-4ubuntu3.22",
+      "license_path": "/usr/share/doc/libudev1/copyright"
+    },
+    {
+      "package": "libunistring2",
+      "version": "0.9.10-2",
+      "license_path": "/usr/share/doc/libunistring2/copyright"
+    },
+    {
+      "package": "libuuid1",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/libuuid1/copyright"
+    },
+    {
+      "package": "libuv1",
+      "version": "1.34.2-1ubuntu1.5",
+      "license_path": "/usr/share/doc/libuv1/copyright"
+    },
+    {
+      "package": "libvulkan1",
+      "version": "1.2.131.2-1",
+      "license_path": "/usr/share/doc/libvulkan1/copyright"
+    },
+    {
+      "package": "libwayland-client0",
+      "version": "1.18.0-1ubuntu0.1",
+      "license_path": "/usr/share/doc/libwayland-client0/copyright"
+    },
+    {
+      "package": "libwind0-heimdal",
+      "version": "7.7.0+dfsg-1ubuntu1.4",
+      "license_path": "/usr/share/doc/libwind0-heimdal/copyright"
+    },
+    {
+      "package": "libx11-6",
+      "version": "2:1.6.9-2ubuntu1.6",
+      "license_path": "/usr/share/doc/libx11-6/copyright"
+    },
+    {
+      "package": "libx11-data",
+      "version": "2:1.6.9-2ubuntu1.6",
+      "license_path": "/usr/share/doc/libx11-data/copyright"
+    },
+    {
+      "package": "libx11-dev",
+      "version": "2:1.6.9-2ubuntu1.6",
+      "license_path": "/usr/share/doc/libx11-dev/copyright"
+    },
+    {
+      "package": "libx11-xcb1",
+      "version": "2:1.6.9-2ubuntu1.6",
+      "license_path": "/usr/share/doc/libx11-xcb1/copyright"
+    },
+    {
+      "package": "libxau-dev",
+      "version": "1:1.0.9-0ubuntu1",
+      "license_path": "/usr/share/doc/libxau-dev/copyright"
+    },
+    {
+      "package": "libxau6",
+      "version": "1:1.0.9-0ubuntu1",
+      "license_path": "/usr/share/doc/libxau6/copyright"
+    },
+    {
+      "package": "libxcb-dri2-0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-dri2-0/copyright"
+    },
+    {
+      "package": "libxcb-dri3-0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-dri3-0/copyright"
+    },
+    {
+      "package": "libxcb-glx0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-glx0/copyright"
+    },
+    {
+      "package": "libxcb-present0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-present0/copyright"
+    },
+    {
+      "package": "libxcb-randr0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-randr0/copyright"
+    },
+    {
+      "package": "libxcb-shm0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-shm0/copyright"
+    },
+    {
+      "package": "libxcb-sync1",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-sync1/copyright"
+    },
+    {
+      "package": "libxcb-xfixes0",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb-xfixes0/copyright"
+    },
+    {
+      "package": "libxcb1",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb1/copyright"
+    },
+    {
+      "package": "libxcb1-dev",
+      "version": "1.14-2",
+      "license_path": "/usr/share/doc/libxcb1-dev/copyright"
+    },
+    {
+      "package": "libxdmcp-dev",
+      "version": "1:1.1.3-0ubuntu1",
+      "license_path": "/usr/share/doc/libxdmcp-dev/copyright"
+    },
+    {
+      "package": "libxdmcp6",
+      "version": "1:1.1.3-0ubuntu1",
+      "license_path": "/usr/share/doc/libxdmcp6/copyright"
+    },
+    {
+      "package": "libxext-dev",
+      "version": "2:1.3.4-0ubuntu1",
+      "license_path": "/usr/share/doc/libxext-dev/copyright"
+    },
+    {
+      "package": "libxext6",
+      "version": "2:1.3.4-0ubuntu1",
+      "license_path": "/usr/share/doc/libxext6/copyright"
+    },
+    {
+      "package": "libxfixes3",
+      "version": "1:5.0.3-2",
+      "license_path": "/usr/share/doc/libxfixes3/copyright"
+    },
+    {
+      "package": "libxi6",
+      "version": "2:1.7.10-0ubuntu1",
+      "license_path": "/usr/share/doc/libxi6/copyright"
+    },
+    {
+      "package": "libxml2",
+      "version": "2.9.10+dfsg-5ubuntu0.20.04.10",
+      "license_path": "/usr/share/doc/libxml2/copyright"
+    },
+    {
+      "package": "libxshmfence1",
+      "version": "1.3-1",
+      "license_path": "/usr/share/doc/libxshmfence1/copyright"
+    },
+    {
+      "package": "libxt-dev",
+      "version": "1:1.1.5-1",
+      "license_path": "/usr/share/doc/libxt-dev/copyright"
+    },
+    {
+      "package": "libxt6",
+      "version": "1:1.1.5-1",
+      "license_path": "/usr/share/doc/libxt6/copyright"
+    },
+    {
+      "package": "libxxf86vm1",
+      "version": "1:1.1.4-1build1",
+      "license_path": "/usr/share/doc/libxxf86vm1/copyright"
+    },
+    {
+      "package": "libzstd1",
+      "version": "1.4.4+dfsg-3ubuntu0.1",
+      "license_path": "/usr/share/doc/libzstd1/copyright"
+    },
+    {
+      "package": "linux-libc-dev",
+      "version": "5.4.0-216.236",
+      "license_path": "/usr/share/doc/linux-libc-dev/copyright"
+    },
+    {
+      "package": "login",
+      "version": "1:4.8.1-1ubuntu5.20.04.4",
+      "license_path": "/usr/share/doc/login/copyright"
+    },
+    {
+      "package": "logsave",
+      "version": "1.45.5-2ubuntu1.1",
+      "license_path": "/usr/share/doc/logsave/copyright"
+    },
+    {
+      "package": "lsb-base",
+      "version": "11.1.0ubuntu2",
+      "license_path": "/usr/share/doc/lsb-base/copyright"
+    },
+    {
+      "package": "make",
+      "version": "4.2.1-1.2",
+      "license_path": "/usr/share/doc/make/copyright"
+    },
+    {
+      "package": "mawk",
+      "version": "1.3.4.20200120-2",
+      "license_path": "/usr/share/doc/mawk/copyright"
+    },
+    {
+      "package": "mesa-common-dev",
+      "version": "21.2.6-0ubuntu0.1~20.04.2",
+      "license_path": "/usr/share/doc/mesa-common-dev/copyright"
+    },
+    {
+      "package": "mesa-vulkan-drivers",
+      "version": "21.2.6-0ubuntu0.1~20.04.2",
+      "license_path": "/usr/share/doc/mesa-vulkan-drivers/copyright"
+    },
+    {
+      "package": "mount",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/mount/copyright"
+    },
+    {
+      "package": "ncurses-base",
+      "version": "6.2-0ubuntu2.1",
+      "license_path": "/usr/share/doc/ncurses-base/copyright"
+    },
+    {
+      "package": "ncurses-bin",
+      "version": "6.2-0ubuntu2.1",
+      "license_path": "/usr/share/doc/ncurses-bin/copyright"
+    },
+    {
+      "package": "openssl",
+      "version": "1.1.1f-1ubuntu2.20",
+      "license_path": "/usr/share/doc/openssl/copyright"
+    },
+    {
+      "package": "passwd",
+      "version": "1:4.8.1-1ubuntu5.20.04.4",
+      "license_path": "/usr/share/doc/passwd/copyright"
+    },
+    {
+      "package": "perl",
+      "version": "5.30.0-9ubuntu0.5",
+      "license_path": "/usr/share/doc/perl/copyright"
+    },
+    {
+      "package": "perl-base",
+      "version": "5.30.0-9ubuntu0.5",
+      "license_path": "/usr/share/doc/perl-base/copyright"
+    },
+    {
+      "package": "perl-modules-5.30",
+      "version": "5.30.0-9ubuntu0.5",
+      "license_path": "/usr/share/doc/perl-modules-5.30/copyright"
+    },
+    {
+      "package": "pkg-config",
+      "version": "0.29.1-0ubuntu4",
+      "license_path": "/usr/share/doc/pkg-config/copyright"
+    },
+    {
+      "package": "procps",
+      "version": "2:3.3.16-1ubuntu2.4",
+      "license_path": "/usr/share/doc/procps/copyright"
+    },
+    {
+      "package": "sed",
+      "version": "4.7-1",
+      "license_path": "/usr/share/doc/sed/copyright"
+    },
+    {
+      "package": "sensible-utils",
+      "version": "0.0.12+nmu1",
+      "license_path": "/usr/share/doc/sensible-utils/copyright"
+    },
+    {
+      "package": "sysvinit-utils",
+      "version": "2.96-2.1ubuntu1",
+      "license_path": "/usr/share/doc/sysvinit-utils/copyright"
+    },
+    {
+      "package": "tar",
+      "version": "1.30+dfsg-7ubuntu0.20.04.3",
+      "license_path": "/usr/share/doc/tar/copyright"
+    },
+    {
+      "package": "tini",
+      "version": "0.18.0-1",
+      "license_path": "/usr/share/doc/tini/copyright"
+    },
+    {
+      "package": "tzdata",
+      "version": "2025b-0ubuntu0.20.04.1",
+      "license_path": "/usr/share/doc/tzdata/copyright"
+    },
+    {
+      "package": "ubuntu-keyring",
+      "version": "2020.02.11.4",
+      "license_path": "/usr/share/doc/ubuntu-keyring/copyright"
+    },
+    {
+      "package": "unzip",
+      "version": "6.0-25ubuntu1.2",
+      "license_path": "/usr/share/doc/unzip/copyright"
+    },
+    {
+      "package": "util-linux",
+      "version": "2.34-0.1ubuntu9.4",
+      "license_path": "/usr/share/doc/util-linux/copyright"
+    },
+    {
+      "package": "wget",
+      "version": "1.20.3-1ubuntu2",
+      "license_path": "/usr/share/doc/wget/copyright"
+    },
+    {
+      "package": "x11-common",
+      "version": "1:7.7+19ubuntu14",
+      "license_path": "/usr/share/doc/x11-common/copyright"
+    },
+    {
+      "package": "x11proto-core-dev",
+      "version": "2019.2-1ubuntu1",
+      "license_path": "/usr/share/doc/x11proto-core-dev/copyright"
+    },
+    {
+      "package": "x11proto-dev",
+      "version": "2019.2-1ubuntu1",
+      "license_path": "/usr/share/doc/x11proto-dev/copyright"
+    },
+    {
+      "package": "x11proto-xext-dev",
+      "version": "2019.2-1ubuntu1",
+      "license_path": "/usr/share/doc/x11proto-xext-dev/copyright"
+    },
+    {
+      "package": "xorg-sgml-doctools",
+      "version": "1:1.11-1",
+      "license_path": "/usr/share/doc/xorg-sgml-doctools/copyright"
+    },
+    {
+      "package": "xtrans-dev",
+      "version": "1.4.0-1",
+      "license_path": "/usr/share/doc/xtrans-dev/copyright"
+    },
+    {
+      "package": "zlib1g",
+      "version": "1:1.2.11.dfsg-2ubuntu1.5",
+      "license_path": "/usr/share/doc/zlib1g/copyright"
+    }
+  ]
+}

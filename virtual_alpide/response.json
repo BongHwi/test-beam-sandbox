@@ -1,0 +1,11 @@
+{
+  "description": "Illustrative synthetic response, not a hardware measurement",
+  "threshold_key": "ITHR",
+  "threshold_min": 0,
+  "threshold_max": 255,
+  "efficiency_at_zero": 1.0,
+  "efficiency_at_max": 0.0,
+  "cluster_mean_at_zero": 2.0,
+  "cluster_mean_at_max": 1.0,
+  "strobe_tick_ps": 25000
+}

@@ -1,0 +1,44 @@
+--- a/user/ITS3/python/ITS3RunControl.py
++++ b/user/ITS3/python/ITS3RunControl.py
+@@ -363,7 +363,9 @@
+             self.tui.target_progress_run(ntarget)
+             self.tui.update_tip()
+             nlast=0
+-            with self.lock: self.running = True
++            with self.lock:
++                self.running = True
++                if hasattr(self, "_its3_hook"): self._its3_hook.apply_after_start()
+             while self.running:
+                 with self.lock: # locking might not be needed, to check
+                     n=min(self.ndev[p] for p in self.dataproducers)
+@@ -387,6 +389,7 @@
+             else:
+                 active_config += 1
+                 if active_config >= len(self.configs):
++                    if getattr(self, '_one_pass', False): break
+                     active_config = 0
+                     iteration += 1
+                     self.tui.reset_progress_tot()
+@@ -408,9 +411,20 @@
+     parser=argparse.ArgumentParser(description='ITS3 Run Control',formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+     parser.add_argument('--address',default='44000')
+     parser.add_argument('--ini',help="Path to .ini file.", required=True)
++    parser.add_argument('--status-file')
++    parser.add_argument('--control-socket')
++    parser.add_argument('--one-pass', action='store_true')
+     args=parser.parse_args()
+ 
+     rc=ITS3RunControl(args.address,args.ini)
+-    rc.start()
+-    rc.tui.run()
++    rc._one_pass = args.one_pass
++    hook = None
++    if args.status_file or args.control_socket or os.environ.get('SESSION_SOURCE_SOCKET'):
++        from hook import Hook
++        hook = Hook(rc, args.status_file, args.control_socket)
++    try:
++        rc.start()
++        rc.tui.run()
++    finally:
++        if hook: hook.close()
+ 

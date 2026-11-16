@@ -1,0 +1,130 @@
+{
+  "devices": [
+    {
+      "kind": "alpide",
+      "number": 0,
+      "plane": 0,
+      "position_mm": [
+        1,
+        -2,
+        0
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "alpide",
+      "number": 1,
+      "plane": 1,
+      "position_mm": [
+        1,
+        -2,
+        20
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "alpide",
+      "number": 2,
+      "plane": 2,
+      "position_mm": [
+        1,
+        -2,
+        40
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "alpide",
+      "number": 3,
+      "plane": 3,
+      "position_mm": [
+        1,
+        -2,
+        80
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "alpide",
+      "number": 4,
+      "plane": 4,
+      "position_mm": [
+        1,
+        -2,
+        100
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "alpide",
+      "number": 5,
+      "plane": 5,
+      "position_mm": [
+        1,
+        -2,
+        120
+      ],
+      "pixels": [
+        1024,
+        512
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    },
+    {
+      "kind": "msensor",
+      "number": 0,
+      "plane": 6,
+      "position_mm": [
+        1,
+        -2,
+        60
+      ],
+      "pixels": [
+        128,
+        128
+      ],
+      "pitch_um": [
+        30,
+        30
+      ]
+    }
+  ]
+}

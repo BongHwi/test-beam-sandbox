@@ -1,0 +1,25 @@
+{
+  "clock": "paced",
+  "end_ns": 1000000000,
+  "participants": [
+    {"serial": "V0", "detector": "P0"},
+    {"serial": "V1", "detector": "P1"},
+    {"serial": "MSENSOR_0", "detector": "D0"}
+  ],
+  "settings": {
+    "schema_version": 4,
+    "preset": "generic",
+    "backend": "fast_electron",
+    "writer": "json",
+    "events": 250000,
+    "workers": 1,
+    "beam": {"particle": "e-", "kinetic_energy_gev": 4.0},
+    "transport": {"scattering": false, "air": false, "extra_layers": []},
+    "timeline": {"duration_s": 10, "tail_padding_ps": 100000000, "clock_hz": 10000000},
+    "detectors": [
+      {"id": "P0", "pixels": [1024, 512], "pitch_um": [30, 30], "position_mm": [1, -2, 0], "orientation_deg": [0, 0, 0], "active_um": 40, "passive_um": 60},
+      {"id": "P1", "pixels": [1024, 512], "pitch_um": [30, 30], "position_mm": [1, -2, 40], "orientation_deg": [0, 0, 0], "active_um": 40, "passive_um": 60},
+      {"id": "D0", "pixels": [128, 128], "pitch_um": [30, 30], "position_mm": [1, -2, 80], "orientation_deg": [0, 0, 0], "active_um": 40, "passive_um": 60}
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "note": "Proposed fixtures. Adjust with a recorded reason if a value cannot be met; do not tune pass criteria to results.",
+  "common": {
+    "columns": 256,
+    "rows": 128,
+    "regions": 4,
+    "seed": 20261110,
+    "deterministic_ids": 1,
+    "beam_center_col": 128.0,
+    "beam_center_row": 64.0,
+    "beam_sigma_px": 20.0,
+    "response": "response_default.json",
+    "response_noise_off": {
+      "r0": 0.0
+    }
+  },
+  "fixtures": {
+    "T_thr": {
+      "readout_mode": "triggered",
+      "noise": "off",
+      "strobe_delay_ns": 0,
+      "strobe_length_ns": 2000,
+      "sim_end_ns": 2000000000,
+      "trigger_period_ns": 1000037,
+      "trigger_first_ns": 50000,
+      "compare": {
+        "threshold_dac": [
+          100,
+          200
+        ]
+      }
+    },
+    "T_strobe": {
+      "readout_mode": "triggered",
+      "noise": "off",
+      "threshold_dac": 100,
+      "strobe_length_ns": 2000,
+      "sim_end_ns": 2000000000,
+      "trigger_period_ns": 1000037,
+      "trigger_first_ns": 50000,
+      "compare": {
+        "strobe_delay_ns": [
+          0,
+          5000
+        ]
+      }
+    },
+    "C_thr": {
+      "readout_mode": "continuous",
+      "noise": "off",
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "sim_end_ns": 2000000000,
+      "trigger_period_ns": 1000037,
+      "trigger_first_ns": 50000,
+      "compare": {
+        "threshold_dac": [
+          100,
+          200
+        ]
+      }
+    },
+    "C_offset": {
+      "readout_mode": "continuous",
+      "noise": "off",
+      "threshold_dac": 100,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "sim_end_ns": 2000000000,
+      "trigger_period_ns": 1000037,
+      "trigger_first_ns": 50000,
+      "compare": {
+        "msensor_window_offset": [
+          0,
+          -1,
+          1
+        ]
+      }
+    },
+    "C_rate0": {
+      "readout_mode": "continuous",
+      "noise": "on",
+      "threshold_dac": 80,
+      "window_length_ns": 100000,
+      "trigger_rate_hz": 0,
+      "sim_end_ns": 200000000
+    },
+    "C_noise_dir": {
+      "readout_mode": "continuous",
+      "noise": "on",
+      "window_length_ns": 100000,
+      "trigger_rate_hz": 0,
+      "sim_end_ns": 200000000,
+      "compare": {
+        "threshold_dac": [
+          80,
+          120
+        ]
+      }
+    },
+    "C_stream": {
+      "readout_mode": "continuous",
+      "noise": "on",
+      "threshold_dac": 100,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "trigger_rate_hz": 1000,
+      "sim_end_ns": 500000000,
+      "comment": "Irregular trigger spacing on purpose: several triggers can fall in one window."
+    },
+    "C_same_window": {
+      "readout_mode": "continuous",
+      "noise": "off",
+      "threshold_dac": 100,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "trigger_times_ns": [
+        250000,
+        250500
+      ],
+      "sim_end_ns": 1000000
+    },
+    "C_truncated_end": {
+      "readout_mode": "continuous",
+      "noise": "off",
+      "threshold_dac": 100,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "trigger_times_ns": [
+        1020000
+      ],
+      "sim_end_ns": 1050000
+    },
+    "C_guard_before": {
+      "readout_mode": "continuous",
+      "noise": "off",
+      "threshold_dac": 100,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "trigger_times_ns": [
+        50000
+      ],
+      "sim_end_ns": 1000000
+    },
+    "D_partition": {
+      "level": "device",
+      "readout_mode": "continuous",
+      "noise": "on",
+      "threshold_dac": 80,
+      "window_length_ns": 100000,
+      "window_guard_before": 1,
+      "window_guard_after": 1,
+      "trigger_rate_hz": 1000,
+      "sim_end_ns": 50000000,
+      "run_number": 1,
+      "advance_partitions_ns": [
+        7919,
+        1000000,
+        50000000
+      ],
+      "extra": [
+        "irregular_partition_from_fixed_list",
+        "wall_clock_sleep_injected"
+      ]
+    }
+  }
+}

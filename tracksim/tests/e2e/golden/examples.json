@@ -1,0 +1,53 @@
+{
+  "examples": {
+    "three-plane": {
+      "acceptance.json": "9967ce5b9b48284b5ad550262507da68011fefed557a3980a4b865bf975689a1",
+      "fast-trace.jsonl": "d5339898e7293d8891f8c5960a3fff936fdfd95ef1758d3c4a1054501a011391",
+      "frames.jsonl": "102c0fcfa5df1742eba585dd208b71b91dd6cfa0a4256b721f5077b96bd59f84",
+      "geometry.json": "2a7bb79fafe4f14fef4269a8f64ebe498aac43d33526ef9272bf29e0eb48ffc3",
+      "intersections.jsonl": "c47073ccc6be449fced9bba3653d9318c85bcc43a9ccd165a80232c51c9f7efe",
+      "metadata.json": "2b0027fa029ffd4eaf26c94bfdac670743bae6fd7e2d5b09c83ac322479ca692",
+      "normalized-spec.json": "a4e5e8a69f6f5c33e5de63d1a63afbf6e9e0f022adebc03e4fcd60ffa1625640",
+      "python-runtime.json": "ca34861214bcdf0151f113e2ac41a9abfacf181e10211971f1af4cfdef7b3ced",
+      "report.json": "37bd6b263d980706445805ac9f06e5b1050d47c1a1ae79fe7d450a62478feddb",
+      "response-report.json": "70f93363f9b2658014fbceddb2ae02c017e8b10a446cc7d06bd0bc1cd1dbe14d",
+      "response-settings.json": "1a827486823cd9f0cbb3776c24f1945affdbd80dd8ce8f3a303ba8dc4fc41328",
+      "response.jsonl": "4b293ac128836f2b579a1b7bff7e5adb091c03ff90775f9c137efc7c4d9a618e",
+      "run-state.json": "7a9812fb8b22cb5ff19ad28dae08af5b605c905b36d1e03ca9e621e7066c00d7",
+      "runtime.json": "f6752f3068f243d0879841cbfa933aa86aca0b89c5fececc657ec897686c73ca",
+      "settings.json": "1a827486823cd9f0cbb3776c24f1945affdbd80dd8ce8f3a303ba8dc4fc41328",
+      "transport-envelope.json": "dd25b3867f7ca240f53bd6285fb1b41f6ef83ff9ac58349f8f27d95a457933f5",
+      "verification/report.json": "6346a0150881270a7e24419e58d3262ab5dd0a83730cca5b798662c877216357"
+    },
+    "three-plane-dark": {
+      "acceptance.json": "0ce91fa94a463d9e78fed80d5914c5519ed2dca32acd1409b1977dd31b3a5163",
+      "fast-trace.jsonl": "a60bc680acd355b9d2e51a6ecc5cbc6d275ed4f215d209c12bd3618c1b9534c1",
+      "frames.jsonl": "17c83096a897d777d640fcf058f60bce8448b3aea6dc65af50d2fedc9d03ebc2",
+      "geometry.json": "2a7bb79fafe4f14fef4269a8f64ebe498aac43d33526ef9272bf29e0eb48ffc3",
+      "intersections.jsonl": "157ee369d90779b05647ead631d790dfbc7c5a5b224b19e31b581a8526b7946d",
+      "metadata.json": "a0f3521ac804e76c761452210ddf551f261fc858f2062d734fc45c03a7cb8b0c",
+      "normalized-spec.json": "555bf00ed9e30c28d6786d6620854b52c866a7def3084bab7eb56d81045fb7a5",
+      "python-runtime.json": "ca34861214bcdf0151f113e2ac41a9abfacf181e10211971f1af4cfdef7b3ced",
+      "report.json": "111aa26b9db88b879c7561e4267c8a8d25f7052d3284714bcec37378c3a19ead",
+      "response-report.json": "2d18bc066f8f439faad3a07510aeb9fa7c6e83c891590d4f12b63ea98849884e",
+      "response-settings.json": "a81c9e42422ba047f304b79ee834bd73880c36511c1d2f3b1339cf93d4f10bdb",
+      "response.jsonl": "8698685264bd9d143846dd0e06db5175d57b97ecfa023c21942adb357973067f",
+      "run-state.json": "7a9812fb8b22cb5ff19ad28dae08af5b605c905b36d1e03ca9e621e7066c00d7",
+      "runtime.json": "f6752f3068f243d0879841cbfa933aa86aca0b89c5fececc657ec897686c73ca",
+      "settings.json": "a81c9e42422ba047f304b79ee834bd73880c36511c1d2f3b1339cf93d4f10bdb",
+      "transport-envelope.json": "294983aa2ce707f6aa665cafae3ce0fdb95b63cf5df5aa8b5a86e250a1b07132",
+      "verification/report.json": "5df6ade73f4ed1cf292b8b752cfe583f735ac242a3cdabc302342034ea7f75a8"
+    }
+  },
+  "python": {
+    "implementation": "cpython",
+    "libc": [
+      "glibc",
+      "2.39"
+    ],
+    "machine": "x86_64",
+    "random_version": 3,
+    "sys_platform": "linux",
+    "sys_version": "3.12.13 (main, Apr 13 2026, 16:21:21) [GCC 13.3.0]"
+  }
+}

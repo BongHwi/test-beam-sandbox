@@ -1,0 +1,193 @@
+{
+  "schema_version": 4,
+  "preset": "generic",
+  "backend": "fast_electron",
+  "writer": "json",
+  "events": 120,
+  "seed": 2024,
+  "device_seed": 67890,
+  "workers": 1,
+  "beam": {
+    "particle": "e-",
+    "kinetic_energy_gev": 4.0,
+    "position_mm": [
+      0,
+      0,
+      -20
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "phase_space_covariance": [
+      [
+        0.0025,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0.0025,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        4e-08,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        4e-08,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0.000225
+      ]
+    ]
+  },
+  "timeline": {
+    "rate_hz": 2000,
+    "duration_s": 0.2,
+    "tail_padding_ps": 100000000,
+    "clock_hz": 10000000
+  },
+  "detectors": [
+    {
+      "id": "PLANE_A",
+      "pixels": [
+        96,
+        64
+      ],
+      "pitch_um": [
+        30,
+        30
+      ],
+      "position_mm": [
+        0,
+        0,
+        0
+      ],
+      "orientation_deg": [
+        0,
+        0,
+        0
+      ],
+      "active_um": 40,
+      "passive_um": 60,
+      "response": {
+        "model": "boundary_resolution",
+        "resolution_um": [
+          7,
+          7
+        ],
+        "efficiency": 0.9,
+        "response_delay_ns": 50,
+        "jitter_ns": 2,
+        "dark_hit_rate_per_pixel_hz": 1.0
+      },
+      "readout": {
+        "model": "triggered",
+        "gate_ns": 1200
+      }
+    },
+    {
+      "id": "PLANE_B",
+      "pixels": [
+        96,
+        64
+      ],
+      "pitch_um": [
+        30,
+        30
+      ],
+      "position_mm": [
+        0,
+        0,
+        40
+      ],
+      "orientation_deg": [
+        0,
+        0,
+        5
+      ],
+      "active_um": 40,
+      "passive_um": 60,
+      "response": {
+        "model": "boundary_cluster_mean",
+        "cluster_mean": 1.5,
+        "efficiency": 0.9,
+        "response_delay_ns": 50,
+        "jitter_ns": 2,
+        "dark_hit_rate_per_pixel_hz": 1.0
+      },
+      "readout": {
+        "model": "continuous",
+        "window_cycles": 300
+      }
+    },
+    {
+      "id": "PLANE_C",
+      "pixels": [
+        96,
+        64
+      ],
+      "pitch_um": [
+        30,
+        30
+      ],
+      "position_mm": [
+        0,
+        0,
+        80
+      ],
+      "orientation_deg": [
+        0,
+        0,
+        -8
+      ],
+      "active_um": 40,
+      "passive_um": 60,
+      "response": {
+        "model": "boundary_resolution",
+        "resolution_um": [
+          7,
+          7
+        ],
+        "efficiency": 0.9,
+        "response_delay_ns": 50,
+        "jitter_ns": 2,
+        "dark_hit_rate_per_pixel_hz": 1.0
+      },
+      "readout": {
+        "model": "continuous",
+        "window_ps": 64000000
+      }
+    }
+  ],
+  "transport": {
+    "scattering": true,
+    "air": true,
+    "extra_layers": [
+      {
+        "z_mm": 30,
+        "material_budget": 0.001
+      }
+    ]
+  },
+  "assumptions": {
+    "purpose": "illustrative example; parameter values are not tuned to any device"
+  }
+}

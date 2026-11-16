@@ -1,0 +1,211 @@
+--- a/user/ITS3/misc/ITS3start.py
++++ b/user/ITS3/misc/ITS3start.py
+@@ -5,6 +5,9 @@
+ import libtmux
+ import argparse
+ import configparser
++import shlex
++import socket
++import subprocess
+ from rich.prompt import Confirm
+ from rich import print
+ 
+@@ -19,20 +22,85 @@
+         self.args = args
+         self.plane_name = plane_name
+ 
++def runcontrol_port(rc_address, rc_args):
++    # The explicit launcher option is appended last and therefore wins.
++    value = None
++    words = shlex.split(rc_args)
++    for index, word in enumerate(words):
++        if word == '--address' and index + 1 < len(words): value = words[index + 1]
++        elif word.startswith('--address='): value = word.split('=', 1)[1]
++    value = rc_address or value or '44000'
++    if value.startswith('tcp://'): value = value[6:]
++    try: port = int(value)
++    except ValueError: raise ValueError('RunControl address must be a TCP port')
++    if not 1 <= port <= 65535: raise ValueError('invalid RunControl TCP port')
++    return port
++
++def listening_inodes(port):
++    inodes = set()
++    for table in ('/proc/net/tcp', '/proc/net/tcp6'):
++        try:
++            with open(table, encoding='ascii') as stream:
++                next(stream, None)
++                for row in stream:
++                    fields = row.split()
++                    if int(fields[1].rsplit(':', 1)[1], 16) == port and fields[3] == '0A':
++                        inodes.add(fields[9])
++        except FileNotFoundError: continue
++    return inodes
++
++def wait_for_runcontrol(server, port):
++    # A real TCP connect would itself register a spurious EUDAQ participant.
++    pane = server.cmd('display-message', '-p', '-t', 'ITS3:rc', '#{pane_pid}')
++    if not pane.stdout: raise RuntimeError('cannot identify RunControl pane process')
++    root_pid = int(pane.stdout[0]); deadline = time.monotonic() + 30; seen = False
++    while time.monotonic() < deadline:
++        processes = [root_pid]; index = 0; rc_pids = []
++        while index < len(processes):
++            pid = processes[index]; index += 1
++            try:
++                with open(f'/proc/{pid}/cmdline', 'rb') as stream: args = stream.read().split(b'\0')
++                if any(arg.endswith(b'/ITS3RunControl.py') for arg in args): rc_pids.append(pid)
++                with open(f'/proc/{pid}/task/{pid}/children', encoding='ascii') as stream:
++                    processes.extend(int(child) for child in stream.read().split())
++            except (FileNotFoundError, ProcessLookupError): continue
++        inodes = listening_inodes(port)
++        for pid in rc_pids:
++            try:
++                for fd in os.listdir(f'/proc/{pid}/fd'):
++                    try: target = os.readlink(f'/proc/{pid}/fd/{fd}')
++                    except (FileNotFoundError, ProcessLookupError): continue
++                    if target.startswith('socket:[') and target[8:-1] in inodes: return
++            except (FileNotFoundError, ProcessLookupError): continue
++        if seen and not rc_pids: raise RuntimeError('RunControl exited before its listener was ready')
++        seen = seen or bool(rc_pids)
++        time.sleep(.05)
++    raise RuntimeError(f'RunControl did not open TCP port {port} before the deadline')
++
+ def setup_tmux(
+-    ini_path: str, n_producers: dict, rclog="rc.log", python_exe="python3"):
++    ini_path: str, n_producers: dict, rclog="rc.log", python_exe="python3", extra_dut=None, rc_args="", rc_address=None, producer_env=None, no_attach=False):
+ 
++    extra_dut = extra_dut or []
++    producer_env = producer_env or []
++    extra_paths = dict(item.split('=', 1) for item in extra_dut)
++    for name in extra_paths:
++        if name not in DUT_PRODUCERS: DUT_PRODUCERS.append(name)
+     eudaq_path=os.path.abspath(os.path.dirname(__file__)+"/../../..")
+     eudaq_lib_path=os.path.join(eudaq_path,"lib")
+     exe_path=os.path.join(eudaq_path,"user/ITS3/python")
+     prefix = f"PYTHONPATH={eudaq_lib_path} {python_exe} {exe_path}/"
+ 
++    if extra_dut or rc_args or rc_address or producer_env:
++        prefix = f'PYTHONPATH={shlex.quote(eudaq_lib_path)}:"${{PYTHONPATH:-}}" {shlex.quote(python_exe)} {shlex.quote(exe_path)}/'
++
+     main_exes = {
+-        "rc"  : Executable(prefix+"ITS3RunControl.py",  args=f"--ini {ini_path} 2>> {rclog}"),
+-        "dc"  : Executable(prefix+"ITS3DataCollector.py"),
++        "rc"  : Executable(prefix+"ITS3RunControl.py",  args=f"--ini {shlex.quote(ini_path)} {rc_args} {'--address '+shlex.quote(rc_address) if rc_address else ''} 2>> {shlex.quote(rclog)}"),
++        "dc"  : Executable(prefix+"ITS3DataCollector.py", args=f"--rc tcp://127.0.0.1:{shlex.quote(rc_address)}" if rc_address else ""),
+         "log" : Executable(f"{eudaq_path}/bin/euCliLogger", args="-n log -a 55000"),
+         "perf": Executable( "htop")
+     }
++    if os.environ.get('SESSION_SOURCE_SOCKET'):
++        main_exes['rc'].cmd = 'SESSION_SOURCE_SOCKET=' + shlex.quote(os.environ['SESSION_SOURCE_SOCKET']) + ' ' + main_exes['rc'].cmd
+     ref_exes = {
+         name: Executable(prefix+name+"Producer.py",plane_name=name+"_plane") for name in REF_PRODUCERS
+     }
+@@ -43,6 +111,9 @@
+         name: Executable(prefix+name+"Producer.py",plane_name=name.upper()) for name in DUT_PRODUCERS
+     }
+ 
++    for name, path in extra_paths.items():
++        dut_exes[name] = Executable(f"{shlex.quote(python_exe)} {shlex.quote(path)}", args=f"-r tcp://127.0.0.1:{shlex.quote(rc_address or '44000')}", plane_name=name.upper())
++
+     server = libtmux.Server()
+     try:
+         session = server.new_session(session_name="ITS3",window_name="rc")
+@@ -51,6 +122,9 @@
+         if not kill: exit()
+         session = server.new_session(session_name="ITS3",window_name="rc",kill_session=True)
+ 
++    for name in producer_env:
++        if name not in os.environ: raise ValueError(f"missing environment variable {name}")
++        server.cmd('set-environment', '-g', name, os.environ[name])
+     session.set_option("pane-border-status","top",True)
+     session.set_option("pane-border-format","#P: #{pane_title} (#{pane_pid})",True)
+ 
+@@ -63,7 +137,7 @@
+     ]:
+         window = session.new_window(window_name)
+         for i in range(1,sum(n_producers[name] for name in producer_list)):
+-            window.split_window()
++            window.split()
+             window.select_layout("tiled")
+         j = 0
+         for name in producer_list:
+@@ -73,14 +147,16 @@
+ 
+     session.new_window("dc")
+     server.cmd('select-pane','-t','ITS3:dc','-T','Data Collector')
+-    session.new_window("log").select_pane("ITS:log")
++    session.new_window("log").select_pane("ITS3:log")
+     server.cmd('select-pane','-t','ITS3:log','-T','EUDAQ Log')
+     session.new_window("perf").select_pane("ITS3:perf")
+     server.cmd('select-pane','-t','ITS3:perf','-T','Performance')
++    port = runcontrol_port(rc_address, rc_args)
++    if listening_inodes(port): raise RuntimeError(f'RunControl TCP port {port} is already in use')
+     for name,exe in main_exes.items():
+         session.select_window(name).select_pane(f"ITS3:{name}").send_keys(f'{exe.cmd} {exe.args}')
+-        if name == "rc": time.sleep(1)
+-
++        if name == "rc": wait_for_runcontrol(server, port)
++    # Other processes may connect only after RunControl owns the listener.
+     for window_name,exe_list in [
+         ("rp", ref_exes),
+         ("dp", dut_exes),
+@@ -93,7 +169,7 @@
+                     f"{exe.cmd} --name {exe.plane_name}_{i} {exe.args}")
+                 j += 1
+ 
+-    if server.cmd('switch-client','-t','ITS3:rc').stderr == ['no current client']:
++    if not no_attach and server.cmd('switch-client','-t','ITS3:rc').stderr == ['no current client']:
+         session.cmd('attach-session','-t','ITS3:rc')
+     
+ 
+@@ -117,9 +193,49 @@
+     parser.add_argument('ini_path',help="EUDAQ2 INI file.")
+     parser.add_argument('--rclog',default="rc.log",help="Run Control log file (default=rc.log).")
+     parser.add_argument('--python-exe', '-p', default="python3",help="Python executable to use")
++    parser.add_argument('--extra-dut', action='append', default=[])
++    parser.add_argument('--rc-args', default='')
++    parser.add_argument('--rc-address')
++    parser.add_argument('--producer-env', action='append', default=[])
++    parser.add_argument('--no-attach', action='store_true')
++    parser.add_argument('--session-geometry')
++    parser.add_argument('--session-socket')
++    parser.add_argument('--session-truth-dir')
++    parser.add_argument('--session-beam-on', action='store_true')
+     args = parser.parse_args()
+ 
++    for spec in args.extra_dut:
++        name, path = spec.split('=', 1)
++        if not name or not os.path.isfile(path): parser.error('invalid extra DUT')
++        if name not in PRODUCERS: PRODUCERS.append(name)
++    if bool(args.session_geometry) != bool(args.session_socket):
++        parser.error('session geometry and socket must be supplied together')
++    if args.session_socket:
++        connected = False
++        try:
++            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as client:
++                client.settimeout(1)
++                client.connect(args.session_socket)
++                connected = True
++        except OSError:
++            pass
++        if not connected:
++            if os.path.exists(args.session_socket):
++                raise RuntimeError('session socket exists but is unavailable')
++            command = [args.python_exe, '-m', 'session_core.server', '--geometry', args.session_geometry,
++                       '--socket', args.session_socket]
++            if args.session_truth_dir:
++                command.extend(['--truth-dir', args.session_truth_dir])
++            if args.session_beam_on:
++                command.append('--beam-on')
++            subprocess.Popen(command, start_new_session=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
++            deadline = time.monotonic() + 10
++            while not os.path.exists(args.session_socket):
++                if time.monotonic() >= deadline: raise RuntimeError('session source did not start')
++                time.sleep(.05)
+     ini_args = parse_ini(args.ini_path)
+-    ini_args.update({k:v for k,v in vars(args).items() if v is not None})
+-    print("Starting EUDAQ with following arguments:", ini_args)
++    ini_args.update({k:v for k,v in vars(args).items() if v is not None and not k.startswith('session_')})
++    public_args = dict(ini_args)
++    public_args.pop("producer_env", None)
++    print("Starting EUDAQ with following arguments:", public_args)
+     setup_tmux(**ini_args)

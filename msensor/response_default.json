@@ -1,0 +1,13 @@
+{
+  "note": "Illustrative synthetic values. Not fitted to any measurement.",
+  "e_max": 0.99,
+  "t_half": 160,
+  "w_e": 12,
+  "r0": 0.001,
+  "t_n": 60,
+  "w_n": 10,
+  "fake_rate_max": 0.01,
+  "reference_duration_ns": 100000,
+  "response_delay_ns": 300,
+  "jitter_ns": 0
+}
