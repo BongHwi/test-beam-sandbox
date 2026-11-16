@@ -35,7 +35,7 @@ A setup file describes one session: which devices sit where, their settings, the
 | `[alpide N]` | `ithr` | `0` | `0` to `255` |
 | `[alpide N]` | `strobe_length` | `40` | `1` to `4000`, in 25 ns ticks |
 | `[msensor N]` | `role` | `dut` | `dut` or `reference`; a reference needs `triggered` readout |
-| `[msensor N]` | `pitch_um` | `22.8, 20.8` | `1` to `1000` |
+| `[msensor N]` | `pitch_um` | `23, 21` | `1` to `1000` |
 | `[msensor N]` | `tiles` | `6, 2` | tiles along x and y, `1` to `64` |
 | `[msensor N]` | `tile_pixels` | `156, 444` | columns and rows of one tile; the matrix is at most `4096` per side |
 | `[msensor N]` | `tiles_off` | empty | tile numbers to switch off |
@@ -50,7 +50,7 @@ A setup file describes one session: which devices sit where, their settings, the
 
 In a running session started with `--setup`, the run length and the device settings `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns` and `strobe_length_ns` can be changed for the next run with `scripts/session_control.sh NAME set` ([operator screen guide](operator-screen.md)); the other items stay as the session started.
 
-The default msensor is `6 x 2` tiles of `156 x 444` pixels with pitch `22.8 x 20.8` µm, as described in [the msensor document](msensor.md). Tiles are numbered from `0` at column `0`, row `0`, along x first: tile `t` is tile column `t mod 6` and tile row `t div 6` in the default grid. A switched-off tile gives no hits and no noise. The default beam (variance `25, 25` mm², sigma `5` mm in x and y) is wide enough to reach every tile; in one measurement `70.1` % of events have a track with the default [trigger](trigger.md). `configs/setups/small-msensor.ini` is the earlier single-tile `128 x 128` msensor with pitch `30` µm, the narrow beam `0.003, 0.004` and no position offsets.
+The default msensor is `6 x 2` tiles of `156 x 444` pixels with pitch `23 x 21` µm, as described in [the msensor document](msensor.md). Tiles are numbered from `0` at column `0`, row `0`, along x first: tile `t` is tile column `t mod 6` and tile row `t div 6` in the default grid. A switched-off tile gives no hits and no noise. The default beam (variance `25, 25` mm², sigma `5` mm in x and y) is wide enough to reach every tile; in one measurement `70.1` % of events have a track with the default [trigger](trigger.md). `configs/setups/small-msensor.ini` is the earlier single-tile `128 x 128` msensor with pitch `30` µm, the narrow beam `0.003, 0.004` and no position offsets.
 
 | Section | Item | Default | Accepted values |
 |---|---|---|---|

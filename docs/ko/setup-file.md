@@ -35,7 +35,7 @@
 | `[alpide N]` | `ithr` | `0` | `0`–`255` |
 | `[alpide N]` | `strobe_length` | `40` | `1`–`4000`, 25 ns 단위 |
 | `[msensor N]` | `role` | `dut` | `dut` 또는 `reference`; 기준면은 `triggered` 읽기가 필요 |
-| `[msensor N]` | `pitch_um` | `22.8, 20.8` | `1`–`1000` |
+| `[msensor N]` | `pitch_um` | `23, 21` | `1`–`1000` |
 | `[msensor N]` | `tiles` | `6, 2` | x와 y 방향의 타일 수, `1`–`64` |
 | `[msensor N]` | `tile_pixels` | `156, 444` | 타일 하나의 열과 행 수, matrix는 한 변에 최대 `4096` |
 | `[msensor N]` | `tiles_off` | 비어 있음 | 끌 타일 번호 |
@@ -50,7 +50,7 @@
 
 `--setup`으로 시작해 실행 중인 세션에서는 run 길이와 장치 설정 `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns`, `strobe_length_ns`를 `scripts/session_control.sh NAME set`으로 다음 run부터 바꿀 수 있습니다([운영자 화면 설명](operator-screen.md)). 다른 항목은 세션을 시작한 그대로입니다.
 
-기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `22.8 x 20.8` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.1` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`, 위치 어긋남 없음입니다.
+기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.1` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`, 위치 어긋남 없음입니다.
 
 | 절 | 항목 | 기본값 | 받는 값 |
 |---|---|---|---|

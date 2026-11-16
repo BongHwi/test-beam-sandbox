@@ -68,8 +68,8 @@ scripts/analyze_session.sh public-session
 QA는 다음과 같은 줄로 끝납니다(숫자는 달라집니다):
 
 ```text
-  Events: Ev: 53.9k Px: 599.9k Tr: 37.9k (0.704/ev) t = 258.73s
-  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.3425(+0.0715373 -0.0746357)%, measured with 31387/31916 matched/total tracks
+  Events: Ev: 10.3k Px: 115.5k Tr: 7.2k (0.704/ev) t = 48.6715s
+  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.446(+0.148435 -0.163065)%, measured with 6842/6950 matched/total tracks
 ```
 
 정렬은 찾은 보정량과 정렬 전후의 event당 track 수를 출력합니다. QA는 event 수, track 수, DUT마다의 효율을 출력합니다. 첫 줄은 컨테이너 안의 결과 디렉터리를 알려 주며, 그 안의 `analysis/output/histograms.root`에 histogram이 있습니다. 둘 다 쓴 Corryvreckan 설정을 알려 줍니다([운영 화면 안내](docs/ko/operator-screen.md)). DUT는 DAQ에서 producer 이름을 따라 `MSENSOR_0`, 분석에서는 plane 번호를 따라 `MSENSOR_6`으로 불립니다.
@@ -235,7 +235,7 @@ flowchart TB
 - [정렬](docs/ko/alignment.md): 장치의 위치를 왜, 어떻게 찾는지.
 - [결과 페이지](docs/ko/qa-page.md): 브라우저 페이지.
 - [trigger](docs/ko/trigger.md): trigger 신틸레이터와 trigger 조건.
-- [msensor](docs/ko/msensor.md): 끌 수 있는 타일로 나뉜 합성 DUT와 데이터·stream 형식. 기본 타일 배치는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `22.8 x 20.8` µm입니다.
+- [msensor](docs/ko/msensor.md): 끌 수 있는 타일로 나뉜 합성 DUT와 데이터·stream 형식. 기본 타일 배치는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm입니다.
 - [자동 실행 예](docs/ko/automation.md): 프로그램을 위해 화면 없이 도는 세션과 상태 파일의 상태.
 - [프로그램과 에이전트](docs/ko/programs-and-agents.md): 프로그램이나 에이전트가 연결할 수 있는 곳.
 

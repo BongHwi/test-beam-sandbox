@@ -129,7 +129,7 @@ DEVICE = {
     }),
     'msensor': dict(GEOMETRY, **{
         'role': Item('choice', 'dut', 'analysis role; reference planes need triggered readout', choices=('dut', 'reference')),
-        'pitch_um': Item('number', [22.8, 20.8], 'pixel pitch in micrometres (x, y)', 1, 1000, count=2),
+        'pitch_um': Item('number', [23, 21], 'pixel pitch in micrometres (x, y)', 1, 1000, count=2),
         'tiles': Item('int', [6, 2], 'tile grid: tiles along x, tiles along y; tiles are numbered from 0 '
                       'starting at column 0, row 0, along x first', 1, 64, count=2),
         'tile_pixels': Item('int', [156, 444], 'pixels of one tile: columns, rows', 1, 4096, count=2),

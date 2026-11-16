@@ -68,8 +68,8 @@ scripts/analyze_session.sh public-session
 QA は次のような行で終わります（数値は変わります）:
 
 ```text
-  Events: Ev: 53.9k Px: 599.9k Tr: 37.9k (0.704/ev) t = 258.73s
-  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.3425(+0.0715373 -0.0746357)%, measured with 31387/31916 matched/total tracks
+  Events: Ev: 10.3k Px: 115.5k Tr: 7.2k (0.704/ev) t = 48.6715s
+  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.446(+0.148435 -0.163065)%, measured with 6842/6950 matched/total tracks
 ```
 
 アライメントは求めた補正量と、アライメントの前後のイベントあたりのトラック数を表示します。QA はイベント数、トラック数、DUT ごとの効率を表示します。最初の行はコンテナー内の結果ディレクトリを示し、その中の `analysis/output/histograms.root` にヒストグラムがあります。どちらも使った Corryvreckan の設定を示します（[操作画面ガイド](docs/ja/operator-screen.md)）。DUT は DAQ では producer 名に従って `MSENSOR_0`、解析では plane 番号に従って `MSENSOR_6` と呼ばれます。
@@ -234,7 +234,7 @@ flowchart TB
 - [アライメント](docs/ja/alignment.md): デバイスの位置をなぜ、どう求めるか。
 - [結果ページ](docs/ja/qa-page.md): ブラウザのページ。
 - [trigger](docs/ja/trigger.md): trigger シンチレーターと trigger 条件。
-- [msensor](docs/ja/msensor.md): オフにできるタイルに分かれた合成 DUT と、そのデータ形式およびストリーム形式。既定のタイル配置は `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `22.8 x 20.8` µm です。
+- [msensor](docs/ja/msensor.md): オフにできるタイルに分かれた合成 DUT と、そのデータ形式およびストリーム形式。既定のタイル配置は `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `23 x 21` µm です。
 - [自動実行の例](docs/ja/automation.md): プログラム向けの、画面なしで動くセッション、および状態ファイルの状態。
 - [プログラムとエージェント](docs/ja/programs-and-agents.md): プログラムやエージェントが接続できるもの。
 

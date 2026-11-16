@@ -68,8 +68,8 @@ scripts/analyze_session.sh public-session
 QA ends with lines like these (the numbers vary):
 
 ```text
-  Events: Ev: 53.9k Px: 599.9k Tr: 37.9k (0.704/ev) t = 258.73s
-  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.3425(+0.0715373 -0.0746357)%, measured with 31387/31916 matched/total tracks
+  Events: Ev: 10.3k Px: 115.5k Tr: 7.2k (0.704/ev) t = 48.6715s
+  [F:AnalysisEfficiency:MSENSOR_6] Total efficiency of detector MSENSOR_6: 98.446(+0.148435 -0.163065)%, measured with 6842/6950 matched/total tracks
 ```
 
 Alignment prints the corrections it found and the tracks per event before and after. QA prints the event count, the track count and the efficiency of each DUT; its first line names the result directory in the container, whose `analysis/output/histograms.root` holds the histograms. Both name the Corryvreckan configuration they used ([operator screen guide](docs/operator-screen.md)). The DUT is named `MSENSOR_0` in the DAQ, after its producer, and `MSENSOR_6` in the analysis, after its plane number.
@@ -235,7 +235,7 @@ The build fixes the versions of the public software, among them EUDAQ commit `bf
 - [Alignment](docs/alignment.md): why and how the device positions are found.
 - [Result page](docs/qa-page.md): the browser page.
 - [Trigger](docs/trigger.md): trigger scintillators and the trigger condition.
-- [msensor](docs/msensor.md): synthetic DUT divided into tiles that can be switched off, and its data and stream formats. Its default tile layout is `6 x 2` tiles of `156 x 444` pixels with pitch `22.8 x 20.8` µm.
+- [msensor](docs/msensor.md): synthetic DUT divided into tiles that can be switched off, and its data and stream formats. Its default tile layout is `6 x 2` tiles of `156 x 444` pixels with pitch `23 x 21` µm.
 - [Automated example](docs/automation.md): a session without the screen, for programs; the states of the status file.
 - [Programs and agents](docs/programs-and-agents.md): what a program or an agent can connect to.
 

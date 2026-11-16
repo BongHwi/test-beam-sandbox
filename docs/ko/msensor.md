@@ -6,7 +6,7 @@
 
 ## 설정
 
-초기화에는 `plane`, `columns`, `rows`가 필요합니다. `regions`의 기본값은 1이며 열 수가 이 값으로 나누어떨어져야 합니다. `tiles_x`와 `tiles_y`(기본값 1)는 matrix를 타일 격자로 나누며 `columns`와 `rows`를 나누어떨어지게 해야 합니다. 타일 번호는 열 0, 행 0에서 0으로 시작해 열 방향으로 먼저 세므로 타일 `t`는 타일 열 `t mod tiles_x`, 타일 행 `t div tiles_x`에 있습니다. 타일이 둘 이상이면 `regions`는 1이어야 하고 `threshold_dac`는 정수 하나 또는 타일별 정수입니다. run 설정 `tiles_off`는 끈 타일의 목록이며 끈 타일은 hit도 잡음도 내지 않습니다. 타일은 빈틈없이 붙어 있는 것으로 둡니다. 이것은 단순화입니다. 기본 셋업은 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `22.8 x 20.8` µm를 씁니다. `clock_mode`는 `virtual` 또는 `paced`입니다. run에는 `EUDAQ_DC`, `EUDAQ_ID`, `readout_mode`, `threshold_dac`가 필요합니다. `EUDAQ_ID`는 `plane`과 같아야 합니다. `triggered`에는 `strobe_delay_ns`와 `strobe_length_ns`, `continuous`에는 `stream_dir`과 `window_length_ns`를 지정합니다. 알 수 없거나 모드에 맞지 않는 key는 거절합니다. `response_file`의 기본값은 `response_default.json`입니다.
+초기화에는 `plane`, `columns`, `rows`가 필요합니다. `regions`의 기본값은 1이며 열 수가 이 값으로 나누어떨어져야 합니다. `tiles_x`와 `tiles_y`(기본값 1)는 matrix를 타일 격자로 나누며 `columns`와 `rows`를 나누어떨어지게 해야 합니다. 타일 번호는 열 0, 행 0에서 0으로 시작해 열 방향으로 먼저 세므로 타일 `t`는 타일 열 `t mod tiles_x`, 타일 행 `t div tiles_x`에 있습니다. 타일이 둘 이상이면 `regions`는 1이어야 하고 `threshold_dac`는 정수 하나 또는 타일별 정수입니다. run 설정 `tiles_off`는 끈 타일의 목록이며 끈 타일은 hit도 잡음도 내지 않습니다. 타일은 빈틈없이 붙어 있는 것으로 둡니다. 이것은 단순화입니다. 기본 셋업은 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm를 씁니다. `clock_mode`는 `virtual` 또는 `paced`입니다. run에는 `EUDAQ_DC`, `EUDAQ_ID`, `readout_mode`, `threshold_dac`가 필요합니다. `EUDAQ_ID`는 `plane`과 같아야 합니다. `triggered`에는 `strobe_delay_ns`와 `strobe_length_ns`, `continuous`에는 `stream_dir`과 `window_length_ns`를 지정합니다. 알 수 없거나 모드에 맞지 않는 key는 거절합니다. `response_file`의 기본값은 `response_default.json`입니다.
 
 ![Histograms 탭의 msensor DUT hit map(936 x 888 픽셀)입니다.](../images/page-histograms.png)
 

@@ -6,7 +6,7 @@
 
 ## 設定
 
-初期化には `plane`、`columns`、`rows` が必要です。`regions` の既定値は 1 で、列数がこの値で割り切れる必要があります。`tiles_x` と `tiles_y`（既定値 1）は matrix をタイルの格子に分け、`columns` と `rows` を割り切る必要があります。タイル番号は列 0、行 0 から 0 で始まり、列方向に先に数えるため、タイル `t` はタイル列 `t mod tiles_x`、タイル行 `t div tiles_x` にあります。タイルが二つ以上ある場合、`regions` は 1 でなければならず、`threshold_dac` は整数一つ、またはタイルごとの整数です。run 設定の `tiles_off` はオフにしたタイルの一覧で、オフのタイルはヒットもノイズも出しません。タイルは隙間なく接しているものとします。これは単純化です。既定のセットアップは `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `22.8 x 20.8` µm を使います。`clock_mode` は `virtual` または `paced` です。run には `EUDAQ_DC`、`EUDAQ_ID`、`readout_mode`、`threshold_dac` が必要です。`EUDAQ_ID` は `plane` と一致させます。`triggered` には `strobe_delay_ns` と `strobe_length_ns`、`continuous` には `stream_dir` と `window_length_ns` を指定します。不明なキーとモードに合わないキーは拒否されます。`response_file` の既定値は `response_default.json` です。
+初期化には `plane`、`columns`、`rows` が必要です。`regions` の既定値は 1 で、列数がこの値で割り切れる必要があります。`tiles_x` と `tiles_y`（既定値 1）は matrix をタイルの格子に分け、`columns` と `rows` を割り切る必要があります。タイル番号は列 0、行 0 から 0 で始まり、列方向に先に数えるため、タイル `t` はタイル列 `t mod tiles_x`、タイル行 `t div tiles_x` にあります。タイルが二つ以上ある場合、`regions` は 1 でなければならず、`threshold_dac` は整数一つ、またはタイルごとの整数です。run 設定の `tiles_off` はオフにしたタイルの一覧で、オフのタイルはヒットもノイズも出しません。タイルは隙間なく接しているものとします。これは単純化です。既定のセットアップは `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `23 x 21` µm を使います。`clock_mode` は `virtual` または `paced` です。run には `EUDAQ_DC`、`EUDAQ_ID`、`readout_mode`、`threshold_dac` が必要です。`EUDAQ_ID` は `plane` と一致させます。`triggered` には `strobe_delay_ns` と `strobe_length_ns`、`continuous` には `stream_dir` と `window_length_ns` を指定します。不明なキーとモードに合わないキーは拒否されます。`response_file` の既定値は `response_default.json` です。
 
 ![Histograms タブの msensor DUT のヒットマップ（936 x 888 ピクセル）です。](../images/page-histograms.png)
 

@@ -35,7 +35,7 @@
 | `[alpide N]` | `ithr` | `0` | `0`–`255` |
 | `[alpide N]` | `strobe_length` | `40` | `1`–`4000`、25 ns 単位 |
 | `[msensor N]` | `role` | `dut` | `dut` または `reference`、基準面は `triggered` 読み出しが必要 |
-| `[msensor N]` | `pitch_um` | `22.8, 20.8` | `1`–`1000` |
+| `[msensor N]` | `pitch_um` | `23, 21` | `1`–`1000` |
 | `[msensor N]` | `tiles` | `6, 2` | x と y 方向のタイル数、`1`–`64` |
 | `[msensor N]` | `tile_pixels` | `156, 444` | タイル一つの列数と行数、matrix は一辺最大 `4096` |
 | `[msensor N]` | `tiles_off` | 空 | オフにするタイル番号 |
@@ -50,7 +50,7 @@
 
 `--setup` で開始して動作中のセッションでは、run の長さとデバイス設定 `ithr`、`strobe_length`、`threshold_dac`、`readout`、`window_length_ns`、`strobe_delay_ns`、`strobe_length_ns` を `scripts/session_control.sh NAME set` で次の run から変更できます（[オペレーター画面の説明](operator-screen.md)）。他の項目はセッション開始時のままです。
 
-既定の msensor は `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `22.8 x 20.8` µm で、[msensor の文書](msensor.md)に説明があります。タイル番号は列 `0`、行 `0` から `0` で始まり、x 方向に先に数えます。既定の格子ではタイル `t` はタイル列 `t mod 6`、タイル行 `t div 6` です。オフのタイルはヒットもノイズも出しません。既定のビーム（分散 `25, 25` mm²、x と y ともに sigma `5` mm）はすべてのタイルに届く広さです。ある測定では既定の [trigger](trigger.md) を使ったイベントの `70.1` % にトラックがありました。`configs/setups/small-msensor.ini` は以前のタイル一つの `128 x 128` msensor（ピッチ `30` µm）、狭いビーム `0.003, 0.004`、位置のずれなしです。
+既定の msensor は `6 x 2` タイル、タイルごとに `156 x 444` ピクセル、ピッチ `23 x 21` µm で、[msensor の文書](msensor.md)に説明があります。タイル番号は列 `0`、行 `0` から `0` で始まり、x 方向に先に数えます。既定の格子ではタイル `t` はタイル列 `t mod 6`、タイル行 `t div 6` です。オフのタイルはヒットもノイズも出しません。既定のビーム（分散 `25, 25` mm²、x と y ともに sigma `5` mm）はすべてのタイルに届く広さです。ある測定では既定の [trigger](trigger.md) を使ったイベントの `70.1` % にトラックがありました。`configs/setups/small-msensor.ini` は以前のタイル一つの `128 x 128` msensor（ピッチ `30` µm）、狭いビーム `0.003, 0.004`、位置のずれなしです。
 
 | セクション | 項目 | 既定値 | 受け付ける値 |
 |---|---|---|---|
