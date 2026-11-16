@@ -55,12 +55,12 @@
 
 `--setup`으로 시작해 실행 중인 세션에서는 run 길이와 장치 설정 `ithr`, `strobe_length`, `threshold_dac`, `readout`, `window_length_ns`, `strobe_delay_ns`, `strobe_length_ns`를 `scripts/session_control.sh NAME set`으로 다음 run부터 바꿀 수 있습니다([운영자 화면 설명](operator-screen.md)). 다른 항목은 세션을 시작한 그대로입니다.
 
-기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.3` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`, 위치 어긋남 없음입니다.
+기본 msensor는 `6 x 2` 타일, 타일마다 `156 x 444` 픽셀, pitch `23 x 21` µm이며 [msensor 문서](msensor.md)에 설명이 있습니다. 타일 번호는 열 `0`, 행 `0`에서 `0`으로 시작해 x 방향으로 먼저 셉니다. 기본 격자에서 타일 `t`는 타일 열 `t mod 6`, 타일 행 `t div 6`입니다. 끈 타일은 hit도 잡음도 내지 않습니다. 기본 빔(분산 `25, 25` mm², x와 y 모두 sigma `5` mm)은 모든 타일에 닿을 만큼 넓습니다. 한 측정에서 기본 [trigger](trigger.md)를 쓴 event의 `70.3` %에 track이 있었습니다. `configs/setups/small-msensor.ini`는 예전의 타일 하나짜리 `128 x 128` msensor(pitch `30` µm), 좁은 빔 `0.003, 0.004`이며 위치 어긋남이 없습니다.
 
 | 절 | 항목 | 기본값 | 받는 값 |
 |---|---|---|---|
 | `[scintillator N]` | `channel` | 필수 | 중복 없는 `0`–`3` |
-| `[scintillator N]` | `position_mm` | 필수 | 판 중심 x, y, z (mm); 빔 출발점보다 하류 |
+| `[scintillator N]` | `position_mm` | 필수 | 판 중심 x, y, z (mm); 빔 source보다 하류 |
 | `[scintillator N]` | `shape` | `rectangle` | `rectangle` 또는 `disc` |
 | `[scintillator N]` | `size_mm` | `30, 20` | 직사각형 폭과 높이 또는 원판 지름, `1`–`200` mm |
 | `[scintillator N]` | `hole_mm` | `0` | 중앙 구멍의 폭과 높이 또는 지름, 판보다 작음 |
@@ -80,13 +80,13 @@ QA는 기준면으로 track을 재구성합니다. 기준면이 적어도 3개 �
 
 `scripts/setup_session.sh show`와 셋업 탭의 요약은 각 DUT에서 track 위치를 얼마나 정확히 아는지 추정합니다. 추정은 이 sandbox의 시뮬레이션과 분석을 따릅니다.
 
-- 축마다의 고유 해상도. msensor 면은 픽셀 하나에만 hit을 내므로 해상도가 pitch/√12입니다. 기본 pitch `23 x 21` µm에서 `6.640` x `6.062` µm입니다. ALPIDE 면은 입자가 픽셀 경계 주변의 띠 안을 지나면 양쪽 픽셀 모두에 hit을 냅니다. 이 띠는 `ithr`가 낮을수록 넓어지므로(cluster 평균 `2 − ithr/255`) pitch `30` µm의 해상도는 `ithr = 0`에서 `4.517` µm, `ithr = 255`에서 `8.660` µm입니다.
+- 축마다의 고유 해상도. msensor 면은 픽셀 하나에만 hit를 내므로 해상도가 pitch/√12입니다. 기본 pitch `23 x 21` µm에서 `6.640` x `6.062` µm입니다. ALPIDE 면은 입자가 픽셀 경계 주변의 띠 안을 지나면 양쪽 픽셀 모두에 hit를 냅니다. 이 띠는 `ithr`가 낮을수록 넓어지므로(cluster 평균 `2 − ithr/255`) pitch `30` µm의 해상도는 `ithr = 0`에서 `4.517` µm, `ithr = 255`에서 `8.660` µm입니다.
 - 모든 면(실리콘 100 µm, `0.00106724` X0)과 빔 source에서 마지막 면까지의 공기에서 일어나는 다중 산란. Highland 공식을 쓰며 로그 항은 시뮬레이션처럼 전체 물질에서 한 번 정합니다.
 - 분석처럼 기준면을 지나는 직선을 고유 해상도로 가중해 맞춥니다. DUT는 fit에 들어가지 않습니다.
 
 `show`는 DUT마다 x와 y의 track 해상도(DUT에서 맞춘 위치의 퍼짐)와 예상 residual(track과 DUT 해상도를 합친 것)을 보여 줍니다. 4 GeV의 `default.ini`에서 추정은 track `2.97 x 2.97` µm, residual `7.27 x 6.75` µm이고, 한 run에서 잰 residual은 `7.21 x 6.84` µm였습니다. 이 추정은 이 시뮬레이션을 설명하며 실제 telescope를 설명하지 않습니다. 면과 공기를 합한 물질은 시뮬레이션의 한계인 `0.01998` X0까지만 됩니다. `check`는 이를 넘는 셋업을 거절합니다.
 
-셋업 탭은 Magnus Mager(CERN)의 외부 telescope optimiser도 x 또는 y 축 하나로 열며 인터넷이 필요합니다. 링크는 `T`를 운동 에너지, `m = 0.00051099895` GeV로 한 빔 운동량 `sqrt(T² + 2 T m)` GeV/c와 z 순서의 장치 면을 전달합니다. 각 면의 해상도는 선택한 축의 위 고유 해상도이고 물질은 100 µm 실리콘, 즉 0.107 % X/X0입니다. DUT는 측정 없이 산란만 하는 면이며 신틸레이터는 넣지 않습니다. 장치 앞뒤 10 mm의 끝점에는 물질과 측정이 없습니다. optimiser는 최적 fit을 쓰고 공기를 넣지 않으므로 값이 `show`의 추정보다 조금 작을 수 있습니다.
+셋업 탭은 Magnus Mager(CERN)의 외부 telescope optimiser도 x 또는 y 중 한 축으로 열며 인터넷이 필요합니다. 링크는 `T`를 운동 에너지, `m = 0.00051099895` GeV로 한 빔 운동량 `sqrt(T² + 2 T m)` GeV/c와 z 순서의 장치 면을 전달합니다. 각 면의 해상도는 선택한 축의 위 고유 해상도이고 물질은 100 µm 실리콘, 즉 0.107 % X/X0입니다. DUT는 측정 없이 산란만 하는 면이며 신틸레이터는 넣지 않습니다. 장치 앞뒤 10 mm의 끝점에는 물질과 측정이 없습니다. optimiser는 최적 fit을 쓰고 공기를 넣지 않으므로 값이 `show`의 추정보다 조금 작을 수 있습니다.
 
 [기본 셋업의 x 축 열기](https://mmager.web.cern.ch/telescope/tracking.html#part=e&p=4.0005&x=[-1,0,2,4,6,8,10,12,13]&XX0=[,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,]&sy=[,0.000452,0.000452,0.000452,0.000664,0.000452,0.000452,0.000452,]&en=[0,1,1,1,0,1,1,1,0])
 

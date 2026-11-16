@@ -213,7 +213,7 @@
   "end_step_2": "출력 복사",
   "end_step_3": "컨테이너 지우기",
   "role_reference_badge": "기준면",
-  "check_pass": "검사 통과",
+  "check_pass": "확인 통과",
   "tracks_matched": "track {total}개 중 {matched}개가 일치",
   "legend_tile_on": "켜진 msensor 타일",
   "legend_tile_off": "꺼진 타일",

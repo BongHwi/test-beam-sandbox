@@ -12,7 +12,7 @@
 
 ## 취득과 분석
 
-빌드, 시작, 취득, 종료와 분석은 [시작 안내](../../README.ko.md)의 명령을 따릅니다. 세션의 빔은 처음에 꺼져 있습니다. 분석에는 공개 EUDAQ 변환기, EventLoaderEUDAQ2, clustering, tracking, DUT association, efficiency와 출력 모듈을 사용합니다. 고정된 Corryvreckan revision은 보조 30 µm pitch histogram에서 ROOT bin 경고를 1번 낼 수 있습니다. 다른 변환 오류가 발생하면 실패로 처리합니다. data event가 없는 raw 데이터는 분석하지 않습니다.
+빌드, 시작, 취득, 종료와 분석은 [시작 안내](../../README.ko.md)의 명령을 따릅니다. 세션의 빔은 처음에 꺼져 있습니다. 분석에는 공개 EUDAQ 변환기, EventLoaderEUDAQ2, clustering, tracking, DUT association, efficiency와 출력 모듈을 사용합니다. 고정된 Corryvreckan revision은 보조 30 µm pitch histogram에서 ROOT bin 경고를 1번 낼 수 있습니다. 다른 변환 오류가 발생하면 실패로 처리합니다. data event가 없는 raw 파일은 분석하면 안 됩니다.
 
 ![터미널에서 실행 중인 세션을 정렬하고 분석합니다.](../images/terminal-analysis.png)
 
