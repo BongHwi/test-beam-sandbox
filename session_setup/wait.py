@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import sys
 import time
+if Path('/tmp/session-run/daq-mode').is_file() and Path('/tmp/session-run/daq-mode').read_text().strip() == 'nestdaq':
+    print('error: wait_session.sh is for the EUDAQ mode', file=sys.stderr);raise SystemExit(2)
 mode=sys.argv[1];path=Path('/tmp/session-run/status.json');deadline=time.monotonic()+180
 while time.monotonic()<deadline:
     try:status=json.loads(path.read_text())

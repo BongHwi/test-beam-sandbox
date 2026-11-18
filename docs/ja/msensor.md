@@ -12,9 +12,14 @@
 
 `source=synthetic` では `seed` と trigger の指定方法をちょうど一つ `MSENSOR_SOURCE_CONFIG_JSON` に渡します。EUDAQ は設定を BORE にコピーするため、ソース条件は ini に入れません。再現可能な run では `sim_end_ns` を設定し、`source_finished=1` を確認してから停止します。`paced` の早期停止は実時間に依存します。全体の検査は `tests/scripts/run_msensor_e2e.sh` で実行します。`source=session` では `clock_mode=virtual` を設定し、`seed` を `MSENSOR_SOURCE_CONFIG_JSON` で渡して、trigger 指定と `sim_end_ns` は入れません。trigger とクロックはセッションが提供します。
 
+粒子がヒットを残すかどうかは msensor ごとに別々に決まり、この乱数は `seed`、msensor の名前、粒子によって決まるため、同じセッションの msensor はそれぞれ異なる粒子を取りこぼします。
+
 ## データ形式
 
 ペイロードは ASCII `MSENSOR`、バージョン byte 1、4-byte big-endian JSON 長、正規 UTF-8 JSON で始まります。ヒットは `[col,row]` です。ストリームは ASCII `MSWINDOW` とバージョン byte 1 で始まり、各記録にはタイプ、4-byte big-endian 長、正規 JSON、CRC32 があります。FOOTER には SHA-256 があります。`python -m msensor.stream verify FILE` は正常なら 0、途中切れは 2、破損は 3 を返します。triggered は半開ゲートを使い、continuous は空の窓を含む固定窓を記録します。最後の窓は実際の終了時刻で切り詰めます。
+
+
+nestDAQ モードの msraw ストリームは [nestDAQ モード](nestdaq.md)を参照します。
 
 ## パラメーターの範囲とソース
 

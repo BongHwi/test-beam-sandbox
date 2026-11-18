@@ -6,7 +6,7 @@ A setup file describes one session: which devices sit where, their settings, the
 
 ![A setup file open in the setup tab of the result page.](images/page-setup.png)
 
-`configs/setups/default.ini` has ALPIDE reference planes and an msensor DUT. `configs/setups/small-msensor.ini` uses a smaller msensor DUT. `configs/setups/msensor-telescope.ini` uses six msensor reference planes and one msensor DUT.
+`configs/setups/default.ini` has ALPIDE reference planes and an msensor DUT. `configs/setups/small-msensor.ini` uses a smaller msensor DUT. `configs/setups/msensor-telescope.ini` uses six msensor reference planes and one msensor DUT. The four setups `configs/setups/nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini` and `nestdaq-telescope.ini` use the nestDAQ mode ([nestDAQ mode](nestdaq.md)).
 
 ## Commands
 
@@ -15,6 +15,9 @@ A setup file describes one session: which devices sit where, their settings, the
 - `scripts/setup_session.sh check FILE` names every wrong item with the values it accepts and exits with a code other than 0. It also says whether QA is possible.
 - `scripts/start_session.sh --setup FILE` checks the setup, generates the session files and starts. The session keeps the setup as given (`setup-source.ini` or `setup-source.json`) and as `setup.json` in `/tmp/session-run`; alignment and QA use the devices of that copy.
  `--scintillators 0` omits the plates; `--scintillators 2` (default) adds the two default plates.
+
+
+For nestDAQ, set `[run] daq = nestdaq` and choose `[nestdaq] input = file | socket`, `frame_ms` and `send_buffer_mb`. `send_buffer_mb` applies only to socket input. Each `[msensor N]` can also set its own clock with `clock_offset_ns` and `clock_drift_ppm`, the triggers it misses with `missed_triggers`, and noise hits with `noise`; see [nestDAQ mode](nestdaq.md).
 
 ## Items
 

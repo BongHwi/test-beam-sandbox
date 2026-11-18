@@ -21,6 +21,7 @@ let setupShown = {}, confirmBox = null;
 const openSections = new Set();
 let setupCommandChoice = () => {}, keyCommandChoice = () => {};
 let previewPlaceholder = null, previousOverflow = '';
+let mode = 'eudaq';
 let windowName = 'rc', screenTimer = null, screenBusy = false, daqActive = false, setupActive = false;
 let daqShown = {}, sessionsList = [], built = false;
 const body = document.body.dataset;
@@ -545,7 +546,7 @@ async function readScreen() {
   if (!screenBusy) {
     screenBusy = true;
     try {
-      const answer = await (await fetch(`/api/screen?session=${encodeURIComponent(ctx.session)}&window=${windowName}`, { cache: 'no-store' })).json();
+      const answer = await (await fetch(`${mode === 'nestdaq' ? '/api/nestdaq/screen' : '/api/screen'}?session=${encodeURIComponent(ctx.session)}&window=${windowName}`, { cache: 'no-store' })).json();
       if (answer.window === windowName) {
         const pre = document.getElementById('screen');
         pre.textContent = answer.text;
@@ -618,8 +619,9 @@ function confirmation(text, command, yesText, onYes) {
 function buildDaq() {
   const { t, el } = ctx;
   const bar = document.getElementById('window-bar');
-  bar.replaceChildren(...WINDOWS.map(w => {
-    const b = el('button', { type: 'button', 'data-window': w, class: w === windowName ? 'active' : '' }, el('code', {}, w), ' ', el('span', { 'data-t': 'win_' + w }, t('win_' + w)));
+  bar.replaceChildren(...(mode === 'nestdaq' ? ['runners', 'sources', 'sink', 'dqm', 'webctl', 'slowdash', 'redis'] : WINDOWS).map(w => {
+    const label = mode === 'nestdaq' ? [] : [' ', el('span', { 'data-t': 'win_' + w }, t('win_' + w))];
+    const b = el('button', { type: 'button', 'data-window': w, class: w === windowName ? 'active' : '' }, el('code', {}, w), ...label);
     b.addEventListener('click', () => { windowName = w; for (const x of bar.querySelectorAll('button')) x.classList.toggle('active', x === b); document.getElementById('screen').textContent = ''; readScreen(); });
     return b;
   }));
@@ -674,6 +676,16 @@ function renderDaq() {
 }
 
 // ---- language and tabs ----
+export function setMode(value) {
+  mode = value;
+  if (mode !== 'nestdaq' || !ctx) return;
+  windowName = 'runners';
+  document.querySelector('#daq aside.panel').hidden = true;
+  buildDaq();
+  document.getElementById('screen').textContent = '';
+  daqLoop(daqActive);
+}
+
 export function sessionLanguage() {
   if (!ctx) return;
   renderSessions();

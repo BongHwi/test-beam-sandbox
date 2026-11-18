@@ -22,7 +22,7 @@
 
 ファイルのすべての項目を変更できます: run、ビーム、位置のずれ、デバイスとその位置と設定、msensor のタイル。値はファイルに書くとおりに入力します（例: `1, -2, 60`）。各項目の下の小さな文字は、保存したファイルに入る説明行です。デバイスは追加と削除ができます。ページが種類ごとに番号を 0 から隙間なく付け直し、面番号と位置は自分で決めます。msensor のタイルをクリックするとオフとオンが切り替わります。編集中は確認と 3D 図が追従します。確認は `scripts/setup_session.sh check` のコードとその文言を使います。
 
-"セットアップファイルを保存" は確認に通った場合だけ `configs/setups/` にファイルを書きます。形式は `scripts/setup_session.sh new` と同じで（項目ごとに説明行がある）、ターミナルでもそのまま使えます。保存した後、ページはそのファイルについての `scripts/setup_session.sh check` の出力を表示します。名前は英字、数字、`-`、`_` で書き、`.ini` で終わる必要があります。`default.ini` と `small-msensor.ini` はリポジトリのファイルなので上書きしません。これを変更したものは別の名前で保存します。既存のファイルを置き換えるときはページ内でもう一度確認します。
+"セットアップファイルを保存" は確認に通った場合だけ `configs/setups/` にファイルを書きます。形式は `scripts/setup_session.sh new` と同じで（項目ごとに説明行がある）、ターミナルでもそのまま使えます。保存した後、ページはそのファイルについての `scripts/setup_session.sh check` の出力を表示します。名前は英字、数字、`-`、`_` で書き、`.ini` で終わる必要があります。リポジトリに含まれるセットアップファイル `default.ini`、`small-msensor.ini`、`msensor-telescope.ini` と四つの `nestdaq` セットアップは上書きしません。これを変更したものは別の名前で保存します。既存のファイルを置き換えるときはページ内でもう一度確認します。
 
 "セッションを開始" は保存したファイルとセッション名で `scripts/start_session.sh --setup configs/setups/FILE --name NAME --no-attach` を実行します。保存したアライメントを選ぶと `--alignment configs/alignments/FILE.json` も付けます（`scripts/align_session.sh NAME --save configs/alignments/FILE.json` で保存します）。ページはコマンドの出力と終了コードを表示し、例えばすでに使われている名前はコマンドの文言のとおりに表示されます。セッションが開始すると、ページは実験画面タブでそのセッションを表示します。イメージはページではビルドしません。イメージがない場合は `scripts/build_session.sh` を示します。
 
@@ -87,6 +87,10 @@ QA タブはアライメント、測定値、図を表示します。
 QA の ROOT ファイルのすべてのヒストグラムを一覧にし、一つを選ぶと描画します。
 
 ![Histograms タブはヒストグラムの一覧と選んだ図を表示します。](../images/page-histograms.png)
+
+## nestDAQ セッション
+
+nestDAQ セッションには nestDAQ タブが追加され、DAQ 画面にはそのウィンドウが表示されます。QA タブは `scripts/session_control.sh NAME nestdaq qa --json` の数値を 5 秒ごとに読み直して表示し、ヒストグラムは使えません。実験画面タブにはビーム制御が残り、EUDAQ の run ボタンは隠れます。nestDAQ run と全 msensor が送った frame および frame レートを表示し、nestDAQ run が動いていないときだけ "出力をコピー" と "コンテナーを削除" を有効にします。このモードは ALPIDE 面を読まないため、物質と表示します。token はこのページの操作に適用され、nestDAQ 画面は [nestDAQ モード](nestdaq.md)で説明されている ticket を使います。
 
 ## 言語と描画
 

@@ -22,7 +22,7 @@
 
 ## 既定の detector 対応
 
-既定の解析対応の識別子と位置は次のとおりです。`mapping.json` は解析 section 名を提供します。ジオメトリの `position_mm`、`pixels`、`pitch_um` はそれぞれ `position`、`number_of_pixels`、`pixel_pitch` に対応します。すべての面には、[セットアップファイルの説明](setup-file.md)にある固有分解能の `spatial_resolution`（例: `ithr = 0` の ALPIDE 面は `4.517um, 4.517um`、既定の msensor は `6.640um, 6.062um`）と、シミュレーションが使う面ごとのシリコン 100 µm に当たる `material_budget = 0.00106724` も入ります。取得専用の配置を生成しても既存の解析ジオメトリは変更しません。
+既定の解析対応の識別子と位置は次のとおりです。`mapping.json` は解析 section 名を提供します。ジオメトリの `position_mm`、`pixels`、`pitch_um` はそれぞれ `position`、`number_of_pixels`、`pixel_pitch` に対応します。すべての面には、[セットアップファイルの説明](setup-file.md)にある固有分解能の `spatial_resolution`（例: ALPIDE 面は `4.517um, 4.517um`（`ithr = 0` のとき）、既定の msensor は `6.640um, 6.062um`）と、`material_budget = 0.00106724`（シミュレーションが面ごとに使うシリコン 100 µm に相当）も入ります。取得専用の配置を生成しても既存の解析ジオメトリは変更しません。
 
 | serial | producer / plane | geometry | analysis detector | z (mm) |
 |---|---|---|---|---:|

@@ -2,6 +2,8 @@
 
 # 자동 실행 예
 
+이 페이지의 유한 예제와 run 명령은 EUDAQ 모드용입니다. nestDAQ 세션은 [nestDAQ 모드](nestdaq.md)를 참조합니다.
+
 유한 예제는 기본 셋업으로 run 하나를 RunControl 화면 없이 돌립니다. 취득을 조작하는 프로그램이 하는 방식과 같습니다. 명령은 저장소 맨 위 디렉터리에서, `session-output` 디렉터리와 `public-session`이라는 컨테이너가 없을 때 실행합니다. 있으면 다른 이름을 씁니다.
 
 <!-- automated-example -->

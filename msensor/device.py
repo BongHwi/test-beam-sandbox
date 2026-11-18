@@ -65,8 +65,8 @@ class MSensorDevice:
         th=c['threshold_dac'][region]
         z=(th-p['t_half'])/p['w_e']
         efficiency=p['e_max']/(1+math.exp(max(-700,min(700,z))))
-        if uniform(c['seed'],'response',crossing.crossing_id)>=efficiency: return
-        jitter=p['jitter_ns']*normal(c['seed'],'jitter',crossing.crossing_id,0) if p['jitter_ns'] else 0
+        if uniform(c['seed'],'response',self.name,crossing.crossing_id)>=efficiency: return
+        jitter=p['jitter_ns']*normal(c['seed'],'jitter',f'{self.name}:{crossing.crossing_id}',0) if p['jitter_ns'] else 0
         t=max(crossing.time_ns, int(crossing.time_ns+p['response_delay_ns']+jitter))
         if not self.bounded_history or c['readout_mode']=='triggered': self.all_hits.append((t,col,row))
         if c['readout_mode']=='continuous': self.signals.setdefault(t//c['window_length_ns'], []).append((t,col,row))

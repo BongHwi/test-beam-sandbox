@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: LGPL-3.0-or-later
 set -euo pipefail
 source "$(dirname "$0")/lib/native_arch.sh"
-layout=''; setup=''; alignment=''; name='public-session'; image='local/public-session:native'; attach=1; example=0
+layout=''; setup=''; alignment=''; name='public-session'; image='local/public-session:native'; attach=1; example=0; image_given=0
 while (($#)); do
   case "$1" in
     --layout) layout=${2:?missing layout directory}; shift 2 ;;
     --setup) setup=${2:?missing setup file}; shift 2 ;;
     --alignment) alignment=${2:?missing alignment file}; shift 2 ;;
     --name) name=${2:?missing container name}; shift 2 ;;
-    --image) image=${2:?missing image tag}; shift 2 ;;
+    --image) image=${2:?missing image tag}; image_given=1; shift 2 ;;
     --no-attach) attach=0; shift ;;
     --example) example=1; shift ;;
     *) echo "usage: $0 (--setup FILE [--alignment FILE] | --layout DIRECTORY) [--name CONTAINER] [--image IMAGE] [--no-attach] [--example]" >&2; exit 2 ;;
@@ -31,6 +31,10 @@ if [[ -n "$setup" ]]; then
     prepare+=(--alignment "$(cd "$(dirname "$alignment")" && pwd)/$(basename "$alignment")")
   fi
   (cd "$(dirname "$0")/.." && python3 -m session_setup.setupfile "${prepare[@]}") || exit 2
+fi
+if [[ $image_given == 0 && -f "$layout/daq-mode" ]]; then
+  mode=$(cat "$layout/daq-mode")
+  if [[ "${mode//[[:space:]]/}" == nestdaq ]]; then image='local/public-session-nestdaq:native'; fi
 fi
 require_native_image "$image"
 [[ -d "$layout" ]] || { echo 'layout directory is missing' >&2; exit 2; }

@@ -16,6 +16,9 @@ In RunControl, `S` stops the current run and proceeds to the next configuration,
 
 A key pressed at the moment the screen redraws a status line can freeze the public RunControl for good: the screen stops changing, the status file and the raw file are no longer written, `updated_monotonic_ns` in the status file stops increasing and requests to the control socket get no answer. Remove the session with `docker rm -f public-session` and start it again. The commands `scripts/session_control.sh public-session stop`, `repeat` and `terminate` do not go through the screen and are not affected.
 
+
+For a nestDAQ session, attach to `NESTDAQ:runners`; its seven windows are `redis`, `webctl`, `slowdash`, `runners`, `sources`, `sink` and `dqm`. See [nestDAQ mode](nestdaq.md).
+
 ## Beam and analysis
 
 In another terminal use `scripts/session_control.sh public-session on`, `off`, or `beam-status`. Each command shows the five latest changes with UTC timestamps and the path to the complete history inside the container. After an accepted `on` or `off` that changes the beam, the last line is that change. Add `--json` for the machine-readable response. The beam remains independent of run changes.

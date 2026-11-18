@@ -68,6 +68,15 @@ env=dict(os.environ,SESSION_SOURCE_CONFIG_JSON=json.dumps(private),
          MSENSOR_SOURCE_CONFIG_JSON=json.dumps({'seed':10_000_000+secrets.randbelow(2**31-10_000_000)}),
          SESSION_SOURCE_SOCKET=sock,VIRTUAL_ALPIDE_SOURCE_SOCKET=sock,
          GIT_DIR='/opt/virtual-producer-cwd/.git',GIT_WORK_TREE='/opt/virtual-producer-cwd')
+if (root/'daq-mode').is_file() and (root/'daq-mode').read_text().strip() == 'nestdaq':
+    if args.example: raise SystemExit('the finite example (--example) is not available in the nestDAQ mode')
+    try:
+        from nestdaq_mode.launch import launch
+    except ModuleNotFoundError as exc:
+        if exc.name == 'nestdaq_mode': raise SystemExit('the nestDAQ mode needs the nestDAQ session image; build it with scripts/build_session.sh --nestdaq')
+        raise
+    launch(root, geometry_path, env)
+    raise SystemExit(0)
 cmd=['python','/opt/eudaq-src/user/ITS3/misc/ITS3start.py',str(root/'init.ini'),
      '--extra-dut','MSENSOR=/opt/public-work/msensor/msensor_producer.py',
      '--rc-address','44000','--producer-env','SESSION_SOURCE_SOCKET',

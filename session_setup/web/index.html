@@ -16,6 +16,7 @@
     <button data-tab="qa" class="active" data-t="tab_qa"></button>
     <button data-tab="browse" data-t="tab_browse"></button>
     <button data-tab="daq" data-t="tab_daq"></button>
+    <button data-tab="nestdaq" data-t="tab_nestdaq" hidden></button>
   </nav>
   <div class="header-right"><label class="session-pick"><span data-t="session"></span> <select id="session-pick"></select></label>
   <div class="languages"><button data-lang="en">EN</button><button data-lang="ko">KO</button><button data-lang="ja">JA</button></div></div>
@@ -108,6 +109,15 @@
     <div id="next-settings" class="controls"></div>
   </section>
   <section id="qa" class="tab active">
+    <section id="nd-qa" hidden>
+      <h2 data-t="nd_qa_title"></h2><p data-t="nd_qa_note"></p>
+      <p><code class="cmd" id="nd-qa-command"></code></p>
+      <p class="alert warn" id="nd-qa-error" hidden></p>
+      <div class="wide"><table id="nd-qa-msensors"></table></div>
+      <h2 data-t="nd_qa_pairs"></h2><p id="nd-qa-none" data-t="nd_qa_none" hidden></p>
+      <div class="wide" id="nd-qa-pairs-wrap"><table id="nd-qa-pairs"></table></div>
+    </section>
+    <p class="alert warn nestdaq-note" data-t="nestdaq_no_qa" hidden></p>
     <div class="qa-overview"><div id="status" class="cards"></div><div id="qa-controls" class="controls"></div></div>
     <div id="alert"></div>
     <nav class="section-links" id="qa-links"></nav>
@@ -120,6 +130,7 @@
     <h2 data-t="history"></h2><div id="history" class="grid"></div>
   </section>
   <section id="browse" class="tab">
+    <p class="alert warn nestdaq-note" data-t="nestdaq_no_histograms" hidden></p>
     <p data-t="browse_help"></p>
     <div class="browser"><div class="tree-card"><div class="tree-heading"><h2 data-t="qa_root_file"></h2><span id="browse-run" class="note"></span></div><label for="tree-filter" data-t="filter"></label><input id="tree-filter" type="search" data-placeholder="filter" autocomplete="off"><ul id="tree"></ul></div><div class="browser-card"><div class="browser-heading"><code id="browse-path"></code><span id="browse-type" class="badge"></span></div><div id="browse-view" class="plot large"><div class="empty" data-t="choose_histogram"></div></div></div></div>
   </section>
@@ -137,6 +148,7 @@
       </aside>
     </div>
   </section>
+  <section id="nestdaq" class="tab"></section>
 </main>
 <div id="preview-dialog" class="preview-backdrop" role="dialog" aria-modal="true" hidden></div>
 <script type="module" src="app.js"></script>

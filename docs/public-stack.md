@@ -30,3 +30,21 @@ The following public sources and versions are fixed by the build. Package-level 
 | jsoncons | https://github.com/danielaparker/jsoncons, `v1.5.0`, `95a220dff2d927f15e1fe0c7dac2821b7134e4c9` |
 | Python packages | https://pypi.org/, `docker/base/pip-constraints.lock` |
 | conda packages | https://conda.anaconda.org/conda-forge/, `docker/base/conda-amd64.explicit`, `docker/base/conda-amd64.sha256`, `279` |
+
+## nestDAQ image
+
+The nestDAQ image is built from public sources that the build downloads; this repository contains no copy of them. Redis `8.6.2` and RedisTimeSeries `v8.6.0` are offered by their authors under a choice of RSALv2, SSPLv1 or AGPLv3. `docker/nestdaq/versions.lock` lists every source, its version, its license and where the license text is in the image. Read these licenses before you pass a built image on.
+
+| Source | Version | License |
+|---|---|---|
+| nestDAQ | `eda728718362cc0ee169bea9b111ffc3fda7ca6b` | MIT |
+| nestdaq-user-impl | `3dd6b69f9b3c37eaa6b97f11c11d0b659c5ab064` | MIT |
+| SlowDash | `dd1138e91857d0065aba05b79d6510d6d6e9fa65` | MIT |
+| hiredis | `1.3.0 ccad7ebaf99310957004661d1c5f82d2a33ebd10` | BSD-3-Clause |
+| Redis | `8.6.2 a176d1225ef66b6bd963231d77d5819909782329` | RSALv2 or SSPLv1 or AGPLv3 |
+| RedisTimeSeries | `v8.6.0 05fd355db748676861dc4c17d19c8c1ca74c0154` | RSALv2 or SSPLv1 or AGPLv3 |
+| ZeroMQ | `4.3.5 622fc6dde99ee172ebaa9c8628d85a7a1995a21d` | MPL-2.0 |
+| Boost | `1.85.0 ab7968a0bbcf574a7859240d1d8443f58ed6f6cf` | BSL-1.0 |
+| FairLogger | `2.3.0 71aac1199aa884da9430cd25c57353405249f0ae` | LGPL-3.0 |
+| FairMQ | `1.10.0 dcea48fcee9217992b0f304ab1691f9996ce60e3` | LGPL-3.0 |
+| redis++ | `1.3.15 a63ac43bf192772910b52e27cd2b42a6098a0071` | Apache-2.0 |

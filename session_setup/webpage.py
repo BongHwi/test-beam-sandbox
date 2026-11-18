@@ -39,6 +39,7 @@ PAGE = Path(__file__).resolve().parent / 'web'
 STATIC = {'/': ('index.html', 'text/html; charset=utf-8'), '/index.html': ('index.html', 'text/html; charset=utf-8'),
           '/app.js': ('app.js', 'text/javascript; charset=utf-8'), '/view.js': ('view.js', 'text/javascript; charset=utf-8'),
           '/control.js': ('control.js', 'text/javascript; charset=utf-8'),
+          '/nestdaq.js': ('nestdaq.js', 'text/javascript; charset=utf-8'),
           '/session.js': ('session.js', 'text/javascript; charset=utf-8'),
           '/style.css': ('style.css', 'text/css; charset=utf-8'),
           **{f'/text/{lang}.json': (f'text/{lang}.json', 'application/json; charset=utf-8') for lang in ('en', 'ko', 'ja')}}
@@ -54,7 +55,9 @@ ACTIONS = {'beam_on': ('scripts/session_control.sh', 'on'), 'beam_off': ('script
            'stop': ('scripts/session_control.sh', 'stop'), 'repeat': ('scripts/session_control.sh', 'repeat'),
            'terminate': ('scripts/session_control.sh', 'terminate'), 'set': ('scripts/session_control.sh', 'set'), 'align': ('scripts/align_session.sh',),
            'qa': ('scripts/analyze_session.sh',), 'start_session': None, 'key': None, 'copy': None, 'remove': None,
-           'save_setup': None}
+           'save_setup': None,
+           'nestdaq_start': ('scripts/session_control.sh', 'nestdaq', 'start'),
+           'nestdaq_stop': ('scripts/session_control.sh', 'nestdaq', 'stop')}
 # Background operations; one of them at a time per session.
 LONG = ('align', 'qa', 'start_session', 'copy')
 # The page sends Q to the screen after termination.
@@ -70,7 +73,7 @@ SETUPS = ROOT / 'configs/setups'
 ALIGNMENTS = ROOT / 'configs/alignments'
 OUTPUTS = ROOT / 'outputs'
 # The setup files of the repository; the page saves edits of them under another name.
-PROTECTED = ('default.ini', 'small-msensor.ini', 'msensor-telescope.ini')
+PROTECTED = ('default.ini', 'small-msensor.ini', 'msensor-telescope.ini', 'nestdaq.ini', 'nestdaq-clocks.ini', 'nestdaq-missed.ini', 'nestdaq-telescope.ini')
 SETUP_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,63}\.ini$')
 ALIGNMENT_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,63}\.json$')
 
@@ -177,13 +180,14 @@ def live(name):
     out = {'session': name, 'read_utc': datetime.now(timezone.utc).isoformat()}
     p = docker('exec', name, 'sh', '-c', 'cd /tmp/session-run && cat status.json; echo; echo @@; '
                'cat source.sock.beam.json; echo; echo @@; ls -t run*.raw 2>/dev/null | head -1; '
-               "echo @@; if ps -eo args | grep -q '[I]TS3RunControl.py'; then echo yes; else echo no; fi", timeout=10)
+               "echo @@; if ps -eo args | grep -q '[I]TS3RunControl.py'; then echo yes; else echo no; fi; "
+               'echo @@; if [ "$(cat daq-mode 2>/dev/null)" = nestdaq ]; then python -m nestdaq_mode.control status 2>/dev/null || echo failed; fi; true', timeout=10)
     if p.returncode:
         inspect = docker('inspect', '--format', '{{.State.Running}}', name)
         out.update(exists=inspect.returncode == 0, running=inspect.stdout.strip() == 'true')
         return out
     out.update(exists=True, running=True)
-    parts = (p.stdout.split('@@') + ['', '', '', ''])[:4]
+    parts = (p.stdout.split('@@') + [''] * 5)[:5]
     try:
         status = json.loads(parts[0])
     except ValueError:
@@ -201,6 +205,17 @@ def live(name):
     out['beam_on'] = beam.get('beam_on')
     out['beam_changed_utc'] = beam.get('last_changed_utc')
     out['events_per_s'] = event_rate(name, out['run'], out['events'])
+    if parts[4].strip():
+        try:
+            nd = json.loads(parts[4]); sources = nd.get('sources', [])
+            run = nd.get('latest_run_number')
+            sent = sum(x.get('frames_sent', 0) for x in sources)
+            out['nestdaq'] = {'running': any(x.get('state') == 'RUNNING' for x in nd.get('devices', [])),
+                              'run': run, 'frames_sent': sent,
+                              'dqm_dropped': sum(x.get('dqm_dropped', 0) for x in sources),
+                              'frames_per_s': event_rate(name + ':frames', run, sent)}
+        except (ValueError, TypeError, AttributeError):
+            out['nestdaq'] = dict.fromkeys(('running', 'run', 'frames_sent', 'dqm_dropped', 'frames_per_s'))
     return out
 
 
@@ -324,13 +339,15 @@ def preview(setup):
 
 def sessions():
     """The session containers of this repository: made by scripts/start_session.sh from the session image."""
-    p = docker('ps', '-a', '--no-trunc', '--filter', f'ancestor={IMAGE}', '--format', '{{.Names}}\t{{.State}}\t{{.Command}}')
+    outputs = [docker('ps', '-a', '--no-trunc', '--filter', f'ancestor={image}',
+                      '--format', '{{.Names}}\t{{.State}}\t{{.Command}}').stdout
+               for image in (IMAGE, 'local/public-session-nestdaq:native')]
     rows = []
-    for line in p.stdout.splitlines():
+    for line in '\n'.join(outputs).splitlines():
         parts = line.split('\t')
         if len(parts) == 3 and parts[2].strip('"').split()[-2:] == ['sleep', 'infinity'] and NAME.match(parts[0]):
             rows.append({'name': parts[0], 'state': parts[1]})
-    return sorted(rows, key=lambda r: r['name'])
+    return sorted({row['name']: row for row in rows}.values(), key=lambda r: r['name'])
 
 
 def image_present():
@@ -472,6 +489,40 @@ def plot_plan(rows):
                       'path': f'AnalysisEfficiency/{d}/efficiencyVsTime'}]
     plan.append({'group': 'history', 'detector': '', 'path': '', 'option': ''})
     return plan
+
+
+NESTDAQ_WINDOWS = ('redis', 'webctl', 'slowdash', 'runners', 'sources', 'sink', 'dqm')
+
+
+def daq_mode(name):
+    return 'nestdaq' if (session_file(name, 'daq-mode') or '').strip() == 'nestdaq' else 'eudaq'
+
+
+def nestdaq_status(name):
+    p = docker('exec', name, 'python', '-m', 'nestdaq_mode.page_status', timeout=10)
+    if p.returncode:
+        raise Refused(502, {'error': (p.stderr.splitlines() or ['status unavailable'])[0]})
+    try:
+        value = json.loads(p.stdout)
+        value['session'] = name
+        return value
+    except (ValueError, TypeError):
+        raise Refused(502, {'error': 'invalid status response'})
+
+
+def nestdaq_screen(name, window):
+    command = ("tmux list-panes -t NESTDAQ:" + window + " -F '#{pane_id}\t#{pane_title}' | "
+               "while IFS=\"$(printf '\\t')\" read -r pane title; do "
+               "printf '\\036%s\\037' \"$title\"; tmux capture-pane -p -t \"$pane\"; done")
+    p = docker('exec', name, 'sh', '-c', command, timeout=10)
+    panes = []
+    for part in p.stdout.split('\x1e')[1:]:
+        title, sep, text = part.partition('\x1f')
+        if sep: panes.append({'title': title, 'text': text})
+    ok = p.returncode == 0 and bool(panes)
+    return {'session': name, 'window': window, 'read_utc': datetime.now(timezone.utc).isoformat(),
+            'ok': ok, 'text': '\n\n'.join('[' + x['title'] + ']\n' + x['text'] for x in panes),
+            'error': '' if ok else (p.stderr.strip() or 'screen unavailable'), 'panes': panes}
 
 
 def jsroot_directory(cache):
@@ -663,6 +714,22 @@ class Handler(http.server.BaseHTTPRequestHandler):
             request = self.body()
             if request.get('action') == 'save_setup':
                 return self.answer(200, save_setup(request))
+            if request.get('action') == 'screens':
+                name = request.get('session')
+                if not isinstance(name, str) or not NAME.match(name):
+                    raise Refused(400, {'error': 'invalid session name'})
+                if daq_mode(name) != 'nestdaq':
+                    raise Refused(409, {'error': 'not a nestDAQ session'})
+                p = docker('exec', name, 'cat', '/tmp/session-run/nestdaq/session.json', timeout=10)
+                if p.returncode:
+                    raise Refused(502, {'error': (p.stderr.splitlines() or ['session unavailable'])[0]})
+                try:
+                    session = json.loads(p.stdout)
+                    ports = {'webctl': session['webctl_port'], 'slowdash': session['slowdash_port'],
+                             'dqm': session['dqm']['http_port']}
+                    return self.answer(200, self.server.tunnel.open(name, ports))
+                except (ValueError, KeyError, TypeError):
+                    raise Refused(502, {'error': 'invalid session data'})
             name, action, command = plan(request)
         except Refused as exc:
             return self.answer(exc.code, exc.body)
@@ -706,6 +773,33 @@ class Handler(http.server.BaseHTTPRequestHandler):
         if path in STATIC:
             file, kind = STATIC[path]
             return self.send_body(200, (PAGE / file).read_bytes(), kind)
+        if path in ('/api/daq-mode', '/api/nestdaq', '/api/nestdaq/screen', '/api/nestdaq/qa'):
+            window = (query.get('window') or [''])[0]
+            if not NAME.match(name) or (path == '/api/nestdaq/screen' and window not in NESTDAQ_WINDOWS):
+                return self.answer(400, {'error': 'invalid session name or window'})
+            mode = daq_mode(name)
+            if path == '/api/daq-mode':
+                return self.answer(200, {'session': name, 'mode': mode})
+            if mode != 'nestdaq':
+                return self.answer(409, {'error': 'not a nestDAQ session'})
+            if path == '/api/nestdaq/screen':
+                return self.answer(200, nestdaq_screen(name, window))
+            if path == '/api/nestdaq/qa':
+                command = f'scripts/session_control.sh {name} nestdaq qa --json'
+                p = docker('exec', name, 'python', '-m', 'nestdaq_mode.control', 'qa', '--json', timeout=15)
+                if p.returncode:
+                    return self.answer(502, {'error': p.stderr.strip().splitlines()[-1] if p.stderr.strip() else 'qa unavailable', 'command': command})
+                try:
+                    result = json.loads(p.stdout)
+                    if not isinstance(result, dict): raise ValueError('not an object')
+                except ValueError:
+                    return self.answer(502, {'error': 'invalid qa response', 'command': command})
+                result.update(session=name, command=command)
+                return self.answer(200, result)
+            try:
+                return self.answer(200, nestdaq_status(name))
+            except Refused as exc:
+                return self.answer(exc.code, exc.body)
         if path == '/api/state':
             if not NAME.match(name):
                 return self.refuse(400, 'invalid session name')
@@ -919,6 +1013,8 @@ def serve(args, browser=False):
     # A fresh token for page operations; none for a view-only server.
     server.token = None if args.view_only else secrets.token_urlsafe(32)
     server.jobs, server.jobs_lock = [], threading.Lock()
+    from session_setup.tunnel import Tunnels
+    server.tunnel = Tunnels()
     private_write(state_file(args.port), json.dumps({'pid': os.getpid(), 'port': args.port, 'session': args.name,
                                                      'token': server.token}))
 
@@ -939,6 +1035,7 @@ def serve(args, browser=False):
         pass
     finally:
         server.stopping.set()
+        server.tunnel.close_all()
         server.server_close()
         shutil.rmtree(server.histograms, ignore_errors=True)
         try:

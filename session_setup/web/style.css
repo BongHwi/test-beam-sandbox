@@ -220,3 +220,17 @@ pre::-webkit-scrollbar { display:none; }
 pre.op-output { white-space:pre; overflow-wrap:normal; }
 .setup-preview-card:not(.expanded) .scene-label.device small,
 .setup-preview-card:not(.expanded) .scene-label.device .z { display:none; }
+
+body[data-daqmode="nestdaq"] .daq { grid-template-columns: minmax(0,1fr); }
+body[data-daqmode="nestdaq"] #qa > :not(#nd-qa), body[data-daqmode="nestdaq"] #browse > :not(.nestdaq-note) { display: none; }
+body[data-daqmode="nestdaq"] .rc-status { display: none; }
+
+/* nestDAQ session cards */
+.nd-layout { display:grid; grid-template-columns:minmax(0,1fr) 360px; gap:16px; align-items:start; }
+.nd-column { display:grid; gap:16px; min-width:0; }
+.nd-card { padding:16px; background:var(--surface); border:1px solid var(--border); border-radius:12px; min-width:0; overflow:hidden; }
+.nd-card h2 { margin-top:0; }
+.nd-card .cmd { display:block; max-width:100%; overflow-x:auto; }
+.nd-screen-card { padding:10px; border:1px solid var(--border); border-radius:8px; margin-top:8px; }
+.nd-screen-card p { margin:4px 0 0; }
+@media (max-width:960px) { .nd-layout { grid-template-columns:minmax(0,1fr); } }

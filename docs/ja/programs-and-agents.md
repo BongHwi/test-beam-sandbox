@@ -18,16 +18,24 @@
 | 解析 | `scripts/align_session.sh NAME [--run N]`, `scripts/analyze_session.sh NAME [--run N]` | テキストの要約と QA 結果ファイル | [アライメント](alignment.md)、[セッション run](session-run.md)、[操作画面](operator-screen.md) |
 | 記録 | `/tmp/session-run/status.json`, `control-history.jsonl`, `command-history.jsonl`, `run<N>.conf`, `source.sock.beam.log` | JSON、JSON lines、テキスト | [RunControl 拡張](runcontrol-hook.md)、[自動実行](automation.md) |
 | 操作画面のテキスト | `docker exec NAME tmux capture-pane -p -t ITS3:WINDOW` (`rc`, `rp`, `dp`, `sp`, `dc`, `log`) | テキスト | [操作画面](operator-screen.md) |
+| nestDAQ run 制御 | `scripts/session_control.sh NAME nestdaq start\|stop\|status\|qa --json` | JSON | [nestDAQ](nestdaq.md) |
+| msraw 抽出 | `python3 -m nestdaq_mode.extract` | テキスト | [nestDAQ](nestdaq.md) |
+| nestDAQ 画面テキスト | `docker exec NAME tmux capture-pane -p -t NESTDAQ:WINDOW` (`redis`, `webctl`, `slowdash`, `runners`, `sources`, `sink`, `dqm`) | テキスト | [nestDAQ](nestdaq.md) |
+
+`--json` オプションは `status` にのみ適用し、`start` と `stop` は既に JSON を出力します。
 
 結果ページサーバーはブラウザ用であり、プログラム用インターフェースとして定めていません。
 
 ## プログラムの規則
 
-run 制御はキーではなく `session_control.sh` で送ります。画面の再描画中に押したキーが公開 RunControl を停止させることがあります（[操作画面](operator-screen.md)）。例外は `TERMINATED` 後に RunControl を抜ける `Q` です。run 制御の要求ごとに `--id` を付けると応答と記録に残ります。ビーム変更、`set`、`end-producer` も記録のために `--id` を受け取ります。`STOPPED` のような短い状態を期待せず、`run.number` が変わるまで待ちます。`stop` はこの run だけを終了し、次の run が始まります。終了するには `terminate` の後に `Q` を送ります。
+run 制御はキーではなく `session_control.sh` で送ります。画面の再描画中に押したキーが公開 RunControl を停止させることがあります（[操作画面](operator-screen.md)）。例外は RunControl を抜ける `Q` を `TERMINATED` 後に送ることです。run 制御の要求ごとに `--id` を付けると応答と記録に残ります。ビーム変更、`set`、`end-producer` も記録のために `--id` を受け取ります。`STOPPED` のような短い状態を期待せず、`run.number` が変わるまで待ちます。`stop` はこの run だけを終了し、次の run が始まります。終了するには `terminate` の後に `Q` を送ります。
 
 ## プログラムが読むべきでないもの
 
-運用プログラムを公平に試すため、実際のオペレーターには見えないシミュレーションの正解を読まないでください。コンテナーの `/tmp/session-private/` にはデバイスの実際の位置、セッションプロセスの環境変数にはビームの非公開値と seed があります。`session_setup/setupfile.py` の `actual_offsets` はセットアップから隠れた位置の差を計算します。
+運用プログラムを公平に試すため、実際のオペレーターには見えないシミュレーションの正解を読まないでください。コンテナーの `/tmp/session-private/` にはデバイスの実際の位置、セッションプロセスの環境変数にはビームの非公開値と seed があります。`actual_offsets` は `session_setup/setupfile.py` にあり、セットアップから隠れた位置の差を計算します。
+
+
+nestDAQ モードでも同様で、より多くのセッションプロセスがこれらの環境変数を継承します。
 
 ## コマンドをラップする
 

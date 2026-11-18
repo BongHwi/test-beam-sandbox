@@ -21,6 +21,8 @@ parser.add_argument('rest',nargs='*')
 parser.add_argument('--json',action='store_true',help='emit the existing machine-readable beam response')
 parser.add_argument('--id',help='id of an on, off, stop, repeat or terminate request (letters, digits, ., -, _; at most 64)')
 args=parser.parse_args();action=args.action
+if (root/'daq-mode').is_file() and (root/'daq-mode').read_text().strip() == 'nestdaq' and action not in ('on','off','beam-status'):
+    print('error: this command is for the EUDAQ mode; in the nestDAQ mode use: scripts/session_control.sh NAME nestdaq start|stop|status [--json]',file=sys.stderr);raise SystemExit(2)
 # Run requests of the RunControl control socket, with the id each one carries by default.
 RUN_INTENTS={'stop':('stop_next','operator-stop'),'repeat':('repeat','operator-repeat'),'terminate':('terminate','operator-terminate')}
 if args.id is not None and action not in (*RUN_INTENTS, 'on', 'off', 'set', 'end-producer'):

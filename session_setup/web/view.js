@@ -161,7 +161,8 @@ export class Scene3D {
     const leader = line([at(x,y+h/2+2,z),at(x,y+h/2+lift,z)],0x6b7689,0.9);
     leader.userData.scenePart = 'leader'; group.add(leader);
     const text = this.el('span', { class:'name' }, d.name + ' ');
-    const roleText = this.el('small', { 'data-t': role === 'dut' ? 'dut_role' : 'reference' }, this.t(role === 'dut' ? 'dut_role' : 'reference'));
+    const roleKey = d.labelRole || (role === 'dut' ? 'dut_role' : 'reference');
+    const roleText = this.el('small', { 'data-t': roleKey }, this.t(roleKey));
     const node = this.label('', at(x,y+h/2+lift,z), role + ' device', 0);
     node.append(text, roleText, this.el('span', { class:'z' }, ` z ${z}`));
     return { tiles, tilesOff };
@@ -467,7 +468,8 @@ export class Scene3D {
 }
 
 function buildScene() {
-  const r = main.build(layout, firstBuild ? FIRST_VIEW : (body.cameraview || 'reset'));
+  const sceneLayout = mode === 'nestdaq' ? {...layout, devices: layout.devices.map(d => d.kind === 'alpide' ? {...d, labelRole:'material_short'} : d)} : layout;
+  const r = main.build(sceneLayout, firstBuild ? FIRST_VIEW : (body.cameraview || 'reset'));
   firstBuild = false;
   main.alignedGroup.visible = !!document.getElementById('show-aligned')?.checked;
   main.render(true);
@@ -509,13 +511,19 @@ function renderStatus() {
   else if (live && !s.running) note.append(el('p', { class: 'alert warn' }, t('stopped')));
   else if (s.beam_on) {
     note.append(el('p', { class: 'note', id: 'illustration' }, t('illustration')));
-    if (s.rc_state !== 'RUNNING') note.append(el('p', { class: 'note' }, t('daq_idle')));
+    if (mode !== 'nestdaq' && s.rc_state !== 'RUNNING') note.append(el('p', { class: 'note' }, t('daq_idle')));
   } else if (live) note.append(el('p', { class: 'note' }, t('beam_off_note')));
-  const rate = s.events_per_s ?? null;
+  const nd = mode === 'nestdaq' ? (s.nestdaq || {}) : null;
+  const rate = nd ? (nd.frames_per_s ?? null) : (s.events_per_s ?? null);
+  const eventTitle = document.querySelector('#run-table .event-heading [data-t]');
+  const rateTitle = document.querySelector('#run-table .metric [data-t]');
+  eventTitle.dataset.t = nd ? 'nd_frames_run' : 'events_run'; eventTitle.textContent = t(eventTitle.dataset.t);
+  rateTitle.dataset.t = nd ? 'nd_frame_rate' : 'rate'; rateTitle.textContent = t(rateTitle.dataset.t);
+  for (const id of ['v-target','event-percent','run-progress']) document.getElementById(id).hidden = !!nd;
   document.getElementById('v-session').textContent = ctx.session || '';
   document.getElementById('v-rc').replaceChildren(el('span', { class:'rc-badge' + (s.rc_state === 'RUNNING' ? ' running' : '') }, fmt(s.rc_state)));
-  document.getElementById('v-run').textContent = fmt(s.run);
-  document.getElementById('v-events').textContent = count(s.events);
+  document.getElementById('v-run').textContent = nd ? fmt(nd.run) + (nd.running && nd.run != null ? ' (RUNNING)' : '') : fmt(s.run);
+  document.getElementById('v-events').textContent = count(nd ? nd.frames_sent : s.events);
   document.getElementById('v-rate').textContent = rate === null ? '-' : `${rate.toFixed(1)} ${t('per_second')}`;
   document.getElementById('read-every').textContent = `${t('updated')} ${s.read_utc ? s.read_utc.slice(11, 19) : '--:--:--'} UTC \u00b7 ${t('read_interval').replace('{n}', '2')}`;
   const targetEvents = layout?.settings?.current?.run?.events ?? layout?.run_events;
@@ -559,7 +567,7 @@ function renderLayoutText() {
     const next = nextSettings?.devices.find(x => x.producer === d.label)?.settings || current;
     const settings = Object.entries(current).map(([k, v]) => `${k} ${fmt(v)}${next[k] !== undefined && JSON.stringify(v) !== JSON.stringify(next[k]) ? ` ${t('next_run_prefix')} ${fmt(next[k])}` : ''}`).join(', ');
     const tilesText = d.tiles ? `${d.tiles[0]}x${d.tiles[1]} (${(d.tiles_off || []).length ? d.tiles_off.join(', ') : '-'})` : '-';
-    const cells = [d.name, t(d.role === 'dut' ? 'dut_role' : 'reference'), fmt(d.plane), fmt(d.position_mm), fmt(d.size_mm, 2),
+    const cells = [d.name, t(mode === 'nestdaq' && d.kind === 'alpide' ? 'material_plane' : (d.role === 'dut' ? 'dut_role' : 'reference')), fmt(d.plane), fmt(d.position_mm), fmt(d.size_mm, 2),
                    d.pixels ? d.pixels.join(' x ') : '-', fmt(d.pitch_um), settings || '-', tilesText];
     if (aligned) cells.push(c ? fmt([d.position_mm[0] + c[0] / 1000, d.position_mm[1] + c[1] / 1000], 3) : '-');
     rows.push(el('tr', { 'data-device': d.name }, ...cells.map(x => el('td', {}, x))));
@@ -656,6 +664,9 @@ async function pollLayout() {
     main.render(true);
   } catch (err) { /* The next reading tries again. */ }
 }
+
+let mode = 'eudaq';
+export function setMode(value) { mode = value; if (ctx) { if (layoutKey !== null && layout?.running && main.renderer) buildScene(); renderStatus(); } }
 
 export function refreshLive() { return pollLive(); }
 

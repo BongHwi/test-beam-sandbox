@@ -21,6 +21,8 @@ function addIcon(button) {
 }
 
 let ctx = null, token = null, viewOnly = false, live = null, state = null, jobs = [], log = [];
+let mode = 'eudaq';
+export function setMode(value) { mode = value; render(); }
 let shown = {}, timer = null, confirmStop = null, finishHandlers = {};
 const body = document.body.dataset;
 
@@ -84,6 +86,12 @@ export function bindCommandChoice(entries, output) {
 
 function allowed(action) {
   if (!token || viewOnly) return false;
+  if (mode === 'nestdaq') {
+    if (action === 'copy' || action === 'remove') return !!(live && live.running && !(live.nestdaq && live.nestdaq.running) && !runningJob());
+    if (action === 'beam_on') return !!(live && live.running && live.beam_on === false);
+    if (action === 'beam_off') return !!(live && live.running && live.beam_on === true);
+    if (['stop', 'end', 'leave'].includes(action)) return false;
+  }
   const running = !!(live && live.running && live.rc_alive !== false && live.rc_state === 'RUNNING');
   if (action === 'beam_on') return running && live.beam_on === false;
   if (action === 'beam_off') return running && live.beam_on === true;
@@ -159,7 +167,10 @@ function render() {
   const { el, t } = ctx;
   for (const b of document.querySelectorAll('button.op[data-action]')) { b.disabled = !allowed(b.dataset.action); addIcon(b); }
   for (const b of document.querySelectorAll('#view-controls button.op[data-action]')) {
-    b.hidden = !allowed(b.dataset.action);
+    const held = canOperate() && mode === 'nestdaq' && ['copy','remove'].includes(b.dataset.action) && live && live.nestdaq && live.nestdaq.running;
+    b.hidden = !allowed(b.dataset.action) && !held;
+    b.disabled = !allowed(b.dataset.action);
+    b.title = held ? t('nd_copy_after_stop') : '';
   }
   const run = selectedRun();
   for (const c of document.querySelectorAll('code[data-command]')) c.textContent = commandLine(c.dataset.command, run);

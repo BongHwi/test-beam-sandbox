@@ -2,6 +2,8 @@
 
 # 自動実行の例
 
+このページの有限の例と run コマンドは EUDAQ モード用です。nestDAQ セッションは [nestDAQ モード](nestdaq.md)を参照します。
+
 有限の例は、既定のセットアップで run を一つ、RunControl 画面なしで実行します。取得を操作するプログラムと同じやり方です。コマンドはリポジトリの最上位ディレクトリで、`session-output` ディレクトリと `public-session` という名前のコンテナーがないときに実行します。ある場合は別の名前を使います。
 
 <!-- automated-example -->

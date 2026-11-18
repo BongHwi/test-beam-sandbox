@@ -12,9 +12,14 @@
 
 `source=synthetic`에서는 `seed`와 정확히 하나의 trigger 지정 방법을 `MSENSOR_SOURCE_CONFIG_JSON`에 전달합니다. EUDAQ가 설정을 BORE에 복사하므로 source 조건은 ini에 넣지 않습니다. 재현 가능한 run에는 `sim_end_ns`를 지정하고 `source_finished=1`을 확인한 뒤 멈춥니다. `paced` 조기 종료는 실제 시간에 영향을 받습니다. 전체 검사는 `tests/scripts/run_msensor_e2e.sh`로 실행합니다. `source=session`에서는 `clock_mode=virtual`을 지정하고 `seed`를 `MSENSOR_SOURCE_CONFIG_JSON`에 전달하고 trigger 지정과 `sim_end_ns`는 넣지 않습니다. trigger와 클록은 세션이 제공합니다.
 
+입자가 hit를 남길지는 msensor마다 따로 정하며, 이 난수는 `seed`와 msensor의 이름, 입자에 따라 정해지므로 한 세션의 msensor들은 서로 다른 입자를 놓칩니다.
+
 ## 데이터 형식
 
 payload는 ASCII `MSENSOR`, 버전 byte 1, 4-byte big-endian JSON 길이와 정규 UTF-8 JSON으로 시작합니다. hit는 `[col,row]`입니다. stream은 ASCII `MSWINDOW`와 버전 byte 1로 시작하며 각 기록에 type, 4-byte big-endian 길이, 정규 JSON과 CRC32가 있습니다. FOOTER에는 SHA-256이 있습니다. `python -m msensor.stream verify FILE`은 정상 0, 잘림 2, 손상 3을 반환합니다. triggered 모드는 반열린 gate를 쓰고 continuous 모드는 빈 창을 포함한 고정 창을 기록합니다. 마지막 창은 실제 종료 시각에서 잘라냅니다.
+
+
+nestDAQ 모드의 msraw stream은 [nestDAQ 모드](nestdaq.md)를 참조합니다.
 
 ## parameter 범위와 source
 

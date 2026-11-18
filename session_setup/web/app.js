@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // QA result page: reads /api/state and draws the QA ROOT file with JSROOT from the session image.
 import { openFile, draw, cleanup, createTGraph, createHistogram } from '/jsroot/modules/main.mjs';
-import { startView, viewActive, viewLanguage, refreshLive } from './view.js';
-import { startControl, controlState, controlLanguage } from './control.js';
-import { startSetup, sessionTab, sessionLanguage } from './session.js';
+import { startView, viewActive, viewLanguage, refreshLive, setMode as setViewMode } from './view.js';
+import { startControl, controlState, controlLanguage, setMode as setControlMode } from './control.js';
+import { startSetup, sessionTab, sessionLanguage, setMode as setSessionMode } from './session.js';
+import { startNestdaq, nestdaqTab, nestdaqLanguage, setMode as setNestdaqMode } from './nestdaq.js';
 // SPDX-License-Identifier: LGPL-3.0-or-later
 // Give every displayed command the same copy control without changing its text.
 function installCommandCopy(t) {
@@ -70,7 +71,41 @@ function applyLanguage() {
   viewLanguage();
   controlLanguage();
   sessionLanguage();
+  nestdaqLanguage();
+  renderNdQa();
 }
+
+let ndQaMode = false, ndQaTimer = null, ndQaBusy = false, ndQaData = null, ndQaError = null;
+function renderNdQa() {
+  const table = (id, headings, rows) => {
+    const head = el('tr', {}, ...headings.map(key => el('th', {'data-t':key}, t(key))));
+    document.getElementById(id).replaceChildren(head, ...rows.map(row => el('tr', {}, ...row.map(value => el('td', {}, String(value))))));
+  };
+  const error = document.getElementById('nd-qa-error');
+  error.hidden = !ndQaError; error.textContent = ndQaError ? t('nd_qa_unavailable') + ' ' + ndQaError : '';
+  const data = ndQaData || {};
+  document.getElementById('nd-qa-command').textContent = data.command || `scripts/session_control.sh ${session || 'NAME'} nestdaq qa --json`;
+  table('nd-qa-msensors', ['nd_msensor','nd_qa_frames','nd_qa_triggers','nd_qa_hits'], (data.msensors || []).map(x => [x.name,x.frames,x.triggers,x.hits]));
+  const pairs = data.pairs || [];
+  document.getElementById('nd-qa-none').hidden = !!pairs.length || !!ndQaError;
+  document.getElementById('nd-qa-pairs-wrap').hidden = !pairs.length || !!ndQaError;
+  table('nd-qa-pairs', ['nd_msensor','nd_qa_matched','nd_qa_only_ref','nd_qa_only_dev','nd_qa_skipped','nd_qa_dcol','nd_qa_drow','nd_qa_drift','nd_qa_offset'],
+    pairs.map(x => [x.msensor,x.matched,x.only_reference,x.only_msensor,x.skipped,Number(x.dcol_px).toFixed(2),Number(x.drow_px).toFixed(2),Number(x.drift_ppm).toFixed(3),Number(x.offset_us).toFixed(1)]));
+}
+async function readNdQa() {
+  clearTimeout(ndQaTimer);
+  if (!ndQaMode || document.body.dataset.tab !== 'qa' || document.hidden || ndQaBusy) return;
+  ndQaBusy = true;
+  try {
+    const response = await fetch(`/api/nestdaq/qa?session=${encodeURIComponent(session)}`, {cache:'no-store'});
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'qa unavailable');
+    ndQaData = data; ndQaError = null;
+  } catch (err) { ndQaData = null; ndQaError = String(err); }
+  renderNdQa(); ndQaBusy = false;
+  if (ndQaMode && document.body.dataset.tab === 'qa' && !document.hidden) ndQaTimer = setTimeout(readNdQa, 5000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) readNdQa(); else clearTimeout(ndQaTimer); });
 
 function card(label, value) { return el('div', { class: 'card' }, el('b', {}, t(label)), label === 'rc_state' ? el('span', { class:'rc-badge' + (value === 'RUNNING' ? ' running' : '') }, String(value)) : String(value)); }
 
@@ -297,6 +332,8 @@ for (const b of document.querySelectorAll('[data-tab]')) b.addEventListener('cli
   document.body.dataset.tab = b.dataset.tab;
   viewActive(b.dataset.tab === 'view');
   sessionTab(b.dataset.tab);
+  nestdaqTab(b.dataset.tab);
+  clearTimeout(ndQaTimer); readNdQa();
   if (!was && qaShown()) poll();
 });
 const firstTab = params.get('tab') || (session ? 'qa' : 'setup');
@@ -310,7 +347,23 @@ document.getElementById('tree-filter').addEventListener('input', event => {
   }
 });
 startSetup({ session, t, el });
+startNestdaq({ session, t, el });
 document.querySelector(`[data-tab="${firstTab}"]`)?.click();
 applyLanguage();
+
+(async () => {
+  let mode = 'eudaq';
+  if (session) {
+    try {
+      const response = await fetch(`/api/daq-mode?session=${encodeURIComponent(session)}`, { cache: 'no-store' });
+      if (response.ok && (await response.json()).mode === 'nestdaq') mode = 'nestdaq';
+    } catch (err) { /* Use the existing mode. */ }
+  }
+  document.body.dataset.daqmode = mode;
+  setControlMode(mode); setSessionMode(mode); setNestdaqMode(mode); setViewMode(mode);
+  ndQaMode = mode === 'nestdaq'; document.getElementById('nd-qa').hidden = !ndQaMode; readNdQa();
+  if (mode === 'eudaq' && document.body.dataset.tab === 'nestdaq') document.querySelector('[data-tab="view"]').click();
+})();
+
 await poll();
 setInterval(poll, 5000);

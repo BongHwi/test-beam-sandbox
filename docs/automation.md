@@ -2,6 +2,8 @@
 
 # Automated example
 
+The finite example and the run commands on this page are for the EUDAQ mode; for a nestDAQ session see [nestDAQ mode](nestdaq.md).
+
 The finite example runs one run from the default setup without the RunControl screen, as a program that operates acquisitions would. Run the commands from the repository root, without an existing `session-output` directory or container named `public-session`; use other names otherwise.
 
 <!-- automated-example -->

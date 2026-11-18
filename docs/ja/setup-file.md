@@ -6,7 +6,7 @@
 
 ![結果ページのセットアップタブで開いたセットアップファイルです。](../images/page-setup.png)
 
-`configs/setups/default.ini` は ALPIDE 基準面と msensor DUT を使います。`configs/setups/small-msensor.ini` はより小さい msensor DUT を使います。`configs/setups/msensor-telescope.ini` は六つの msensor 基準面と一つの msensor DUT を使います。
+`configs/setups/default.ini` は ALPIDE 基準面と msensor DUT を使います。`configs/setups/small-msensor.ini` はより小さい msensor DUT を使います。`configs/setups/msensor-telescope.ini` は六つの msensor 基準面と一つの msensor DUT を使います。四つのセットアップ `configs/setups/nestdaq.ini`、`nestdaq-clocks.ini`、`nestdaq-missed.ini`、`nestdaq-telescope.ini` は nestDAQ モードを使います（[nestDAQ モード](nestdaq.md)）。
 
 ## コマンド
 
@@ -15,6 +15,9 @@
 - `scripts/setup_session.sh check FILE` は誤った項目ごとに受け付ける値を示し、0 以外のコードで終了します。QA が可能かどうかも伝えます。
 - `scripts/start_session.sh --setup FILE` はセットアップを検査し、セッションのファイルを生成して開始します。セッションは、受け取ったままのセットアップ（`setup-source.ini` または `setup-source.json`）と `setup.json` を `/tmp/session-run` に残します。アライメントと QA はそのコピーのデバイスを使います。
  `--scintillators 0` は板なし、`--scintillators 2`（既定）は既定の板二枚です。
+
+
+nestDAQ では `[run] daq = nestdaq` を設定し、`[nestdaq] input = file | socket`、`frame_ms`、`send_buffer_mb` を選びます。`send_buffer_mb` は socket 入力にのみ適用されます。各 `[msensor N]` は `clock_offset_ns` と `clock_drift_ppm` で自分の時計を、`missed_triggers` で取りこぼす trigger を、`noise` でノイズヒット を設定することもできます。[nestDAQ モード](nestdaq.md)を参照します。
 
 ## 項目
 
@@ -66,7 +69,7 @@
 | `[scintillator N]` | `hole_mm` | `0` | 中央の穴の幅と高さまたは直径、板より小さい値 |
 | `[trigger]` | `trg` | `trg0&trg3&dt_trg>10000&dt_veto>5000&!bsy` | 存在する channel を使う空でない trigger 式 |
 | `[trigger]` | `veto` | `ntrg>0` | trigger 式、空なら veto なし |
-| `[trigger]` | `count` | `1xxR Rxx1 xxxR Rxxx` | 4文字のカウント条件 1–16個 |
+| `[trigger]` | `count` | `1xxR Rxx1 xxxR Rxxx` | 四文字のカウント条件一つから十六個 |
 
 ## QA
 
@@ -80,13 +83,13 @@ QA は基準面からトラックを再構成します。基準面が少なく�
 
 `scripts/setup_session.sh show` とセットアップタブの要約は、各 DUT でトラック位置がどれだけ正確に分かるかを推定します。推定はこの sandbox のシミュレーションと解析に従います。
 
-- 軸ごとの固有分解能。msensor の面はピクセル一つにだけヒットを出すので、分解能は pitch/√12 です。既定のピッチ `23 x 21` µm では `6.640` x `6.062` µm です。ALPIDE の面は、粒子がピクセル境界のまわりの帯の中を通ると両側のピクセルにヒットを出します。この帯は `ithr` が低いほど広がる（クラスター平均 `2 − ithr/255`）ので、ピッチ `30` µm の分解能は `ithr = 0` で `4.517` µm、`ithr = 255` で `8.660` µm です。
+- 軸ごとの固有分解能。msensor の面はピクセル一つにだけヒットを出すので、分解能は pitch/√12 です。`6.640` x `6.062` µm で、既定のピッチは `23 x 21` µm です。ALPIDE の面は、粒子がピクセル境界のまわりの帯の中を通ると両側のピクセルにヒットを出します。この帯は `ithr` が低いほど広がる（クラスター平均 `2 − ithr/255`）ので、ピッチ `30` µm の分解能は `4.517` µm（`ithr = 0`）、`8.660` µm（`ithr = 255`）です。
 - すべての面（シリコン 100 µm、`0.00106724` X0）と、ビーム源から最後の面までの空気での多重散乱。Highland の式を使い、対数項はシミュレーションと同じく全物質から一度だけ決めます。
 - 解析と同じく、基準面を通る直線を固有分解能で重み付けして当てはめます。DUT は fit に含めません。
 
 `show` は DUT ごとに x と y のトラック分解能（DUT で当てはめた位置の広がり）と予想 residual（トラックと DUT の分解能を合わせたもの）を表示します。4 GeV の `default.ini` では推定がトラック `2.97 x 2.97` µm、residual `7.27 x 6.75` µm で、ある run で測った residual は `7.21 x 6.84` µm でした。この推定はこのシミュレーションを表すもので、実際の telescope を表すものではありません。面と空気を合わせた物質はシミュレーションの上限 `0.01998` X0 までです。`check` はこれを超えるセットアップを拒否します。
 
-セットアップタブは Magnus Mager（CERN）の外部 telescope optimiser も x または y の一軸で開き、インターネットが必要です。リンクは `T` を運動エネルギー、`m = 0.00051099895` GeV とするビーム運動量 `sqrt(T² + 2 T m)` GeV/c と、z 順のデバイス面を渡します。各面の分解能は選択した軸の上記の固有分解能、物質は 100 µm のシリコン、すなわち 0.107 % X/X0 です。DUT は測定せず散乱だけを起こす面で、シンチレーターは含めません。デバイスの前後 10 mm の端点には物質も測定もありません。optimiser は最適な fit を使い空気を含めないため、値が `show` の推定より少し小さくなることがあります。
+セットアップタブは Magnus Mager（CERN）の外部 telescope optimiser も x または y の一軸で開き、インターネットが必要です。リンクはビーム運動量 `sqrt(T² + 2 T m)` GeV/c（`T` は運動エネルギー、`m = 0.00051099895` GeV）と、z 順のデバイス面を渡します。各面の分解能は選択した軸の上記の固有分解能、物質は 100 µm のシリコン、すなわち 0.107 % X/X0 です。DUT は測定せず散乱だけを起こす面で、シンチレーターは含めません。デバイスの前後 10 mm の端点には物質も測定もありません。optimiser は最適な fit を使い空気を含めないため、値が `show` の推定より少し小さくなることがあります。
 
 [既定のセットアップの x 軸を開く](https://mmager.web.cern.ch/telescope/tracking.html#part=e&p=4.0005&x=[-1,0,2,4,6,8,10,12,13]&XX0=[,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,]&sy=[,0.000452,0.000452,0.000452,0.000664,0.000452,0.000452,0.000452,]&en=[0,1,1,1,0,1,1,1,0])
 

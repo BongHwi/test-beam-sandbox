@@ -31,9 +31,9 @@ compare := ('dt_trg' | 'dt_veto' | 'ntrg') ('>' | '<' | '>=' | '<=' | '==') INT
 INT     := 0 – 1000000000000
 ```
 
-空白は無視します。ビームがオンの間、粒子ごとに `trgN` は channel N の有効部分を通ったか、`ntrg` は反応した channel 数を表します。`dt_trg`、`dt_veto` は直前に受理された trigger と veto からの 100.5 MHz clock の cycle 数（1 cycle は 9.95 ns）で、前のものがなければ `2**62` です。`bsy` は直前の trigger から参加デバイスの最長 gate が終わるまで真です。trigger 式を先に、veto 式を後に評価するため、同じ粒子の veto は自身の trigger に影響しません。veto 式が空なら veto はありません。既定条件は両方の板を通り、直前の trigger から 10000 cycle（99.5 µs）、直前の板の信号から 5000 cycle（49.75 µs）を超え、busy でない場合です。
+空白は無視します。ビームがオンの間、粒子ごとに `trgN` は channel N の有効部分を通ったか、`ntrg` は反応した channel 数を表します。`dt_trg`、`dt_veto` は直前に受理された trigger と veto からの 100.5 MHz clock の cycle 数（一 cycle は 9.95 ns）で、前のものがなければ `2**62` です。`bsy` は直前の trigger から参加デバイスの最長 gate が終わるまで真です。trigger 式を先に、veto 式を後に評価するため、同じ粒子の veto は自身の trigger に影響しません。veto 式が空なら veto はありません。既定条件は両方の板を通り、直前の trigger から 10000 cycle（99.5 µs）、直前の板の信号から 5000 cycle（49.75 µs）を超え、busy でない場合です。
 
-ここで説明する仮想ボードはこの sandbox のモデルです。入力パルスを 1 cycle とし粒子ごとに判定し `bsy` を最長デバイス gate とすることは単純化です。別々の粒子同士が 2 cycle 内で偶然 coincidence になることは模擬しません。
+ここで説明する仮想ボードはこの sandbox のモデルです。入力パルスを一 cycle とし粒子ごとに判定し `bsy` を最長デバイス gate とすることは単純化です。別々の粒子同士が二 cycle 内で偶然 coincidence になることは模擬しません。
 
 ## Trigger producer
 

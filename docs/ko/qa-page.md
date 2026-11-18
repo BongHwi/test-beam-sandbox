@@ -22,7 +22,7 @@
 
 파일의 모든 항목을 고칠 수 있습니다: run, 빔, 위치의 어긋남, 장치와 그 위치와 설정, msensor의 타일. 값은 파일에 쓰는 그대로 적습니다(예: `1, -2, 60`). 항목 아래의 작은 글은 저장한 파일에 들어가는 설명 줄입니다. 장치를 더하고 뺄 수 있습니다. 페이지가 종류마다 번호를 0부터 빈틈없이 매기고, 면 번호와 위치는 직접 정합니다. msensor의 타일을 누르면 끄거나 켭니다. 고치는 동안 확인과 3D 그림이 따라 바뀝니다. 확인은 `scripts/setup_session.sh check`의 코드와 그 말을 씁니다.
 
-"셋업 파일 저장"은 확인을 통과한 경우에만 `configs/setups/`에 파일을 씁니다. 형식은 `scripts/setup_session.sh new`와 같고(항목마다 설명 줄이 있음) 터미널에서도 그대로 쓸 수 있습니다. 저장한 뒤 페이지는 그 파일에 대한 `scripts/setup_session.sh check`의 출력을 보여 줍니다. 이름은 영문자, 숫자, `-`, `_`로 쓰고 `.ini`로 끝나야 합니다. `default.ini`와 `small-msensor.ini`는 저장소의 파일이므로 덮어쓰지 않습니다. 이것을 고친 것은 다른 이름으로 저장합니다. 이미 있는 파일을 바꿀 때는 페이지 안에서 한 번 더 확인합니다.
+"셋업 파일 저장"은 확인을 통과한 경우에만 `configs/setups/`에 파일을 씁니다. 형식은 `scripts/setup_session.sh new`와 같고(항목마다 설명 줄이 있음) 터미널에서도 그대로 쓸 수 있습니다. 저장한 뒤 페이지는 그 파일에 대한 `scripts/setup_session.sh check`의 출력을 보여 줍니다. 이름은 영문자, 숫자, `-`, `_`로 쓰고 `.ini`로 끝나야 합니다. 저장소에 포함된 셋업 파일 `default.ini`, `small-msensor.ini`, `msensor-telescope.ini`와 네 `nestdaq` 셋업은 덮어쓰지 않습니다. 이것을 고친 것은 다른 이름으로 저장합니다. 이미 있는 파일을 바꿀 때는 페이지 안에서 한 번 더 확인합니다.
 
 "세션 시작"은 저장한 파일과 세션 이름으로 `scripts/start_session.sh --setup configs/setups/FILE --name NAME --no-attach`를 실행합니다. 저장해 둔 정렬을 고르면 `--alignment configs/alignments/FILE.json`도 줍니다(`scripts/align_session.sh NAME --save configs/alignments/FILE.json`으로 저장해 둡니다). 페이지는 명령의 출력과 종료 코드를 보여 주며, 예를 들어 이미 쓰는 이름은 명령의 말 그대로 보입니다. 세션이 시작되면 페이지는 실험 화면 탭에서 그 세션을 보여 줍니다. 이미지는 페이지에서 빌드하지 않습니다. 이미지가 없으면 `scripts/build_session.sh`를 알려 줍니다.
 
@@ -87,6 +87,10 @@ QA 탭은 정렬과 측정값, 그림을 보여 줍니다.
 QA ROOT 파일의 모든 histogram을 보여 주며, 하나를 고르면 그립니다.
 
 ![Histograms 탭은 histogram 목록과 선택한 그림을 보여 줍니다.](../images/page-histograms.png)
+
+## nestDAQ 세션
+
+nestDAQ 세션에는 nestDAQ 탭이 생기고 DAQ 화면은 해당 창을 보여 줍니다. QA 탭은 `scripts/session_control.sh NAME nestdaq qa --json`의 숫자를 5초마다 다시 읽어 보여 주며 Histogram 탭은 사용할 수 없습니다. 실험 화면 탭에는 빔 제어가 남고 EUDAQ run 버튼은 숨겨집니다. nestDAQ run과 모든 msensor가 보낸 frame 및 frame rate를 보여 주며 nestDAQ run이 돌고 있지 않을 때만 "출력 복사"와 "컨테이너 지우기"를 활성화합니다. 이 모드는 ALPIDE 평면을 읽지 않으므로 물질로 표시합니다. token은 이 페이지의 조작에 적용되며 nestDAQ 화면은 [nestDAQ 모드](nestdaq.md)에 설명된 ticket을 사용합니다.
 
 ## 언어와 그림
 

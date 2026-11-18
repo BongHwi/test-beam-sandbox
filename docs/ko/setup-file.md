@@ -6,7 +6,7 @@
 
 ![결과 페이지의 셋업 탭에서 연 셋업 파일입니다.](../images/page-setup.png)
 
-`configs/setups/default.ini`는 ALPIDE 기준면과 msensor DUT를 씁니다. `configs/setups/small-msensor.ini`는 더 작은 msensor DUT를 씁니다. `configs/setups/msensor-telescope.ini`는 msensor 기준면 여섯 개와 msensor DUT 하나를 씁니다.
+`configs/setups/default.ini`는 ALPIDE 기준면과 msensor DUT를 씁니다. `configs/setups/small-msensor.ini`는 더 작은 msensor DUT를 씁니다. `configs/setups/msensor-telescope.ini`는 msensor 기준면 여섯 개와 msensor DUT 하나를 씁니다. 네 셋업 `configs/setups/nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`는 nestDAQ 모드를 사용합니다([nestDAQ 모드](nestdaq.md)).
 
 ## 명령
 
@@ -15,6 +15,9 @@
 - `scripts/setup_session.sh check FILE`은 잘못된 항목마다 받는 값을 알려 주고 0이 아닌 코드로 끝납니다. QA가 가능한지도 알려 줍니다.
 - `scripts/start_session.sh --setup FILE`은 셋업을 검사하고 세션 파일을 생성해 시작합니다. 세션은 셋업을 받은 그대로(`setup-source.ini` 또는 `setup-source.json`), 그리고 `setup.json`으로 `/tmp/session-run`에 남깁니다. 정렬과 QA는 그 사본의 장치를 씁니다.
  `--scintillators 0`은 판을 빼고 `--scintillators 2`(기본)는 기본 판 두 개를 넣습니다.
+
+
+nestDAQ에서는 `[run] daq = nestdaq`을 설정하고 `[nestdaq] input = file | socket`, `frame_ms`, `send_buffer_mb`를 선택합니다. `send_buffer_mb`는 socket 입력에만 적용됩니다. 각 `[msensor N]`은 `clock_offset_ns`와 `clock_drift_ppm`으로 자기 시계를, `missed_triggers`로 놓치는 trigger를, `noise`로 노이즈 hit를 설정할 수도 있습니다. [nestDAQ 모드](nestdaq.md)를 참조합니다.
 
 ## 항목
 
@@ -49,7 +52,7 @@
 
 `N`은 장치 종류마다 `0`부터 빠짐없이 셉니다. ALPIDE는 기준면이고 msensor는 `role`을 따릅니다. 빔의 위치, 퍼짐과 rate는 명목값입니다. 세션마다 비공개로 조금씩 달라지므로 분석에서 실제 빔을 찾아야 합니다. 유한 예제(`--example`)는 source가 끝나면 종료되며 `events`를 쓰지 않습니다.
 
-세션은 전자 하나하나를 빔 source에서 면들을 지나 일정한 운동량으로 따라갑니다. 모든 면(면마다 실리콘 100 µm)과 source에서 마지막 면까지의 공기에서 Highland 공식에 따른 가우스 분포의 산란각을 더해 다중 산란을 넣습니다. 에너지 손실, 제동 복사, 2차 입자는 시뮬레이션하지 않습니다. 신틸레이터는 trigger만 정하고 물질을 더하지 않습니다.
+세션은 전자 하나하나를 빔 source에서 면들을 지나 일정한 운동량으로 따라갑니다. 모든 면(면마다 실리콘 100 µm)과 source에서 마지막 면까지의 공기에서 Highland 공식에 따른 가우스 분포의 산란각을 더해 다중 산란을 넣습니다. 에너지 손실, 제동 복사, 이차 입자는 시뮬레이션하지 않습니다. 신틸레이터는 trigger만 정하고 물질을 더하지 않습니다.
 
 `profile`은 빔의 각도를 정합니다. 기본값인 `gaussian`은 모든 전자를 빔 축 방향으로 보냅니다. `kek-2gev`와 `kek-4gev`는 KEK 빔 테스트에서 2 GeV와 4 GeV로 잰 폭의 가우스 분포 각도를 더하며, 빔 축에서 멀어질수록 각도가 조금 커지는 것도 넣습니다. 평균 각도는 0입니다. 위치의 퍼짐은 그대로 `spread_mm2`가 정합니다. 세션은 각도를 `energy_gev`에 맞춰 바꾸지 않으므로 프로파일은 잰 에너지에서 씁니다. 각도의 퍼짐은 x와 y 각각 7.5 mrad까지만 됩니다. `check`는 이를 넘는 `profile`과 `spread_mm2`를 거절합니다.
 
@@ -66,7 +69,7 @@
 | `[scintillator N]` | `hole_mm` | `0` | 중앙 구멍의 폭과 높이 또는 지름, 판보다 작음 |
 | `[trigger]` | `trg` | `trg0&trg3&dt_trg>10000&dt_veto>5000&!bsy` | 있는 channel을 쓰는 비어 있지 않은 trigger 식 |
 | `[trigger]` | `veto` | `ntrg>0` | trigger 식; 비우면 veto 없음 |
-| `[trigger]` | `count` | `1xxR Rxx1 xxxR Rxxx` | 네 글자로 된 계수 조건 1–16개 |
+| `[trigger]` | `count` | `1xxR Rxx1 xxxR Rxxx` | 네 글자로 된 계수 조건 하나에서 열여섯 개 |
 
 ## QA
 
@@ -80,13 +83,13 @@ QA는 기준면으로 track을 재구성합니다. 기준면이 적어도 3개 �
 
 `scripts/setup_session.sh show`와 셋업 탭의 요약은 각 DUT에서 track 위치를 얼마나 정확히 아는지 추정합니다. 추정은 이 sandbox의 시뮬레이션과 분석을 따릅니다.
 
-- 축마다의 고유 해상도. msensor 면은 픽셀 하나에만 hit를 내므로 해상도가 pitch/√12입니다. 기본 pitch `23 x 21` µm에서 `6.640` x `6.062` µm입니다. ALPIDE 면은 입자가 픽셀 경계 주변의 띠 안을 지나면 양쪽 픽셀 모두에 hit를 냅니다. 이 띠는 `ithr`가 낮을수록 넓어지므로(cluster 평균 `2 − ithr/255`) pitch `30` µm의 해상도는 `ithr = 0`에서 `4.517` µm, `ithr = 255`에서 `8.660` µm입니다.
+- 축마다의 고유 해상도. msensor 면은 픽셀 하나에만 hit를 내므로 해상도가 pitch/√12입니다. `6.640` x `6.062` µm이며 기본 pitch는 `23 x 21` µm입니다. ALPIDE 면은 입자가 픽셀 경계 주변의 띠 안을 지나면 양쪽 픽셀 모두에 hit를 냅니다. 이 띠는 `ithr`가 낮을수록 넓어지므로(cluster 평균 `2 − ithr/255`) pitch `30` µm의 해상도는 `4.517` µm (`ithr = 0`), `8.660` µm (`ithr = 255`)입니다.
 - 모든 면(실리콘 100 µm, `0.00106724` X0)과 빔 source에서 마지막 면까지의 공기에서 일어나는 다중 산란. Highland 공식을 쓰며 로그 항은 시뮬레이션처럼 전체 물질에서 한 번 정합니다.
 - 분석처럼 기준면을 지나는 직선을 고유 해상도로 가중해 맞춥니다. DUT는 fit에 들어가지 않습니다.
 
 `show`는 DUT마다 x와 y의 track 해상도(DUT에서 맞춘 위치의 퍼짐)와 예상 residual(track과 DUT 해상도를 합친 것)을 보여 줍니다. 4 GeV의 `default.ini`에서 추정은 track `2.97 x 2.97` µm, residual `7.27 x 6.75` µm이고, 한 run에서 잰 residual은 `7.21 x 6.84` µm였습니다. 이 추정은 이 시뮬레이션을 설명하며 실제 telescope를 설명하지 않습니다. 면과 공기를 합한 물질은 시뮬레이션의 한계인 `0.01998` X0까지만 됩니다. `check`는 이를 넘는 셋업을 거절합니다.
 
-셋업 탭은 Magnus Mager(CERN)의 외부 telescope optimiser도 x 또는 y 중 한 축으로 열며 인터넷이 필요합니다. 링크는 `T`를 운동 에너지, `m = 0.00051099895` GeV로 한 빔 운동량 `sqrt(T² + 2 T m)` GeV/c와 z 순서의 장치 면을 전달합니다. 각 면의 해상도는 선택한 축의 위 고유 해상도이고 물질은 100 µm 실리콘, 즉 0.107 % X/X0입니다. DUT는 측정 없이 산란만 하는 면이며 신틸레이터는 넣지 않습니다. 장치 앞뒤 10 mm의 끝점에는 물질과 측정이 없습니다. optimiser는 최적 fit을 쓰고 공기를 넣지 않으므로 값이 `show`의 추정보다 조금 작을 수 있습니다.
+셋업 탭은 Magnus Mager(CERN)의 외부 telescope optimiser도 x 또는 y 중 한 축으로 열며 인터넷이 필요합니다. 링크는 빔 운동량 `sqrt(T² + 2 T m)` GeV/c (`T`는 운동 에너지, `m = 0.00051099895` GeV)와 z 순서의 장치 면을 전달합니다. 각 면의 해상도는 선택한 축의 위 고유 해상도이고 물질은 100 µm 실리콘, 즉 0.107 % X/X0입니다. DUT는 측정 없이 산란만 하는 면이며 신틸레이터는 넣지 않습니다. 장치 앞뒤 10 mm의 끝점에는 물질과 측정이 없습니다. optimiser는 최적 fit을 쓰고 공기를 넣지 않으므로 값이 `show`의 추정보다 조금 작을 수 있습니다.
 
 [기본 셋업의 x 축 열기](https://mmager.web.cern.ch/telescope/tracking.html#part=e&p=4.0005&x=[-1,0,2,4,6,8,10,12,13]&XX0=[,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,0.00107,]&sy=[,0.000452,0.000452,0.000452,0.000664,0.000452,0.000452,0.000452,]&en=[0,1,1,1,0,1,1,1,0])
 

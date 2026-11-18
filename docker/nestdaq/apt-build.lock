@@ -1,0 +1,9 @@
+libmagic-mgc=1:5.38-4
+libmagic1=1:5.38-4
+file=1:5.38-4
+libsigsegv2=2.12-2
+m4=1.4.18-4
+autoconf=2.69-11.1
+autotools-dev=20180224.1
+automake=1:1.16.1-4ubuntu6
+libtool=2.4.6-14

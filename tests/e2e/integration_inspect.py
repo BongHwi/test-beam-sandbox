@@ -37,7 +37,7 @@ def parse_raw(path):
 
 def source_efficiency(trigger,threshold):
     # Independent transcription of the published counter-based response law.
-    key=f'86753091234:response:{trigger}'.encode('ascii')
+    key=f'86753091234:response:MSENSOR_0:{trigger}'.encode('ascii')
     u=((int.from_bytes(hashlib.sha256(key).digest()[:8],'big')>>12)+0.5)/2**52
     return u < .99/(1+math.exp((threshold-160)/12))
 

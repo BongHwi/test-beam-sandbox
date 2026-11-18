@@ -1,5 +1,6 @@
-ARG ROOT_IMAGE
+# check=skip=InvalidDefaultArgInFrom
 # SPDX-License-Identifier: LGPL-3.0-or-later
+ARG ROOT_IMAGE
 FROM ${ROOT_IMAGE} AS eudaq
 ARG TARGETARCH
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]

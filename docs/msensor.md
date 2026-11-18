@@ -12,9 +12,14 @@ Initialisation requires `plane`, `columns`, and `rows`; `regions` defaults to 1 
 
 For `source=synthetic`, pass `seed` and exactly one trigger specification in `MSENSOR_SOURCE_CONFIG_JSON`; keep source conditions out of ini files because EUDAQ copies configuration into BORE. A reproducible run sets `sim_end_ns` and waits for `source_finished=1` before stopping. `paced` early stopping depends on wall-clock time. Run `tests/scripts/run_msensor_e2e.sh` for end-to-end checks. For `source=session`, set `clock_mode=virtual` and pass `seed` in `MSENSOR_SOURCE_CONFIG_JSON` without a trigger specification or `sim_end_ns`; the session supplies triggers and the clock.
 
+Each msensor decides for itself whether a particle leaves a hit: the draw depends on `seed`, on the name of the msensor and on the particle, so the msensors of one session miss different particles.
+
 ## Data formats
 
 The payload starts with ASCII `MSENSOR`, version byte 1, a 4-byte big-endian JSON length and canonical UTF-8 JSON; hits are `[col,row]`. The stream starts with ASCII `MSWINDOW` and version byte 1; each record has a type, 4-byte big-endian length, canonical JSON and CRC32. The FOOTER contains a SHA-256. `python -m msensor.stream verify FILE` returns 0 for valid, 2 for truncated and 3 for corrupt streams. Triggered mode uses a half-open gate; continuous mode records fixed windows, including empty windows. The final window is truncated at the actual end time.
+
+
+For the msraw stream used in nestDAQ mode, see [nestDAQ mode](nestdaq.md).
 
 ## Parameter ranges and source
 

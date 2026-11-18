@@ -22,7 +22,7 @@ The setup tab lists the setup files of `configs/setups/`. Choosing one shows wha
 
 Every item of the file can be changed: the run, the beam, the position offsets, the devices and their positions and settings, and the msensor tiles. Values are written as in the file (for example `1, -2, 60`); the small text under each item is the comment the saved file carries. Devices can be added and removed; the page numbers each kind from 0 without gaps, and the plane numbers and positions are yours to set. Clicking an msensor tile switches it off or on. While you edit, the check and the 3D view follow; the check uses the code of `scripts/setup_session.sh check` and its words.
 
-"Save the setup file" writes the file in `configs/setups/` only after the check passes, in the same form as `scripts/setup_session.sh new` (with the comment of every item), so it can be used from a terminal as well. The page then shows what `scripts/setup_session.sh check` prints for the saved file. The name must use letters, digits, `-` and `_` and end in `.ini`. `default.ini` and `small-msensor.ini` belong to the repository and are not overwritten: an edit of them is saved under another name. Replacing an existing file asks for a confirmation on the page.
+"Save the setup file" writes the file in `configs/setups/` only after the check passes, in the same form as `scripts/setup_session.sh new` (with the comment of every item), so it can be used from a terminal as well. The page then shows what `scripts/setup_session.sh check` prints for the saved file. The name must use letters, digits, `-` and `_` and end in `.ini`. The setup files that come with the repository, `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` and the four `nestdaq` setups, are not overwritten: an edit of them is saved under another name. Replacing an existing file asks for a confirmation on the page.
 
 "Start the session" runs `scripts/start_session.sh --setup configs/setups/FILE --name NAME --no-attach` with the saved file and the session name, and with `--alignment configs/alignments/FILE.json` when a saved alignment is chosen (keep one with `scripts/align_session.sh NAME --save configs/alignments/FILE.json`). The page shows the command's output and exit code; a name that is already in use, for example, is reported in the command's words. When the session has started, the page shows it in the experiment tab. The page does not build the image: when it is missing, the page names `scripts/build_session.sh`.
 
@@ -87,6 +87,10 @@ A plot without entries says that there are no data yet.
 It lists every histogram of the QA ROOT file; choosing one draws it.
 
 ![The Histograms tab shows the histogram list and selected plot.](images/page-histograms.png)
+
+## nestDAQ sessions
+
+A nestDAQ session adds a nestDAQ tab, and the DAQ screen shows its windows. The QA tab shows the numbers of `scripts/session_control.sh NAME nestdaq qa --json`, read again every 5 seconds, and Histograms is unavailable. The Experiment tab keeps the beam controls and hides the EUDAQ run buttons; it shows the nestDAQ run with the frames sent by all msensors and the frame rate, and it enables "Copy the output" and "Remove the container" only while no nestDAQ run is running. The ALPIDE planes are labelled as material, because this mode does not read them. The token covers the operations of this page; the nestDAQ screens use the ticket described in [nestDAQ mode](nestdaq.md).
 
 ## Languages and drawing
 

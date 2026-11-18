@@ -33,7 +33,7 @@ INT     := 0 – 1000000000000
 
 공백은 무시합니다. 빔이 켜진 동안 입자마다 `trgN`은 channel N의 활성 부분을 지났는지, `ntrg`는 켜진 channel 수를 뜻합니다. `dt_trg`, `dt_veto`는 직전에 수락된 trigger와 veto부터 지난 100.5 MHz clock의 cycle 수(한 cycle 9.95 ns)이며 이전 것이 없으면 `2**62`입니다. `bsy`는 직전 trigger부터 참여 장치 중 가장 긴 gate가 끝나기 전까지 참입니다. trigger 식을 먼저, veto 식을 다음에 계산하므로 같은 입자의 veto는 자신의 trigger에 영향을 주지 않습니다. veto 식이 비면 veto가 없습니다. 기본 조건은 두 판을 지나고 직전 trigger에서 10000 cycle(99.5 µs), 직전 판 신호에서 5000 cycle(49.75 µs)보다 더 지나고 busy가 아닌 경우입니다.
 
-여기에서 설명하는 가상 보드는 이 sandbox의 모델입니다. 입력 펄스를 1 cycle로 두고 입자마다 판정하며 `bsy`를 가장 긴 장치 gate로 정한 것은 단순화입니다. 두 입자가 2 cycle 안에서 우연히 coincidence를 만드는 일은 모의하지 않습니다.
+여기에서 설명하는 가상 보드는 이 sandbox의 모델입니다. 입력 펄스를 한 cycle로 두고 입자마다 판정하며 `bsy`를 가장 긴 장치 gate로 정한 것은 단순화입니다. 두 입자가 두 cycle 안에서 우연히 coincidence를 만드는 일은 모의하지 않습니다.
 
 ## Trigger producer
 

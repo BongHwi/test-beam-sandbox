@@ -18,6 +18,11 @@ This sandbox contains no agent framework or MCP server. A program or agent conne
 | Analysis | `scripts/align_session.sh NAME [--run N]`, `scripts/analyze_session.sh NAME [--run N]` | Text summary and QA result files | [Alignment](alignment.md), [session run](session-run.md), [operator screen](operator-screen.md) |
 | Records | `/tmp/session-run/status.json`, `control-history.jsonl`, `command-history.jsonl`, `run<N>.conf`, `source.sock.beam.log` | JSON, JSON lines, text | [RunControl extensions](runcontrol-hook.md), [automation](automation.md) |
 | Operator screen text | `docker exec NAME tmux capture-pane -p -t ITS3:WINDOW` (`rc`, `rp`, `dp`, `sp`, `dc`, `log`) | Text | [Operator screen](operator-screen.md) |
+| nestDAQ run control | `scripts/session_control.sh NAME nestdaq start\|stop\|status\|qa --json` | JSON | [nestDAQ](nestdaq.md) |
+| Extract msraw | `python3 -m nestdaq_mode.extract` | Text | [nestDAQ](nestdaq.md) |
+| nestDAQ screen text | `docker exec NAME tmux capture-pane -p -t NESTDAQ:WINDOW` (`redis`, `webctl`, `slowdash`, `runners`, `sources`, `sink`, `dqm`) | Text | [nestDAQ](nestdaq.md) |
+
+The `--json` option applies only to `status`; `start` and `stop` already print JSON.
 
 The result page server is for browsers; it is not defined as a program interface.
 
@@ -28,6 +33,9 @@ Send run control with `session_control.sh`, not keys: keys pressed while the scr
 ## What a program should not read
 
 For a fair test of an operating program, do not read simulation truth unavailable to an operator: `/tmp/session-private/` in the container (actual device positions), the session processes’ environment variables (private beam values and seeds), or `actual_offsets` in `session_setup/setupfile.py` (calculates the hidden position differences from the setup).
+
+
+The same holds in the nestDAQ mode, where more of the session's processes inherit these variables.
 
 ## Wrapping the commands
 

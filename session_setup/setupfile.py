@@ -97,6 +97,14 @@ def _text(value):
 
 RUN = {'events': Item('int', OPERATOR_EVENTS, 'events per run (NEVENTS) before RunControl starts the next run; '
                       'the finite example (--example) ends with its source instead', 1, 1000000000)}
+DAQ = Item('choice', 'eudaq', 'DAQ framework of the session; nestdaq needs the nestDAQ image (scripts/build_session.sh --nestdaq)', choices=('eudaq', 'nestdaq'))
+NESTDAQ = {
+    'input': Item('choice', 'file', 'how the msensor data reach nestDAQ', choices=('file', 'socket')),
+    'frame_ms': Item('int', 100, 'length of one msensor stream frame in ms', 10, 1000),
+    'send_buffer_mb': Item('int', 64, 'TCP send queue limit of each msensor runner in MB (input = socket)', 1, 1024),
+    'generator_mb_s': Item('number', 0, 'load test of the data path: above 0, every msensor runner is replaced by a generator that writes valid frames at about this many MB/s per msensor, without the beam simulation; 0 runs the simulation', 0, 500, render=False),
+}
+NESTDAQ_NOTE = 'nestDAQ mode: the msensor data go to nestDAQ; events is ignored, the operator starts and stops runs; QA, alignment and analysis are not available in this mode.'
 BEAM = {
     'particle': Item('choice', BEAM_DEFAULTS['particle'], 'beam particle; the session core simulates electrons only',
                      choices=('e-',)),
@@ -149,6 +157,10 @@ DEVICE = {
                                 0, 1000000),
         'strobe_length_ns': Item('int', MSENSOR_DEFAULTS['strobe_length_ns'], 'triggered readout strobe length in ns',
                                  1, 1000000),
+        'clock_offset_ns': Item('int', 0, 'reading of this msensor clock in ns when the session clock reads 0; only with daq = nestdaq', 0, 1000000000, render=False),
+        'clock_drift_ppm': Item('number', 0, 'how much faster this msensor clock runs, in parts per million; only with daq = nestdaq', -1000, 1000, render=False),
+        'missed_triggers': Item('int', [], 'session trigger numbers, counted from 0 in every run, that this msensor does not see; only with daq = nestdaq', 0, 1000000000, count='optional list', render=False),
+        'noise': Item('choice', 'off', 'noise hits of this msensor: on uses the default msensor response, whose noise rate grows as threshold_dac is lowered; only with daq = nestdaq', choices=('off', 'on'), render=False),
     }),
 }
 SCINTILLATOR = {
@@ -222,8 +234,20 @@ def load_text(text, path):
         raise SetupError([f'{path}: {exc.message if hasattr(exc, "message") else exc}'.replace('\n', ' ')])
     errors = []
     setup = {'run': _defaults(RUN), 'beam': _defaults(BEAM), 'positions': _defaults(POSITIONS), 'devices': [], 'scintillators': [], 'trigger': None}
+    nestdaq_values = None
     for section in parser.sections():
         values = dict(parser.items(section))
+        if section == 'run' and 'daq' in values:
+            raw = values.pop('daq')
+            try:
+                daq = DAQ.parse(raw)
+                if daq == 'nestdaq': setup['run']['daq'] = daq
+            except ValueError:
+                errors.append(f'[run] daq = {raw.strip()}: not accepted; expected {DAQ.accepted()}')
+        if section == 'nestdaq':
+            nestdaq_values = _defaults(NESTDAQ)
+            nestdaq_values.update(_read_items(section, values, NESTDAQ, errors))
+            continue
         if section in ('run', 'beam', 'positions'):
             setup[section].update(_read_items(section, values, {'run': RUN, 'beam': BEAM, 'positions': POSITIONS}[section], errors))
             continue
@@ -263,6 +287,28 @@ def load_text(text, path):
         setup['devices'].append(device)
     if not parser.sections():
         errors.append(f'{path}: no sections; a setup needs [run], [beam] and at least one device section')
+    if setup['run'].get('daq', 'eudaq') == 'nestdaq':
+        setup['nestdaq'] = nestdaq_values if nestdaq_values is not None else _defaults(NESTDAQ)
+        if setup['nestdaq']['input'] == 'file':
+            if parser.has_option('nestdaq', 'send_buffer_mb'):
+                errors.append('[nestdaq] send_buffer_mb: only for input = socket')
+            setup['nestdaq'].pop('send_buffer_mb')
+        if setup['nestdaq']['generator_mb_s'] == 0:
+            setup['nestdaq'].pop('generator_mb_s')
+        elif any(d['kind'] == 'msensor' and d['readout'] != 'continuous' for d in setup['devices']):
+            errors.append('[nestdaq] generator_mb_s: needs continuous readout for every msensor')
+        if not any(d['kind'] == 'msensor' for d in setup['devices']):
+            errors.append('[run] daq = nestdaq: needs at least one [msensor N] section')
+        if setup['scintillators'] or setup['trigger'] is not None:
+            errors.append('[run] daq = nestdaq: scintillators and [trigger] are not available in the nestDAQ mode; remove those sections (scripts/setup_session.sh new --scintillators 0 writes a setup without them)')
+        frame = setup['nestdaq']['frame_ms'] * 1000000
+        for d in setup['devices']:
+            if d['kind'] == 'msensor' and d['readout'] == 'continuous':
+                w = d['window_length_ns']
+                if frame % w or frame // w > 65536:
+                    errors.append(f'[msensor {d["number"]}] window_length_ns = {w}: with daq = nestdaq, frame_ms x 1000000 must be a multiple of it, at most 65536 windows')
+    elif nestdaq_values is not None:
+        errors.append('[nestdaq]: only for daq = nestdaq; add daq = nestdaq to [run] or remove this section')
     validate(setup, errors)
     if errors:
         raise SetupError(errors)
@@ -433,6 +479,19 @@ def validate(setup, errors):
                 errors.append(f'{section} {key}: applies only to '
                               + ('triggered' if d['readout'] == 'continuous' else 'continuous')
                               + f' readout, but readout = {d["readout"]}')
+    if setup['run'].get('daq', 'eudaq') != 'nestdaq':
+        for d in devices:
+            if d['kind'] == 'msensor':
+                for key in ('clock_offset_ns', 'clock_drift_ppm', 'missed_triggers', 'noise'):
+                    if key in d.get('given', []):
+                        errors.append(f'[msensor {d["number"]}] {key}: only for daq = nestdaq')
+    for d in devices:
+        if d['kind'] == 'msensor':
+            missed = d.get('missed_triggers', [])
+            if any(a >= b for a, b in zip(missed, missed[1:])):
+                errors.append(f'[msensor {d["number"]}] missed_triggers: numbers must increase')
+            if len(missed) > 64:
+                errors.append(f'[msensor {d["number"]}] missed_triggers: at most 64 numbers')
     zs = [d['position_mm'][2] for d in devices if isinstance(d.get('position_mm'), list)]
     if len(zs) == len(devices) and zs and setup['beam']['position_mm'][2] < min(zs):
         total = material_budget(devices, setup['beam']['position_mm'][2])
@@ -513,8 +572,8 @@ def normalized(setup):
     beam = dict(setup['beam'])
     if beam['profile'] != 'gaussian':
         beam['profile_values'] = profile_values(beam['profile'])
-    return {'run': setup['run'], 'beam': beam, 'positions': setup['positions'],
-            'devices': [{k: v for k, v in d.items() if k != 'given'} for d in setup['devices']],
+    return {**({'nestdaq': setup['nestdaq']} if setup.get('nestdaq') else {}), 'run': setup['run'], 'beam': beam, 'positions': setup['positions'],
+            'devices': [{k: v for k, v in d.items() if k != 'given' and (k != 'noise' or (setup['run'].get('daq', 'eudaq') == 'nestdaq' and v == 'on')) and (k != 'missed_triggers' or (setup['run'].get('daq', 'eudaq') == 'nestdaq' and v)) and (k not in ('clock_offset_ns', 'clock_drift_ppm') or (setup['run'].get('daq', 'eudaq') == 'nestdaq' and (d.get('clock_offset_ns', 0) or d.get('clock_drift_ppm', 0))))} for d in setup['devices']],
             **({'scintillators': setup['scintillators'], 'trigger': setup['trigger']} if setup.get('scintillators') else {})}
 
 
@@ -537,8 +596,19 @@ def render(setup):
             lines.append(f'{key} = {_text(values[key])}'.rstrip())
         lines.append('')
     block('run', RUN, setup['run'], True)
+    if setup['run'].get('daq', 'eudaq') == 'nestdaq':
+        lines.pop()
+        lines.extend(textwrap.wrap(f'{DAQ.help}; {DAQ.accepted()}', 78, initial_indent='# ', subsequent_indent='#   '))
+        lines.extend(['daq = nestdaq', ''])
     block('beam', BEAM, setup['beam'], True)
     block('positions', POSITIONS, setup['positions'], True)
+    if setup.get('nestdaq'): block('nestdaq', {k: v for k, v in NESTDAQ.items() if k in setup['nestdaq']}, setup['nestdaq'], True)
+    if setup.get('nestdaq', {}).get('generator_mb_s', 0) > 0:
+        lines.pop()
+        item = NESTDAQ['generator_mb_s']
+        lines.extend(textwrap.wrap(f'{item.help}; {item.accepted()}', 78, initial_indent='# ', subsequent_indent='#   '))
+        lines.append(f"generator_mb_s = {_text(setup['nestdaq']['generator_mb_s'])}")
+        lines.append('')
     explained = set()
     for d in sorted(setup['devices'], key=lambda d: (KINDS.index(d['kind']), d['number'])):
         items = dict(DEVICE[d['kind']])
@@ -550,6 +620,25 @@ def render(setup):
             lines.append(f'# Same items as the first [{d["kind"]} N] section above.')
         explained.add((d['kind'], d.get('readout')))
         block(f'{d["kind"]} {d["number"]}', items, d, explain)
+        if d['kind'] == 'msensor' and setup['run'].get('daq', 'eudaq') == 'nestdaq' and (d.get('clock_offset_ns', 0) or d.get('clock_drift_ppm', 0)):
+            lines.pop()
+            for key in ('clock_offset_ns', 'clock_drift_ppm'):
+                item = items[key]
+                lines.extend(textwrap.wrap(f'{item.help}; {item.accepted()}', 78, initial_indent='# ', subsequent_indent='#   '))
+                lines.append(f'{key} = {_text(d[key])}')
+            lines.append('')
+        if d['kind'] == 'msensor' and setup['run'].get('daq', 'eudaq') == 'nestdaq' and d.get('missed_triggers'):
+            lines.pop()
+            item = items['missed_triggers']
+            lines.extend(textwrap.wrap(f'{item.help}; {item.accepted()}', 78, initial_indent='# ', subsequent_indent='#   '))
+            lines.append(f"missed_triggers = {_text(d['missed_triggers'])}")
+            lines.append('')
+        if d['kind'] == 'msensor' and setup['run'].get('daq', 'eudaq') == 'nestdaq' and d.get('noise') == 'on':
+            lines.pop()
+            item = items['noise']
+            lines.extend(textwrap.wrap(f'{item.help}; {item.accepted()}', 78, initial_indent='# ', subsequent_indent='#   '))
+            lines.append(f"noise = {_text(d['noise'])}")
+            lines.append('')
     for p in sorted(setup.get('scintillators', []), key=lambda p:p['number']):
         block(f'scintillator {p["number"]}', SCINTILLATOR, p, True)
     if setup.get('scintillators'):
@@ -685,7 +774,10 @@ def show(setup):
         for key in ('trg','veto','count'):
             out.extend(textwrap.wrap(f'Trigger {key}: {setup["trigger"][key]}', WIDTH, subsequent_indent='  ', break_long_words=True, break_on_hyphens=False))
     b = setup['beam']
-    out.append(f'Run: {setup["run"]["events"]} events per run')
+    if setup.get('nestdaq'):
+        out.append(f'Run: nestDAQ mode, input {setup["nestdaq"]["input"]}, frame {setup["nestdaq"]["frame_ms"]} ms; the operator starts and stops runs')
+    else:
+        out.append(f'Run: {setup["run"]["events"]} events per run')
     m = setup['positions']['offset_max_mm']
     out.append(f'Positions: actual x, y differ by up to {_text(m)} mm (hidden; align before QA)' if m
                else 'Positions: actual positions equal the setup (no offsets)')
@@ -704,7 +796,7 @@ def show(setup):
             out.extend(textwrap.wrap(f'  {r["label"]}, z {_text(r["z_mm"])} mm: track {x:.2f} x {y:.2f} um, residual {rx:.2f} x {ry:.2f} um', WIDTH, subsequent_indent='    '))
     out.append('')
     out += side_view(setup)
-    long = [line for index, line in enumerate(out) if index not in table_lines and len(line) > WIDTH]
+    long = [line for index, line in enumerate(out) if index not in table_lines and len(line) > WIDTH and not (setup.get('nestdaq') and line.startswith('Run: nestDAQ mode,'))]
     if long:
         raise RuntimeError('display line exceeds 80 columns: ' + long[0])
     return out
@@ -775,6 +867,8 @@ def report_errors(path, exc):
 
 
 def check_lines(name, setup):
+    if setup.get('nestdaq'):
+        return [f'{name}: valid; {len(setup["devices"])} device(s), nestDAQ mode (input {setup["nestdaq"]["input"]}, frame {setup["nestdaq"]["frame_ms"]} ms).', NESTDAQ_NOTE]
     return [f'{name}: valid; {len(setup["devices"])} device(s), {setup["run"]["events"]} events per run.'] + qa_notes(setup)[1]
 
 
@@ -874,7 +968,10 @@ def command_prepare(args):
     except SetupError as exc:
         report_errors(args.file, exc)
         return 2
-    for line in qa_notes(setup)[1]:
+    if args.example and setup.get('nestdaq'):
+        print(f'{args.file}: the finite example (--example) is not available with daq = nestdaq', file=sys.stderr)
+        return 2
+    for line in ([NESTDAQ_NOTE] if setup.get('nestdaq') else qa_notes(setup)[1]):
         print(line)
     if args.example and not any(d['kind'] == 'msensor' for d in setup['devices']):
         print(f'{args.file}: cannot start the finite example. {EXAMPLE_NEEDS_MSENSOR}', file=sys.stderr)
@@ -890,6 +987,7 @@ def command_prepare(args):
     directory = Path(args.directory)
     shutil.copyfile(args.file, directory / ('setup-source' + ('.json' if Path(args.file).suffix == '.json' else '.ini')))
     (directory / 'setup.json').write_text(json.dumps(normalized(setup), indent=2) + '\n')
+    if setup.get('nestdaq'): (directory / 'daq-mode').write_text('nestdaq\n')
     if args.alignment:
         # A saved alignment is used only for the same devices; otherwise say why and start without it.
         from session_setup import aligned

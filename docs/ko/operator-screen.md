@@ -16,6 +16,9 @@ RunControl에서 `S`는 현재 run을 멈추고 다음 설정으로 넘어가며
 
 화면이 상태 줄을 다시 그리는 순간에 키를 누르면 공개 RunControl이 완전히 멈출 수 있습니다. 화면이 더 바뀌지 않고 상태 파일과 raw 파일도 더 쓰이지 않으며, 상태 파일의 `updated_monotonic_ns`가 늘지 않고 제어 socket 요청에 답이 오지 않습니다. 이때는 `docker rm -f public-session`으로 세션을 지우고 다시 시작합니다. `scripts/session_control.sh public-session stop`, `repeat`, `terminate` 명령은 화면을 거치지 않으므로 이 영향을 받지 않습니다.
 
+
+nestDAQ 세션에서는 `NESTDAQ:runners`에 붙습니다. 일곱 창은 `redis`, `webctl`, `slowdash`, `runners`, `sources`, `sink`, `dqm`입니다. [nestDAQ 모드](nestdaq.md)를 참조합니다.
+
 ## 빔과 분석
 
 다른 터미널에서 `scripts/session_control.sh public-session on`, `off`, `beam-status`를 사용합니다. 각 명령은 최근 다섯 번의 변경을 UTC 시각과 함께 표시하고 컨테이너 안의 전체 기록 경로를 알려줍니다. `on`이나 `off`가 수락되어 빔 상태가 바뀌면 목록의 마지막 줄이 방금 한 변경입니다. 프로그램이 읽는 응답에는 `--json`을 붙입니다. 빔은 run 변경과 무관하게 유지됩니다.

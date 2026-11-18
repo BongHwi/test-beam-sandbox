@@ -16,6 +16,9 @@ RunControl では `S` で現在の run を停止して次の設定に進み、`R
 
 画面が状態の行を描き直す瞬間にキーを押すと、公開 RunControl が完全に止まることがあります。画面が変わらなくなり、状態ファイルと raw ファイルも書かれなくなり、状態ファイルの `updated_monotonic_ns` が増えず、制御 socket への要求に応答がなくなります。その場合は `docker rm -f public-session` でセッションを削除し、起動し直します。`scripts/session_control.sh public-session stop`、`repeat`、`terminate` のコマンドは画面を経由しないため、この影響を受けません。
 
+
+nestDAQ セッションでは `NESTDAQ:runners` に接続します。七つのウィンドウは `redis`、`webctl`、`slowdash`、`runners`、`sources`、`sink`、`dqm` です。[nestDAQ モード](nestdaq.md)を参照してください。
+
 ## ビームと解析
 
 別のターミナルで `scripts/session_control.sh public-session on`、`off`、`beam-status`を使います。各コマンドは直近の変更五件を UTC の時刻とともに表示し、コンテナー内の全履歴のパスを示します。`on` または `off` が受け付けられてビームの状態が変わった場合、一覧の最後の行がその変更です。プログラム用の応答には `--json` を付けます。ビームは run の切り替えに関係なく維持されます。
