@@ -16,7 +16,7 @@ import sys
 
 root=Path('/tmp/session-run')
 parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument('action',choices=('status','on','off','beam-status','stop','repeat','terminate','set','settings','end-producer'))
+parser.add_argument('action',choices=('status','on','off','beam-status','stop','repeat','terminate','set','settings','end-producer','stall'))
 parser.add_argument('rest',nargs='*')
 parser.add_argument('--json',action='store_true',help='emit the existing machine-readable beam response')
 parser.add_argument('--id',help='id of an on, off, stop, repeat or terminate request (letters, digits, ., -, _; at most 64)')
@@ -25,8 +25,8 @@ if (root/'daq-mode').is_file() and (root/'daq-mode').read_text().strip() == 'nes
     print('error: this command is for the EUDAQ mode; in the nestDAQ mode use: scripts/session_control.sh NAME nestdaq start|stop|status [--json]',file=sys.stderr);raise SystemExit(2)
 # Run requests of the RunControl control socket, with the id each one carries by default.
 RUN_INTENTS={'stop':('stop_next','operator-stop'),'repeat':('repeat','operator-repeat'),'terminate':('terminate','operator-terminate')}
-if args.id is not None and action not in (*RUN_INTENTS, 'on', 'off', 'set', 'end-producer'):
-    print('--id applies only to on, off, stop, repeat and terminate',file=sys.stderr);raise SystemExit(2)
+if args.id is not None and action not in (*RUN_INTENTS, 'on', 'off', 'set', 'end-producer', 'stall'):
+    print('--id applies only to on, off, stop, repeat, terminate, set, end-producer and stall',file=sys.stderr);raise SystemExit(2)
 if args.id is not None and not re.fullmatch(r'[A-Za-z0-9._-]{1,64}',args.id):
     print('request not sent: --id must be 1 to 64 letters, digits, ., - or _',file=sys.stderr);raise SystemExit(2)
 if action in ('set','settings'):
@@ -92,6 +92,41 @@ if action=='end-producer':
         append(root,'end_producer',args.id or 'operator-end-producer',producer=producer,pid=pid,signal=used,ended=ended)
     print('RunControl shows it as disconnected. Next steps: "A producer stops responding" in docs/operator-screen.md.')
     raise SystemExit(result)
+if action=='stall':
+    from msensor import stall as stall_mod
+    from session_setup.command_history import append
+    if args.json or len(args.rest)!=2: parser.error('usage: stall PRODUCER SECONDS|cancel')
+    producer,length=args.rest
+    try:seconds=0.0 if length=='cancel' else float(length)
+    except ValueError:seconds=-1.0
+    if not 0<=seconds<=stall_mod.MAX_SECONDS or (seconds==0 and length!='cancel'):
+        print(f'request not sent: SECONDS must be above 0 and at most {stall_mod.MAX_SECONDS}, or "cancel"',file=sys.stderr);raise SystemExit(2)
+    cfg=configparser.ConfigParser(interpolation=None);cfg.read(root/'init.ini')
+    names=[x.strip() for key in ('dataproducers','moreproducers') for x in cfg.get('RunControl',key,fallback='').split(',') if x.strip()]
+    msensors=[n for n in names if n.startswith('MSENSOR_')]
+    if producer not in msensors:
+        print(f"unknown or unsupported producer: {producer}; msensor producers of this session: "+(', '.join(msensors) or 'none'),file=sys.stderr);raise SystemExit(2)
+    try:status=json.loads((root/'status.json').read_text())
+    except (OSError,ValueError):print('RunControl status is not available',file=sys.stderr);raise SystemExit(1)
+    entry=next((c for c in status.get('connections',[]) if c['name']==producer),None)
+    if status.get('rc_state')!='RUNNING' or entry is None or not entry['connected'] or entry['state']!='RUNNING':
+        print(f'request not sent: {producer} must be connected and RUNNING in a running run',file=sys.stderr);raise SystemExit(1)
+    run=status['run']['number']
+    try:previous=json.loads((root/'stall'/(producer+'.state.json')).read_text())
+    except (OSError,ValueError):previous={}
+    if seconds>0 and previous.get('state')=='active' and previous.get('run')==run:
+        print(f'request not sent: {producer} is already stalled (id {previous.get("id")}); cancel it first',file=sys.stderr);raise SystemExit(1)
+    ident=args.id or ('operator-stall' if seconds>0 else 'operator-stall-cancel')
+    answer=stall_mod.submit(root,producer,seconds,run,ident)
+    if answer is None:
+        print(f'{producer} did not answer within 5 s; no stall started. The producer may be an older build or not stalled in this run.',file=sys.stderr);raise SystemExit(1)
+    if seconds==0:
+        print(f'Stall of {producer} cancelled' if answer.get('state')=='ended' else f'Nothing to cancel: {answer.get("reason","no stall in progress")}');raise SystemExit(0 if answer.get('state')=='ended' else 1)
+    if answer.get('state')!='active':
+        print(f'Stall of {producer} not started: {answer.get("reason","rejected")}',file=sys.stderr);raise SystemExit(1)
+    append(root,'stall',ident,producer=producer,run=run,seconds=seconds,started_monotonic_ns=answer.get('started_monotonic_ns'))
+    print(f'{producer} stalled for {length} s in run {run}; it keeps answering and continues in the same run.')
+    raise SystemExit(0)
 if action=='status':
     print((root/'status.json').read_text());raise SystemExit(0)
 if action in ('on','off','beam-status'):

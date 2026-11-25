@@ -64,6 +64,22 @@ scripts/session_control.sh public-session end-producer ALPIDE_plane_2
 
 ある試験では残りの producer と collector は続き、`stop` 要求は受け付けられましたが、完了しませんでした。終了した producer は pane で再起動すると再接続しましたが、`UNINIT` のままで次の run には参加しませんでした。すべてのデバイスを再び使うには、`docker cp` で出力を保存し、新しいセッションを開始します。
 
+## run 内の時間制の停滞
+
+session source に 10 秒応答しない producer はその run から除外され、戻れません（[session source とデバイス喪失](session-core.md)）。したがって同じ run で続く停滞は、producer が応答し続ける場合だけ可能です。一時的な停滞の練習用に、`stall` は msensor を 1 台、接続と `RUNNING` 状態、ビームをそのままに、指定した時間だけ event を作らせません。
+
+```sh
+# MSENSOR_0 は現在の run で 90 秒間 event を作らず、同じ run で続けます。
+scripts/session_control.sh public-session stall MSENSOR_0 90 --id practice-stall
+
+# 停滞を早く終えます。
+scripts/session_control.sh public-session stall MSENSOR_0 cancel
+```
+
+`SECONDS` は 0 より大きく 120 以下の数です。対象は実行中の run で接続され `RUNNING` の msensor（`MSENSOR_N`）で、ALPIDE プレーンとトリガーボードは対象外です。停滞中はその producer の data event 数と `run.events` は増えず、他の producer は数え続け、producer の状態項目 `stalled` は `1` です。停滞中の event は捨てず、順に保持して停滞後に送るため、その後は数が急に増え、run の raw ファイルは 1 つの run として閉じます。stop 要求、run の終了、`cancel` が停滞を終え、停滞は次の run に持ち越されません。120 秒の制限は、source が最も遅い参加者より先行できる上限（200 秒）に収めるためです。collector は遅い読み出しと同様に停滞した producer を待ちます。上限に近い停滞は公開イメージで最初から最後まで実行していません。
+
+コマンドは停滞が始まれば `0`、始まらなければ（実行中でない、すでに停滞中、5 秒以内に応答なし）`1`、不正な引数に `2` を返します。操作は `command-history.jsonl` に種類 `stall`、producer、run、秒、id（`--id` がなければ `operator-stall`）、producer の開始時刻 `started_monotonic_ns` とともに 1 行で残ります。終了はそこではなく `/tmp/session-run/stall/PRODUCER.state.json`（`state` が `ended`、`reason` が `elapsed`、`cancelled` または `run_ended`）にあります。
+
 ## QA の結果ファイル
 
 QA は実行のたびにセッションのコンテナーの `/tmp/session-run/qa/latest.json`（最後の QA）を書き、`status` が `ok` なら `/tmp/session-run/qa/history.jsonl` に一行を加えます。次の項目が保持されます:

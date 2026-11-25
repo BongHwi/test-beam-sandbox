@@ -46,7 +46,7 @@ docker rm -f public-session
 ## 設定と producer
 
 - `scripts/session_control.sh NAME settings --json` は `format`、`next`、`current` を返します。それぞれ run とデバイスを含み、`current` は `run_number` と `file` を持つか `null` です。
-- `set` と `end-producer` は成功時に `0`、不正な値または存在しないプロセスに `1`、不正な引数や不明な項目に `2` を返します。
+- `set`、`end-producer`、`stall` は成功時に `0`、不正な値または存在しないプロセスや開始しなかった停滞に `1`、不正な引数や不明な項目に `2` を返します。
 - `command-history.jsonl` は `format`、`seq`、`utc`、`monotonic_ns`、`kind`、`id` と、変更した `section`、`item`、`value`、`previous` または `producer`、`pid`、`signal`、`ended` を含みます。
 - `run<number>.conf` はその run 用に読み込まれた設定を保存します。
 - QA の `settings_changed` はセットアップファイルとの差で、同じなら空のリスト、利用できない場合は `null` です。

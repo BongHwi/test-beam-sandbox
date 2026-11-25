@@ -64,6 +64,22 @@ scripts/session_control.sh public-session end-producer ALPIDE_plane_2
 
 한 테스트에서 남은 producer와 collector는 계속되었고 `stop` 요청은 받아들여졌지만 끝나지 않았습니다. 종료한 producer를 pane에서 다시 띄우자 연결됐으나 `UNINIT`로 남아 다음 run에 참여하지 못했습니다. 모든 장치를 다시 쓰려면 `docker cp`로 출력을 보존하고 새 세션을 시작합니다.
 
+## run 안의 시간제 정체
+
+session source에 10초 동안 응답하지 않은 producer는 그 run에서 제외되며 다시 들어올 수 없으므로([session source와 장치 손실](session-core.md)), 같은 run에서 이어지는 정체는 producer가 계속 응답할 때만 가능합니다. 일시적 정체를 연습하도록 `stall`은 msensor 하나가 연결과 `RUNNING` 상태, 빔을 그대로 둔 채 정해진 시간 동안 event를 만들지 않게 합니다.
+
+```sh
+# MSENSOR_0이 현재 run에서 90초 동안 event를 만들지 않다가 같은 run에서 이어 갑니다.
+scripts/session_control.sh public-session stall MSENSOR_0 90 --id practice-stall
+
+# 정체를 일찍 끝냅니다.
+scripts/session_control.sh public-session stall MSENSOR_0 cancel
+```
+
+`SECONDS`는 0보다 크고 120 이하인 수입니다. 대상은 실행 중인 run에서 연결되어 `RUNNING`인 msensor(`MSENSOR_N`)여야 하며 ALPIDE 평면과 trigger 보드는 지원하지 않습니다. 정체 동안 그 producer의 data event 수와 `run.events`는 늘지 않고, 다른 producer는 계속 세며, producer의 상태 필드 `stalled`는 `1`입니다. 정체 동안의 event는 버리지 않고 순서대로 보관했다가 정체 뒤에 보내므로 그때 수가 빠르게 늘고 run의 raw 파일은 하나의 run으로 닫힙니다. stop 요청, run의 끝, `cancel`이 정체를 끝내며 정체는 다음 run으로 넘어가지 않습니다. 120초 제한은 source가 가장 느린 참가자보다 앞서 가는 한도(200초) 안에 있게 합니다. collector는 느린 읽기와 같이 정체한 producer를 기다립니다. 한도에 가까운 정체는 공개 이미지에서 처음부터 끝까지 실행해 보지 않았습니다.
+
+명령은 정체가 시작되면 `0`, 시작되지 않으면(실행 중 아님, 이미 정체 중, 5초 안에 응답 없음) `1`, 잘못된 인수에 `2`를 반환합니다. 조작은 `command-history.jsonl`에 종류 `stall`, producer, run, 초, id(`--id`가 없으면 `operator-stall`), producer의 시작 시각 `started_monotonic_ns`와 함께 한 줄로 남습니다. 끝은 거기에 없고 `/tmp/session-run/stall/PRODUCER.state.json`(`state`가 `ended`, `reason`이 `elapsed`, `cancelled` 또는 `run_ended`)에 있습니다.
+
 ## QA 결과 파일
 
 QA는 실행할 때마다 세션 컨테이너의 `/tmp/session-run/qa/latest.json`(마지막 QA)을 쓰고, `status`가 `ok`이면 `/tmp/session-run/qa/history.jsonl`에 한 줄을 더합니다. 다음 항목이 유지됩니다:

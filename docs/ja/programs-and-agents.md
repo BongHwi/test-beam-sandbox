@@ -13,7 +13,7 @@
 | ビーム | `scripts/session_control.sh NAME on\|off\|beam-status [--id ID]` | テキスト（最近のビーム変更。`--id` は on と off に適用） | [セッションコア](session-core.md)、[操作画面](operator-screen.md) |
 | run 制御 | `scripts/session_control.sh NAME stop\|repeat\|terminate [--id ID]` | JSON 一行（`id`、`accepted`、`seq`、`rc_state`、拒否時は理由） | [RunControl 拡張](runcontrol-hook.md)、[自動実行](automation.md) |
 | 状態 | `scripts/session_control.sh NAME status` | 状態ファイルの JSON（`rc_state`、`run.number`、接続） | [自動実行](automation.md) |
-| 次の run の設定 | `scripts/session_control.sh NAME settings --json`, `scripts/session_control.sh NAME set SECTION ITEM VALUE [--id ID]`, `scripts/session_control.sh NAME end-producer PRODUCER [--id ID]` | settings は JSON、set と end-producer はテキスト、終了コード 0、1、2 | [自動実行](automation.md) |
+| 次の run の設定 | `scripts/session_control.sh NAME settings --json`, `scripts/session_control.sh NAME set SECTION ITEM VALUE [--id ID]`, `scripts/session_control.sh NAME end-producer PRODUCER [--id ID]`, `scripts/session_control.sh NAME stall PRODUCER SECONDS|cancel [--id ID]` | settings は JSON、set と end-producer はテキスト、終了コード 0、1、2 | [自動実行](automation.md) |
 | 待機 | `scripts/wait_session.sh NAME ready\|closed` | 終了コード、180 s | [自動実行](automation.md) |
 | 解析 | `scripts/align_session.sh NAME [--run N]`, `scripts/analyze_session.sh NAME [--run N]` | テキストの要約と QA 結果ファイル | [アライメント](alignment.md)、[セッション run](session-run.md)、[操作画面](operator-screen.md) |
 | 記録 | `/tmp/session-run/status.json`, `control-history.jsonl`, `command-history.jsonl`, `run<N>.conf`, `source.sock.beam.log` | JSON、JSON lines、テキスト | [RunControl 拡張](runcontrol-hook.md)、[自動実行](automation.md) |

@@ -46,7 +46,7 @@ docker rm -f public-session
 ## 설정과 producer
 
 - `scripts/session_control.sh NAME settings --json`은 `format`, `next`, `current`를 반환합니다. 각각 run과 장치를 담고 `current`는 `run_number`와 `file`도 담거나 `null`입니다.
-- `set`과 `end-producer`는 성공에 `0`, 잘못된 값이나 없는 프로세스에 `1`, 잘못된 인수나 모르는 항목에 `2`를 반환합니다.
+- `set`, `end-producer`, `stall`은 성공에 `0`, 잘못된 값이나 없는 프로세스나 시작되지 않은 정체에 `1`, 잘못된 인수나 모르는 항목에 `2`를 반환합니다.
 - `command-history.jsonl`에는 `format`, `seq`, `utc`, `monotonic_ns`, `kind`, `id`와 변경한 `section`, `item`, `value`, `previous` 또는 `producer`, `pid`, `signal`, `ended`가 있습니다.
 - `run<number>.conf`는 그 run을 위해 읽은 설정을 보존합니다.
 - QA의 `settings_changed`는 셋업 파일과 다른 항목이며 같으면 빈 목록, 사용할 수 없으면 `null`입니다.

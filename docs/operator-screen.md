@@ -64,6 +64,22 @@ The command takes the producer names shown on the RunControl screen and records 
 
 In one test, the remaining producers and collector continued; a `stop` request was accepted but did not finish. Restarting the ended producer in its pane reconnected it, but it stayed `UNINIT` and did not join another run. To use every device again, keep the output with `docker cp` and start a new session.
 
+## A timed stall within the run
+
+A producer that does not answer the session source for 10 seconds is excluded from the run and cannot return to it ([session source and device loss](session-core.md)), so a stall that ends in the same run is only possible if the producer keeps answering. For practice with a temporary stall, `stall` makes one msensor stop producing events for a given time while it stays connected and `RUNNING`, with the beam unchanged:
+
+```sh
+# MSENSOR_0 produces no events for 90 s of the current run, then continues in the same run.
+scripts/session_control.sh public-session stall MSENSOR_0 90 --id practice-stall
+
+# End the stall early.
+scripts/session_control.sh public-session stall MSENSOR_0 cancel
+```
+
+`SECONDS` is a number above 0 and at most 120. The producer must be an msensor (`MSENSOR_N`) that is connected and `RUNNING` in a running run; ALPIDE planes and the trigger board are not supported. During the stall the data event count of that producer and `run.events` do not increase, the other producers keep counting, and the status field `stalled` of the producer is `1`. The events of the stall are not discarded: they are kept in order and sent after the stall, so the count then rises quickly, and the raw file of the run is closed as one run. A stop request, the end of the run or `cancel` ends the stall; a stall never reaches the next run. The 120 s limit keeps the source within its 200 s lead over the slowest participant. The collector waits for the stalled producer, as in any slow readout; a stall near the limit has not been run end to end in the public images.
+
+The command exits with 0 when the producer started the stall, 1 when it was not started (not running, already stalled, no answer within 5 s) and 2 for invalid arguments. The operation is a line of `command-history.jsonl` with kind `stall`, the producer, the run, the seconds, the id (`operator-stall` without `--id`) and the producer's start time `started_monotonic_ns`; the end is not recorded there but in `/tmp/session-run/stall/PRODUCER.state.json` (`state` `ended` with `reason` `elapsed`, `cancelled` or `run_ended`).
+
 ## QA result files
 
 Each QA writes `/tmp/session-run/qa/latest.json` (the last QA) in the session container and, when its `status` is `ok`, adds one line to `/tmp/session-run/qa/history.jsonl`. These items are kept:

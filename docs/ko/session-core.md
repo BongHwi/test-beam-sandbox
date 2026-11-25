@@ -20,6 +20,8 @@
 
 producer가 연결된 채 응답을 멈추면 상태가 RUNNING으로 남고 그 producer의 event 수는 멈추지만 다른 producer의 수는 계속 늘어날 수 있습니다. 공개 collector는 멈춘 producer를 기다리므로 collector의 수는 멈추고 다른 대기열은 쌓입니다. run을 멈추기 전에 [운영자 화면 안내](operator-screen.md)에 따라 멈춘 producer를 끝냅니다. collector가 남은 장치의 event 조립을 다시 시작할 수 있지만 멈춤 요청 뒤 run은 계속 기다릴 수 있습니다. 멈춤 요청 뒤 남은 producer에 `Stop Error`가 생기고 RunControl이 `ERROR`가 될 수도 있습니다. 시간 초과된 producer가 다시 깨어나면 그 상태가 `ERROR`로 바뀌고 RunControl도 `ERROR`가 될 수 있으며 멈춤 요청이 거부되고 raw 파일이 열린 채 불완전하게 남을 수 있습니다. producer가 멈춘 채로 StopRun을 먼저 요청하면 남은 producer에 `Stop Error`가 발생하고 아직 조립되지 않은 event가 raw 데이터에서 빠질 수 있습니다. 상태를 확인하고 raw 데이터를 보존한 뒤 `docker rm -f public-session`으로 컨테이너를 제거하고 `scripts/start_session.sh --layout /tmp/public-session-layout --name public-session`으로 새 세션을 시작합니다. 세션 source 자체가 사라져도 장치에서 오류가 발생하므로 세션을 다시 시작합니다.
 
+따라서 같은 run에서의 회복은 10초 안에서만 가능합니다. source는 참가자의 마지막 요청 이후 시간으로 제외하므로 SIGSTOP으로 멈췄다가 10초 이상 지나 재개한 producer는 거절되어 `ERROR`가 됩니다. 같은 run에서 이어지는 더 긴 정체는 source에 계속 응답해야 하며, [운영자 화면 안내](operator-screen.md)의 `stall` 명령이 msensor에 대해 이를 수행하고 정체 동안의 event를 정체 뒤를 위해 보관합니다.
+
 유한 예제에서 event, 교차 또는 픽셀 계산 한도에 도달하면 msensor가 `source_finished`를 알리고 `source_limit` 상태 필드에 한도 종류를 표시합니다. 빔이 꺼진 동안 소비한 event도 한도에 포함합니다. RunControl에서 run을 멈추어 정상적으로 닫습니다. source는 그 run을 재개하지 않습니다.
 
 ## 빔과 비교

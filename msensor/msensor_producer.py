@@ -11,6 +11,7 @@ from msensor.codec import encode
 from msensor.device import MSensorDevice
 from msensor.source import SyntheticSource
 from msensor.session_source import SessionSource
+from msensor.stall import Stall
 
 def send_immediately():
     """Disable delayed coalescing of small writes on this process's TCP sockets.
@@ -76,6 +77,12 @@ class MSensorProducer(pyeudaq.Producer):
         source = (SessionSource(self.device.config, self.name) if self.device.config['source'] == 'session'
                   else SyntheticSource(self.device.config))
         self.device.arm(self.GetRunNumber(), source)
+        self._run = self.GetRunNumber()
+        self._stall = None
+        if isinstance(source, SessionSource):
+            self._stall = Stall(os.path.dirname(os.environ['SESSION_SOURCE_SOCKET']), self.name)
+            self._stall.reset()
+            self.SetStatusTag('stalled', '0')
         begin={'readout_mode':self.device.config['readout_mode'],'settings':self.device.detector,'config_hash':self.device.config_hash}
         if self.device.stream:
             begin.update(stream_id=self.device.stream_id,stream_file=self.device.stream.path.name,window_length_ns=self.device.config['window_length_ns'])
@@ -122,7 +129,16 @@ class MSensorProducer(pyeudaq.Producer):
 
     def _session_runloop(self):
         source = self.device.source
+        stalled = False
         while self.running:
+            # A timed stall keeps answering the source (so the producer stays in the run)
+            # but neither processes nor sends events; they are sent after the stall.
+            if self._stall.active(self._run):
+                if not stalled: stalled = True; self.SetStatusTag('stalled', '1')
+                source.poll()
+                time.sleep(.001)
+                continue
+            if stalled: stalled = False; self.SetStatusTag('stalled', '0')
             target = source.watermark_ns()
             if target > self.device.time:
                 self._send(self.device.advance_to(target))
@@ -132,6 +148,7 @@ class MSensorProducer(pyeudaq.Producer):
                 self.SetStatusTag('source_limit', source.limit_reason or 'end_time')
                 self.SetStatusMsg('source_finished')
             time.sleep(.001)
+        self._stall.finish()
         source.stop()
         source.poll()
         if source.end_ns() > self.device.time:
