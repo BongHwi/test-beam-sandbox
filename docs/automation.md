@@ -46,7 +46,7 @@ docker rm -f public-session
 ## Settings and producers
 
 - `scripts/session_control.sh NAME settings --json` returns `format`, `next` and `current`; each has the run and devices, and `current` also has `run_number` and `file`, or is `null`.
-- `set` and `end-producer` return `0` on success, `1` for invalid values or an absent process, and `2` for invalid arguments or unknown items.
+- `set`, `end-producer` and `stall` return `0` on success, `1` for invalid values or an absent process or a stall that did not start, and `2` for invalid arguments or unknown items.
 - `command-history.jsonl` contains `format`, `seq`, `utc`, `monotonic_ns`, `kind`, `id` and the changed `section`, `item`, `value`, `previous`, or the `producer`, `pid`, `signal` and `ended`.
 - `run<number>.conf` keeps the configuration read for that run.
 - QA writes `settings_changed` as the differences from the setup file, an empty list when equal, or `null` when unavailable.

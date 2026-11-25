@@ -20,6 +20,8 @@
 
 producer が接続されたまま応答を停止すると、状態は RUNNING のままでその producer のイベント数は止まりますが、他の producer の数は増え続ける場合があります。公開 collector は停止した producer を待つため、collector の数は止まり、他のキューがたまります。run を停止する前に[オペレーター画面の案内](operator-screen.md)に従って停止した producer を終了します。collector は残りのデバイスのイベントの組み立てを再開できても、停止要求後に run が待機し続ける場合があります。停止要求後、残りの producer に `Stop Error` が発生し、RunControl が `ERROR` になる場合もあります。タイムアウトした producer が再開すると状態が `ERROR` に変わり、RunControl も `ERROR` になって停止要求が拒否され、raw が開いたまま不完全に残る場合があります。producer が停止したまま先に StopRun を要求すると、残りの producer に `Stop Error` が発生し、未組み立てのイベントが raw に含まれない場合があります。状態を確認して raw の結果を保存した後、`docker rm -f public-session` でコンテナーを削除し、`scripts/start_session.sh --layout /tmp/public-session-layout --name public-session` で新しいセッションを開始します。セッションソース自体が消えた場合もデバイスがエラーを報告するため、セッションを再起動します。
 
+したがって同じ run での回復は 10 秒以内に限られます。source は参加者の最後の要求からの時間で除外するため、SIGSTOP で止めて 10 秒以上たってから再開した producer は拒否されて `ERROR` になります。同じ run で続くより長い停滞は source に応答し続ける必要があり、[オペレーター画面ガイド](operator-screen.md)の `stall` コマンドが msensor についてこれを行い、停滞中の event を停滞後のために保持します。
+
 有限の例でイベント、交差、ピクセルの計算上限に達すると、msensor が `source_finished` を通知し、`source_limit` 状態フィールドに上限の種類を表示します。ビームがオフの間に消費したイベントも上限に数えます。RunControl から run を停止して通常どおり閉じます。ソースはその run を再開しません。
 
 ## ビームと比較

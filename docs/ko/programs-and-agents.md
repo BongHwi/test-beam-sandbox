@@ -13,7 +13,7 @@
 | 빔 | `scripts/session_control.sh NAME on\|off\|beam-status [--id ID]` | 글(최근 빔 변경; `--id`는 on과 off에 적용) | [세션 코어](session-core.md), [운영 화면](operator-screen.md) |
 | run 제어 | `scripts/session_control.sh NAME stop\|repeat\|terminate [--id ID]` | JSON 한 줄(`id`, `accepted`, `seq`, `rc_state`, 거절이면 이유) | [RunControl 확장](runcontrol-hook.md), [자동 실행](automation.md) |
 | 상태 | `scripts/session_control.sh NAME status` | 상태 파일 JSON(`rc_state`, `run.number`, 연결) | [자동 실행](automation.md) |
-| 다음 run 설정 | `scripts/session_control.sh NAME settings --json`, `scripts/session_control.sh NAME set SECTION ITEM VALUE [--id ID]`, `scripts/session_control.sh NAME end-producer PRODUCER [--id ID]` | settings는 JSON, set과 end-producer는 글; 종료 코드 0, 1, 2 | [자동 실행](automation.md) |
+| 다음 run 설정 | `scripts/session_control.sh NAME settings --json`, `scripts/session_control.sh NAME set SECTION ITEM VALUE [--id ID]`, `scripts/session_control.sh NAME end-producer PRODUCER [--id ID]`, `scripts/session_control.sh NAME stall PRODUCER SECONDS|cancel [--id ID]` | settings는 JSON, set과 end-producer는 글; 종료 코드 0, 1, 2 | [자동 실행](automation.md) |
 | 기다리기 | `scripts/wait_session.sh NAME ready\|closed` | 종료 코드; 180 s | [자동 실행](automation.md) |
 | 분석 | `scripts/align_session.sh NAME [--run N]`, `scripts/analyze_session.sh NAME [--run N]` | 글 요약과 QA 결과 파일 | [정렬](alignment.md), [세션 run](session-run.md), [운영 화면](operator-screen.md) |
 | 기록 | `/tmp/session-run/status.json`, `control-history.jsonl`, `command-history.jsonl`, `run<N>.conf`, `source.sock.beam.log` | JSON, JSON lines, 글 | [RunControl 확장](runcontrol-hook.md), [자동 실행](automation.md) |
