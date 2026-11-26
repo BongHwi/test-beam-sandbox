@@ -35,13 +35,13 @@ scripts/align_session.sh public-session
 scripts/analyze_session.sh public-session
 ```
 
-세션을 끝내는 방법, nestDAQ 모드(`scripts/build_session.sh --nestdaq`)와 브라우저는 [따라 하기](docs/ko/walkthrough.md)에서 이어집니다.
+세션을 끝내는 방법, nestDAQ 모드(`scripts/build_session.sh --nestdaq`)와 브라우저는 [따라 하기](docs/ko/walkthrough.md)에서 다룹니다.
 
 ## 설명서
 
 ### 운영
 
-- [따라 하기](docs/ko/walkthrough.md): 터미널(EUDAQ, nestDAQ)과 브라우저에서 세션을 단계별로 따라 합니다.
+- [따라 하기](docs/ko/walkthrough.md): 터미널(EUDAQ, nestDAQ)과 브라우저에서 세션을 단계별로 진행합니다.
 - [DAQ 모드](docs/ko/daq-modes.md): EUDAQ 모드와 nestDAQ 모드의 비교, 그리고 샌드박스와 실제 빔 테스트의 대응.
 - [참조](docs/ko/reference.md): 켜져 있는 것, 스크립트, 각 부분이 맞물리는 방식과 저장소 구성.
 - [운영 화면](docs/ko/operator-screen.md): 창과 키, 빔과 run 명령, QA 출력과 결과 파일.

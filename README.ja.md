@@ -35,7 +35,7 @@ scripts/align_session.sh public-session
 scripts/analyze_session.sh public-session
 ```
 
-セッションの終了、nestDAQ モード（`scripts/build_session.sh --nestdaq`）、ブラウザは[ウォークスルー](docs/ja/walkthrough.md)に続きます。
+セッションの終了、nestDAQ モード（`scripts/build_session.sh --nestdaq`）、ブラウザについては[ウォークスルー](docs/ja/walkthrough.md)で説明します。
 
 ## ドキュメント
 
