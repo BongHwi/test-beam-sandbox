@@ -44,7 +44,7 @@ The `[nestdaq]` section can also add a virtual trigger board with `trigger_board
 
 ## Start a session
 
-Start with `scripts/start_session.sh --setup FILE --name public-session`; the image is selected automatically. With `--no-attach` the terminal stays free, as in the README. The `NESTDAQ` tmux session has seven windows: `redis` for Redis, `webctl` for run control, `slowdash` for time series, `runners` for msensor and trigger board runners, `sources` for input devices, `sink` for FileSink and `dqm` for monitoring. `scripts/attach_session.sh public-session` attaches to `NESTDAQ:runners`; `Ctrl-b` and then `d` leaves it. A runner that exits restarts after 2 seconds.
+Start with `scripts/start_session.sh --setup FILE --name public-session`; the image is selected automatically. With `--no-attach` the terminal stays free, as in the [walkthrough](walkthrough.md). The `NESTDAQ` tmux session has seven windows: `redis` for Redis, `webctl` for run control, `slowdash` for time series, `runners` for msensor and trigger board runners, `sources` for input devices, `sink` for FileSink and `dqm` for monitoring. `scripts/attach_session.sh public-session` attaches to `NESTDAQ:runners`; `Ctrl-b` and then `d` leaves it. A runner that exits restarts after 2 seconds.
 
 ## Runs
 

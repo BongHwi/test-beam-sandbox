@@ -43,7 +43,7 @@ nestDAQ モードでは msensor にノイズ hit も出させることができ�
 
 ## セッションの開始
 
-`scripts/start_session.sh --setup FILE --name public-session` で開始するとイメージが自動で選ばれます。`--no-attach` を使うと README のようにターミナルをそのまま使えます。tmux の `NESTDAQ` には七つのウィンドウがあります。`redis` は Redis、`webctl` は run 制御、`slowdash` は時系列、`runners` は msensor と trigger ボードの実行器、`sources` は入力デバイス、`sink` は FileSink、`dqm` は監視を担当します。`scripts/attach_session.sh public-session` は `NESTDAQ:runners` に接続します。`Ctrl-b`、次に `d` を押すと離れます。実行器が終了すると 2 秒後に再起動します。
+`scripts/start_session.sh --setup FILE --name public-session` で開始するとイメージが自動で選ばれます。`--no-attach` を使うと[ウォークスルー](walkthrough.md)のようにターミナルをそのまま使えます。tmux の `NESTDAQ` には七つのウィンドウがあります。`redis` は Redis、`webctl` は run 制御、`slowdash` は時系列、`runners` は msensor と trigger ボードの実行器、`sources` は入力デバイス、`sink` は FileSink、`dqm` は監視を担当します。`scripts/attach_session.sh public-session` は `NESTDAQ:runners` に接続します。`Ctrl-b`、次に `d` を押すと離れます。実行器が終了すると 2 秒後に再起動します。
 
 ## Run
 

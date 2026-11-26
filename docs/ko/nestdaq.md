@@ -43,7 +43,7 @@ nestDAQ 모드에서는 msensor가 노이즈 hit도 내게 할 수 있습니다.
 
 ## 세션 시작
 
-`scripts/start_session.sh --setup FILE --name public-session`으로 시작하면 이미지를 자동으로 고릅니다. `--no-attach`를 쓰면 README처럼 터미널을 그대로 쓸 수 있습니다. tmux의 `NESTDAQ`에는 일곱 창이 있습니다. `redis`는 Redis, `webctl`은 run 제어, `slowdash`는 시계열, `runners`는 msensor와 trigger 보드 실행기, `sources`는 입력 장치, `sink`는 FileSink, `dqm`은 모니터링을 담당합니다. `scripts/attach_session.sh public-session`은 `NESTDAQ:runners`에 붙습니다. `Ctrl-b`를 누르고 `d`를 누르면 나갑니다. 실행기가 종료되면 2초 후 다시 시작합니다.
+`scripts/start_session.sh --setup FILE --name public-session`으로 시작하면 이미지를 자동으로 고릅니다. `--no-attach`를 쓰면 [따라 하기](walkthrough.md)처럼 터미널을 그대로 쓸 수 있습니다. tmux의 `NESTDAQ`에는 일곱 창이 있습니다. `redis`는 Redis, `webctl`은 run 제어, `slowdash`는 시계열, `runners`는 msensor와 trigger 보드 실행기, `sources`는 입력 장치, `sink`는 FileSink, `dqm`은 모니터링을 담당합니다. `scripts/attach_session.sh public-session`은 `NESTDAQ:runners`에 붙습니다. `Ctrl-b`를 누르고 `d`를 누르면 나갑니다. 실행기가 종료되면 2초 후 다시 시작합니다.
 
 ## Run
 

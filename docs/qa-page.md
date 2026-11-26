@@ -55,7 +55,7 @@ The tab shows the text of one window of the session's operator screen: `rc` (Run
 
 `R` and `T` run `scripts/session_control.sh public-session repeat --id page-repeat` and `terminate --id page-terminate`, which send the RunControl requests through the control socket; `Q` sends the key to the RunControl window with `docker exec public-session tmux send-keys -t ITS3:rc Q`. `R` repeats the current configuration, `T` terminates the sequence and `Q` exits after termination. Each button shows its command; `T` and `Q` ask for a confirmation on the page.
 
-To finish a session, follow the README order: `T`, `Q`, then "Copy the output", which runs `docker cp public-session:/tmp/session-run outputs/public-session-TIME` into a new folder under `outputs/` of the repository (TIME is the UTC time), then "Remove the container", which runs `docker rm -f public-session` after a confirmation on the page. Only a session container of this repository can be removed. The page then returns to the setup tab.
+To finish a session, follow the order of the [walkthrough](walkthrough.md): `T`, `Q`, then "Copy the output", which runs `docker cp public-session:/tmp/session-run outputs/public-session-TIME` into a new folder under `outputs/` of the repository (TIME is the UTC time), then "Remove the container", which runs `docker rm -f public-session` after a confirmation on the page. Only a session container of this repository can be removed. The page then returns to the setup tab.
 
 ## Operations
 
