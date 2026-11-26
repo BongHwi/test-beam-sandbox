@@ -6,7 +6,7 @@
 
 セッションはセットアップファイルで選んだ二つの公開データ取得フレームワークの一つでデータを取得します:
 - EUDAQ（`[run] daq = eudaq`、既定）は公開 EUDAQ で仮想 ALPIDE 基準面、msensor、仮想 trigger ボードを読みます。ALPIDE producer、trigger producer、data collector はそのまま使い、RunControl はこのリポジトリの状態・制御の拡張とともに動きます。[公式リポジトリ](https://gitlab.cern.ch/corryvreckan/corryvreckan)の master commit `22fca3e43ceec7ba6263a5cf179cd57d5fff42fe` からビルドした公開解析ソフトウェア Corryvreckan が面をアライメントし、粒子のトラックを再構成して DUT がそれをどの程度効率よく検出するかを測定します。
-- nestDAQ（`[run] daq = nestdaq`）は nestDAQ デバイスですべての msensor を continuous または triggered stream として読みます。msensor ごとの入力デバイス、frame を保存する FileSink、hit map を埋めて msensor の trigger を対応づけるモニター（DQM）を使います。daq-webctl は run を制御し、SlowDash は時系列を表示します。任意の仮想 trigger ボード（`trigger_board = on`）は、すべての msensor に周期 trigger を受け取らせて時間 frame の境界を示し、ビームラインの物理 trigger は専用のボード stream に記録します。
+- nestDAQ（`[run] daq = nestdaq`）は nestDAQ デバイスですべての msensor を continuous または triggered stream として読みます。msensor ごとの入力デバイス、frame を保存する FileSink、hit map を埋めて msensor の trigger を対応づけるモニター（DQM）を使います。daq-webctl は run を制御し、SlowDash は時系列を表示します。仮想 trigger ボード（`trigger_board = on`、任意）は、すべての msensor に周期 trigger を送って時間 frame の境界を示し、ビームラインの物理 trigger を専用のボード stream に記録します。
 
 オペレーターがデータ取得と解析のフローを習得する用途だけでなく、取得を制御する自動化プログラムの開発・テストにも利用できます。すべての応答はシミュレーションによる合成データであり、実機の測定値ではありません。
 
@@ -14,7 +14,7 @@
 
 ## 動作環境
 
-Linux コンテナーを実行する Docker が動いている Linux または macOS、Python 3、40 GiB 以上の空き容量が必要です。ビルドにはインターネットが必要で、セッションはネットワークなしで動きます。ビルドは Docker デーモンのアーキテクチャ（arm64 または amd64）を選び、最大 4 ジョブと 8 GiB のメモリを使います。ホストでは Python 3.9 以降で追加パッケージなしに結果ページと nestDAQ モードの抽出ツール、frame builder を実行します。macOS では最初の `python3` がコマンドライン開発者ツールのインストールを求めることがあります。
+Linux コンテナーを実行する Docker が動いている Linux または macOS、Python 3、40 GiB 以上の空き容量が必要です。ビルドにはインターネットが必要で、セッションはネットワークなしで動きます。ビルドは Docker デーモンのアーキテクチャ（arm64 または amd64）を選び、最大 4 ジョブと 8 GiB のメモリを使います。ホストでは Python 3.9 以降で追加パッケージなしに結果ページと nestDAQ モードの抽出ツールおよび frame builder を実行します。macOS では最初の `python3` がコマンドライン開発者ツールのインストールを求めることがあります。
 
 ## DAQ モード
 
@@ -128,7 +128,7 @@ scripts/session_control.sh public-session on
 scripts/session_control.sh public-session nestdaq start
 ```
 
-仮想 trigger ボードを加えるには、`configs/setups/nestdaq-board.ini` から始めるか、`[nestdaq]` に `trigger_board = on` と `periodic_clk` を設定します。すると、すべての msensor が 100.5 MHz のボード時計で `periodic_clk` サイクルごとに周期 trigger を受け取り、実行器 `TRIGGERBOARD_0` が周期 trigger と物理 trigger を（シンチレーターパターンとともに）専用の stream に保存します。この設定がなければ、セッションはこれまでどおり動きます。
+仮想 trigger ボードを加えるには、`configs/setups/nestdaq-board.ini` から始めるか、`[nestdaq]` に `trigger_board = on` と `periodic_clk` を設定します。すると、すべての msensor が 100.5 MHz のボード時計で `periodic_clk` サイクルごとに周期 trigger を受け取り、`TRIGGERBOARD_0` 実行器が周期 trigger と物理 trigger をそれぞれのシンチレーターパターンとともに専用の stream に保存します。この設定がなければ、セッションはこれまでどおり動きます。
 
 #### 2. 監視
 
@@ -146,7 +146,7 @@ scripts/session_control.sh public-session nestdaq qa
 
 #### 3. 終了
 
-run を止めると、残りのデータは run が止まる前に保存され、次の `nestdaq start` は新しい run を開始します。出力をコピーしてコンテナーを削除し、このコンピューターで msensor ごと、および trigger ボードの msraw stream を抽出します。trigger ボードを使った場合は時間 frame も作ります。各ツールは JSON の要約を表示します。
+run を止めると、残りのデータは run が止まる前に保存され、次の `nestdaq start` は新しい run を開始します。出力をコピーしてコンテナーを削除し、このコンピューターで各 msensor と trigger ボードの msraw stream を抽出します。trigger ボードを使った場合は時間 frame も作ります。各ツールは JSON の要約を表示します。
 
 ```sh
 # run を止めます。
@@ -158,10 +158,10 @@ docker cp public-session:/tmp/session-run ./session-output
 # セッションのコンテナーとその中のすべてを削除します。
 docker rm -f public-session
 
-# run 1 の msensor ごと、および trigger ボードの msraw stream を抽出します。
+# run 1 の各 msensor と trigger ボードの msraw stream を抽出します。
 python3 -m nestdaq_mode.extract session-output/nestdaq/data/run000001.dat extracted
 
-# trigger ボードを使った場合: 周期 trigger ごとの時間 frame を作ります。frame ごとに JSON 一行です。
+# trigger ボードを使った場合: 周期 trigger ごとの時間 frame を作ります。frame ごとに 1 行の JSON です。
 python3 -m nestdaq_mode.framebuilder --dir extracted --out frames.jsonl
 ```
 
@@ -183,7 +183,7 @@ EUDAQ セッション:
 5. 同じカードで "出力をコピー"（`docker cp public-session:/tmp/session-run outputs/public-session-UTCTIME`）、次に "コンテナーを削除"（`docker rm -f public-session`）を押します。DAQ 画面タブでも同じ手順を実行できます。
 nestDAQ セッション:
 
-1. セットアップタブで `nestdaq.ini` を選び（trigger ボードを使うには `nestdaq-board.ini`）、"セッションを開始" を押します（`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`）。
+1. セットアップタブで `nestdaq.ini` を選び（trigger ボードを使う場合は `nestdaq-board.ini`）、"セッションを開始" を押します（`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`）。
 2. 実験タブで "ビームをオン" を押します（`scripts/session_control.sh public-session on --id page-on`）。
 3. nestDAQ タブで "Start" を押します（`scripts/session_control.sh public-session nestdaq start`）。画面リンクは daq-webctl、SlowDash、DQM を開きます。run を終えるには "Stop" を押します（`scripts/session_control.sh public-session nestdaq stop`）。
 4. 実験タブで EUDAQ セッションと同じように "出力をコピー"、次に "コンテナーを削除" を押します。
@@ -227,7 +227,7 @@ nestDAQ セッション:
 | ビームと run | `scripts/session_control.sh` | ビームをオンとオフにして状態を表示します; EUDAQ モードでは run を止め、繰り返し、終え、次の run の設定を変更し、応答しなくなった producer を終了します; nestDAQ モードでは run を開始し、止め、DQM の数値を表示します |
 | 解析 | `scripts/align_session.sh` | 解析のジオメトリをデータに合わせます（EUDAQ モード） |
 | 解析 | `scripts/analyze_session.sh` | 現在の run か閉じた run の QA をします（EUDAQ モード） |
-| データ | `python3 -m nestdaq_mode.extract` | nestDAQ モードで保存したファイルから msensor ごと、および trigger ボードの msraw stream を抽出します |
+| データ | `python3 -m nestdaq_mode.extract` | nestDAQ モードで保存したファイルから各 msensor と trigger ボードの msraw stream を抽出します |
 | データ | `python3 -m nestdaq_mode.framebuilder` | 抽出した stream または保存したファイルから、周期 trigger ごとの時間 frame を作ります（trigger ボード） |
 | 結果ページ | `scripts/qa_page.sh` | ページサーバーを起動し、止めます |
 | 自動化 | `scripts/wait_session.sh` | 有限の例が終わるか、セッションが終わるまで待ちます |
@@ -281,7 +281,7 @@ flowchart TB
     end
 
     frames[("msraw frame")]
-    ext["抽出ツール<br/>msensor とボードごとに一つの msraw stream"]
+    ext["抽出ツール<br/>各 msensor とボードに一つずつの msraw stream"]
     fb["frame builder<br/>周期 trigger ごとの時間 frame"]
 
     op -. "ビーム on / off" .-> bc
@@ -354,7 +354,7 @@ flowchart TB
 
 - [操作画面](docs/ja/operator-screen.md): ウィンドウとキー、ビームと run のコマンド、QA の出力と結果ファイル。
 - [セットアップファイル](docs/ja/setup-file.md): デバイス、設定、run の長さ、ビームと `scripts/setup_session.sh`。
-- [nestDAQ モード](docs/ja/nestdaq.md): nestDAQ で msensor を読むセッションのセットアップ、任意の trigger ボード、run、画面、データ、frame builder、制約。
+- [nestDAQ モード](docs/ja/nestdaq.md): nestDAQ で msensor を読むセッションのセットアップ、trigger ボード（任意）、run、画面、データ、frame builder、制約。
 - [アライメント](docs/ja/alignment.md): デバイスの位置をなぜ、どう求めるか。
 - [結果ページ](docs/ja/qa-page.md): ブラウザのページ。
 - [trigger](docs/ja/trigger.md): trigger シンチレーターと trigger 条件。
