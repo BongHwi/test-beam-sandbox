@@ -6,7 +6,7 @@ This repository is an environment for practicing the data taking and the analysi
 
 A session takes data with one of two public data-acquisition frameworks, chosen in the setup file:
 - EUDAQ (`[run] daq = eudaq`, the default) reads the virtual ALPIDE reference planes, the msensors and the virtual trigger board with public EUDAQ: its ALPIDE producer, trigger producer and data collector are used unchanged, and its RunControl runs with the status and control extensions of this repository. The public analysis software Corryvreckan, built from its [official repository](https://gitlab.cern.ch/corryvreckan/corryvreckan) at master commit `22fca3e43ceec7ba6263a5cf179cd57d5fff42fe`, then aligns the planes, reconstructs particle tracks and measures how efficiently the DUT detects them.
-- nestDAQ (`[run] daq = nestdaq`) reads every msensor as a continuous or triggered stream with nestDAQ devices: an input device for each msensor, FileSink to store the frames and a monitor (DQM) that fills hit maps and pairs the triggers of the msensors. daq-webctl controls the runs, and SlowDash shows time series.
+- nestDAQ (`[run] daq = nestdaq`) reads every msensor as a continuous or triggered stream with nestDAQ devices: an input device for each msensor, FileSink to store the frames and a monitor (DQM) that fills hit maps and pairs the triggers of the msensors. daq-webctl controls the runs, and SlowDash shows time series. An optional virtual trigger board (`trigger_board = on`) gives every msensor a periodic trigger, which marks the borders of time frames, and writes the physics triggers of the beamline to a board stream of its own.
 
 Use it to learn acquisition and analysis procedures or to develop and test automation that operates acquisitions. All responses are synthetic; they are not measurements from real equipment.
 
@@ -14,7 +14,7 @@ Use it to learn acquisition and analysis procedures or to develop and test autom
 
 ## Requirements
 
-Linux or macOS with Docker running Linux containers, Python 3 and at least 40 GiB of free space are required. The build needs Internet access; a session runs without network access. The build selects the Docker daemon architecture (arm64 or amd64) and uses at most 4 jobs and 8 GiB of memory. On the host, Python 3.9 or later runs the result page and the extraction tool of the nestDAQ mode without further packages; on macOS the first `python3` may ask to install the command line developer tools.
+Linux or macOS with Docker running Linux containers, Python 3 and at least 40 GiB of free space are required. The build needs Internet access; a session runs without network access. The build selects the Docker daemon architecture (arm64 or amd64) and uses at most 4 jobs and 8 GiB of memory. On the host, Python 3.9 or later runs the result page, the extraction tool and the frame builder of the nestDAQ mode without further packages; on macOS the first `python3` may ask to install the command line developer tools.
 
 ## DAQ modes
 
@@ -128,6 +128,8 @@ scripts/session_control.sh public-session on
 scripts/session_control.sh public-session nestdaq start
 ```
 
+To add the virtual trigger board, start from `configs/setups/nestdaq-board.ini` instead, or set `trigger_board = on` and `periodic_clk` in `[nestdaq]`. Every msensor then receives a periodic trigger every `periodic_clk` cycles of the 100.5 MHz board clock, and a runner `TRIGGERBOARD_0` stores the periodic triggers and the physics triggers, with the scintillator pattern of each, in a stream of its own. Without the setting, a session runs as before.
+
 #### 2. Monitor
 
 The status shows the run, the devices and, for each msensor, the frames sent and the DQM copies dropped. The nestDAQ tab of the page shows these and the frames written by each runner, and links to daq-webctl, SlowDash and the DQM; `scripts/qa_page.sh public-session` opens it. `nestdaq qa` prints the numbers of the DQM, which the QA tab of the page also shows; the DQM hit maps and the trigger pairing are described in [nestDAQ mode](docs/nestdaq.md).
@@ -144,7 +146,7 @@ scripts/session_control.sh public-session nestdaq qa
 
 #### 3. Finish
 
-Stop the run; the remaining data are stored before the run stops, and the next `nestdaq start` begins a new run. Then copy the output, remove the container and extract the msraw stream of each msensor on this computer; the tool prints a summary in JSON.
+Stop the run; the remaining data are stored before the run stops, and the next `nestdaq start` begins a new run. Then copy the output, remove the container and extract the msraw stream of each msensor, and of the trigger board, on this computer; with the trigger board, build the time frames. Each tool prints a summary in JSON.
 
 ```sh
 # Stop the run.
@@ -156,8 +158,11 @@ docker cp public-session:/tmp/session-run ./session-output
 # Remove the session container and everything in it.
 docker rm -f public-session
 
-# Extract the msraw stream of each msensor in run 1.
+# Extract the msraw stream of each msensor, and of the trigger board, in run 1.
 python3 -m nestdaq_mode.extract session-output/nestdaq/data/run000001.dat extracted
+
+# With the trigger board: build time frames at the periodic triggers, one JSON line for each frame.
+python3 -m nestdaq_mode.framebuilder --dir extracted --out frames.jsonl
 ```
 
 `terminate` and the keys `T` and `Q` belong to the EUDAQ RunControl; a nestDAQ session rejects `terminate`. Setup items, runs, screens, data and limits are in [nestDAQ mode](docs/nestdaq.md).
@@ -179,7 +184,7 @@ For an EUDAQ session:
 
 For a nestDAQ session:
 
-1. Setup tab: choose `nestdaq.ini` and press "Start the session" (`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`).
+1. Setup tab: choose `nestdaq.ini` (`nestdaq-board.ini` for the trigger board) and press "Start the session" (`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`).
 2. Experiment tab: press "Turn the beam on" (`scripts/session_control.sh public-session on --id page-on`).
 3. nestDAQ tab: press "Start" (`scripts/session_control.sh public-session nestdaq start`); the screen links open daq-webctl, SlowDash and the DQM. Press "Stop" (`scripts/session_control.sh public-session nestdaq stop`) to end the run.
 4. Experiment tab: press "Copy the output", then "Remove the container", as for an EUDAQ session.
@@ -204,7 +209,7 @@ Stop the page server with `scripts/qa_page.sh --stop`. To watch a session starte
 |---|---|---|---|
 | Images | `scripts/build_session.sh` (nothing runs) | | they stay until they are built again |
 | Session: one container with the simulated beam and the DAQ of the setup file; in the EUDAQ mode RunControl, producers and data collector | `scripts/start_session.sh` | `docker rm -f NAME` | output not copied out with `docker cp` before removal is lost |
-| nestDAQ processes in the nestDAQ mode: Redis, daq-webctl, SlowDash, msensor runners, input devices, FileSink and DQM in the `NESTDAQ` tmux session of the container | `scripts/start_session.sh` | `docker rm -f NAME` | stored files in `/tmp/session-run/nestdaq/data/` of the container, lost with it unless copied out |
+| nestDAQ processes in the nestDAQ mode: Redis, daq-webctl, SlowDash, msensor runners, the trigger board runner (with `trigger_board = on`), input devices, FileSink and DQM in the `NESTDAQ` tmux session of the container | `scripts/start_session.sh` | `docker rm -f NAME` | stored files in `/tmp/session-run/nestdaq/data/` of the container, lost with it unless copied out |
 | nestDAQ run | `scripts/session_control.sh NAME nestdaq start` | `scripts/session_control.sh NAME nestdaq stop` | |
 | Beam | `scripts/session_control.sh NAME on` (a session starts with the beam off) | `scripts/session_control.sh NAME off` | |
 | Page server: a process on this computer, outside the container | `scripts/qa_page.sh` | `scripts/qa_page.sh --stop` | it keeps running when the session is removed |
@@ -223,7 +228,8 @@ Stop the page server with `scripts/qa_page.sh --stop`. To watch a session starte
 | Beam and run | `scripts/session_control.sh` | turn the beam on and off and show the status; in the EUDAQ mode stop, repeat or terminate runs, change settings for the next run and end a stalled producer; in the nestDAQ mode start and stop runs and print the DQM numbers |
 | Analysis | `scripts/align_session.sh` | align the analysis geometry with the data (EUDAQ mode) |
 | Analysis | `scripts/analyze_session.sh` | QA of the current run or of a closed run (EUDAQ mode) |
-| Data | `python3 -m nestdaq_mode.extract` | extract the msraw stream of each msensor from a file stored in the nestDAQ mode |
+| Data | `python3 -m nestdaq_mode.extract` | extract the msraw stream of each msensor, and of the trigger board, from a file stored in the nestDAQ mode |
+| Data | `python3 -m nestdaq_mode.framebuilder` | build time frames at the periodic triggers from the extracted streams or from a stored file (trigger board) |
 | Result page | `scripts/qa_page.sh` | start and stop the page server |
 | Automation | `scripts/wait_session.sh` | wait until the finite example has finished or the session has ended |
 
@@ -267,6 +273,8 @@ flowchart TB
 
     subgraph NDQ["nestDAQ mode: data acquisition with public nestDAQ"]
         ru["msensor runners<br/>one stream for each msensor"]
+        br["Trigger board runner<br/>optional: periodic and physics triggers"]
+        bsrc["Board input device<br/>file, no DQM copy"]
         src["Input devices<br/>file or TCP, one for each msensor"]
         fs(["FileSink<br/>public, used unchanged"])
         dqm["msensor DQM<br/>hit maps and trigger pairing"]
@@ -274,7 +282,8 @@ flowchart TB
     end
 
     frames[("msraw frames")]
-    ext["Extraction tool<br/>one msraw stream for each msensor"]
+    ext["Extraction tool<br/>one msraw stream for each msensor and for the board"]
+    fb["Frame builder<br/>time frames at the periodic triggers"]
 
     op -. "beam on / off" .-> bc
     op -. "start, status, stop" .-> rc
@@ -305,6 +314,10 @@ flowchart TB
     corry --> res
     ms --> ru
     ru --> src
+    core -- "accepted triggers" --> br
+    br --> bsrc
+    bsrc --> fs
+    wc -. "run commands" .-> bsrc
     wc -. "run commands" .-> src
     wc -. "run commands" .-> fs
     wc -. "run commands" .-> dqm
@@ -312,6 +325,7 @@ flowchart TB
     src --> dqm
     fs --> frames
     frames --> ext
+    ext --> fb
 ```
 
 Rectangles are components of this repository; rounded boxes are public software used unchanged. Solid arrows carry data, dashed arrows carry control. A session uses either the EUDAQ box or the nestDAQ box, as its setup file says; the beamline, the devices and the result page are the same for both. The result page is optional: it shows the state and the results and runs the same commands as the terminal, and setup files are edited there with the checks of the setup tool.
@@ -327,7 +341,7 @@ The build fixes the versions of the public software, among them EUDAQ commit `bf
 - `virtual_alpide/`: virtual ALPIDE board.
 - `virtual_trigger/`: virtual trigger board.
 - `msensor/`: msensor device, its producer and its runner.
-- `nestdaq_mode/`: nestDAQ mode: session start, run control, input devices, DQM and the extraction tool.
+- `nestdaq_mode/`: nestDAQ mode: session start, run control, input devices, trigger board runner, DQM, the extraction tool and the frame builder.
 - `runcontrol/`: RunControl extensions and the patches applied to EUDAQ.
 - `eudaq_module/`: msensor converter for EUDAQ.
 - `integration/`: layouts and Corryvreckan modules.
@@ -342,7 +356,7 @@ The build fixes the versions of the public software, among them EUDAQ commit `bf
 
 - [Operator screen](docs/operator-screen.md): windows and keys, beam and run commands, QA output and result files.
 - [Setup file](docs/setup-file.md): devices, settings, run length, beam and `scripts/setup_session.sh`.
-- [nestDAQ mode](docs/nestdaq.md): sessions that read the msensors with nestDAQ: setups, runs, screens, data and limits.
+- [nestDAQ mode](docs/nestdaq.md): sessions that read the msensors with nestDAQ: setups, the optional trigger board, runs, screens, data, the frame builder and limits.
 - [Alignment](docs/alignment.md): why and how the device positions are found.
 - [Result page](docs/qa-page.md): the browser page.
 - [Trigger](docs/trigger.md): trigger scintillators and the trigger condition.
