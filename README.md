@@ -24,7 +24,7 @@ Both modes use the same simulated beam, setup files, scripts and result page. Th
 |---|---|---|
 | Setup file | `[run] daq = eudaq` (the default) | `[run] daq = nestdaq` |
 | Images | `scripts/build_session.sh` | also `scripts/build_session.sh --nestdaq` |
-| Example setups in `configs/setups/` | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini` |
+| Example setups in `configs/setups/` | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | Devices read | ALPIDE reference planes, msensors and the trigger board | msensors; the ALPIDE planes stay in the beam as material |
 | Trigger | scintillators and the trigger condition of the setup file | the triggers of the simulated beamline; no scintillators or trigger board |
 | Run control | public RunControl screen and `scripts/session_control.sh` | daq-webctl and `scripts/session_control.sh NAME nestdaq` |

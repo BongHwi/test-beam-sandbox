@@ -26,17 +26,20 @@ EUDAQ 모드와 비교하면:
 | `nestdaq-clocks.ini` | 자기 시계로 동작하는 msensor |
 | `nestdaq-missed.ini` | 일부 trigger를 놓치는 msensor |
 | `nestdaq-telescope.ini` | 기준 msensor 여섯 개와 DUT msensor 한 개로 된 telescope |
+| `nestdaq-board.ini` | 가상 trigger 보드를 쓰는 msensor 두 개: 주기 trigger와 보드 stream |
 
 `[run] daq = nestdaq`로 설정합니다. `[nestdaq] input = file | socket`으로 입력을 고르고 `frame_ms`로 frame을 설정하며 `send_buffer_mb`는 socket 입력에만 적용합니다. 모든 항목은 [셋업 파일 설명](setup-file.md)을 참조합니다.
 
 msensor마다 자기 시계로 동작하게 할 수 있습니다. `[msensor N]` 섹션에서 `clock_offset_ns`는 세션 시계가 0일 때 그 msensor 시계가 가리키는 값이고, `clock_drift_ppm`은 그 시계가 얼마나 빨리 가는지를 ppm(백만분율) 단위로 정합니다. 두 키는 `daq = nestdaq`에서만 쓰며 기본값 0은 세션과 공유하는 시계입니다. 이때 msensor는 window, frame, trigger 시각을 자기 시계로 세므로 msensor끼리 window 번호가 맞지 않습니다. trigger 번호는 모두에게 공통입니다. 예시는 `configs/setups/nestdaq-clocks.ini`에 있습니다.
 
-msensor가 일부러 trigger를 놓치게 할 수도 있습니다. `[msensor N]` 섹션의 `missed_triggers`에는 이 msensor가 보지 못하는 세션 trigger 번호를 적으며, 번호는 run마다 0부터 셉니다. 그러면 msensor는 그 trigger의 레코드를 쓰지 않고, 놓친 trigger 하나마다 뒤의 trigger 번호를 하나씩 낮춰 붙입니다. trigger를 스스로 세는 센서가 그렇게 하기 때문입니다. 그래서 처음 놓친 trigger부터는 그 msensor의 trigger 번호가 다른 msensor와 맞지 않습니다. 이 키는 `daq = nestdaq`에서만 씁니다. 예시는 `configs/setups/nestdaq-missed.ini`에 있습니다.
+msensor가 일부러 trigger를 놓치게 할 수도 있습니다. `[msensor N]` 섹션의 `missed_triggers`에는 이 msensor가 보지 못하는 세션 trigger 번호를 적으며, 번호는 run마다 0부터 셉니다. 그러면 msensor는 그 trigger의 레코드를 쓰지 않고, 놓친 trigger 하나마다 뒤의 trigger 번호를 하나씩 낮춰 붙입니다. trigger를 스스로 세는 센서가 그렇게 하기 때문입니다. 그래서 처음 놓친 trigger부터는 그 msensor의 trigger 번호가 다른 msensor와 맞지 않습니다. 이 키는 `daq = nestdaq`에서만 씁니다. trigger 보드를 켜면(아래 참조) 이 번호는 주기 trigger의 번호입니다. 예시는 `configs/setups/nestdaq-missed.ini`에 있습니다.
 
 nestDAQ 모드에서는 msensor가 노이즈 hit도 내게 할 수 있습니다. `[msensor N]` 섹션에 `noise = on`을 쓰면 msensor의 기본 응답을 쓰며, 그 노이즈 발생률은 `threshold_dac`를 낮출수록 커집니다. 기본값 `noise = off`에서는 EUDAQ 모드와 같이 노이즈 hit가 없습니다.
 
 데이터 경로의 부하 시험에는 `[nestdaq]` 섹션의 `generator_mb_s`를 씁니다. 0보다 크면 모든 msensor 실행기를 발생기로 바꾸며, 발생기는 빔 시뮬레이션 없이 주기적인 trigger와 함께 msensor당 약 그만큼의 MB/s로 올바른 msensor raw frame을 씁니다. 모든 msensor는 continuous readout이어야 합니다. 데이터에 물리적 의미가 없으므로 이 모드에서는 DQM correlation이 의미가 없습니다.
 `configs/setups/nestdaq-telescope.ini`의 telescope에서는 가장 상류의 msensor를 뺀 나머지가 각자 자기 시계로 동작합니다. msensor마다 자기 실행기와 입력 장치가 있고 모두 같은 FileSink와 DQM으로 데이터를 보냅니다. DQM은 msensor마다 가장 상류의 msensor와 짝을 짓습니다.
+
+`[nestdaq]` 섹션에 `trigger_board = on`을 쓰면 가상 trigger 보드를 더할 수 있습니다. 기본값 `off`에서는 위의 내용이 모두 그대로입니다. 보드를 켜면 모든 msensor가 입자마다 하나씩 받던 trigger 대신 주기 trigger를 받습니다. run마다 0부터 세는 k번째 주기 trigger는 run 시작 후 100.5 MHz 보드 시계로 (k + 1) × `periodic_clk` 사이클째에 옵니다. `periodic_clk`는 10000에서 1005000000까지이며 기본값 1005000은 10 ms입니다. 주기는 모든 msensor의 window 하나 이상이어야 합니다. hit는 여전히 모든 입자에서 나옵니다. 각 msensor는 주기 trigger를 자기 시계로 TRIGGER 레코드에 쓰므로, 시계가 다르면 번호가 같은 주기 trigger도 시각이 다릅니다. 모든 msensor는 continuous readout이어야 하며 `generator_mb_s`는 보드와 함께 쓸 수 없습니다. 이 모드에서는 scintillator와 `[trigger]`를 쓸 수 있으며, 어느 입자가 물리 trigger인지를 이것들이 정합니다. scintillator가 없으면 모든 입자가 패턴 0인 물리 trigger입니다. 보드 실행기 `TRIGGERBOARD_0`는 세션이 받아들인 물리 trigger를 읽어 주기 trigger와 함께 보드 stream으로 씁니다. 이 stream은 자기 입력 장치를 거쳐 DQM 복사본 없이 FileSink에 도달합니다. 예시는 `configs/setups/nestdaq-board.ini`에 있습니다.
 
 ## 세션 시작
 
@@ -67,6 +70,8 @@ DQM은 다른 msensor마다 그 trigger를 가장 상류의 msensor(z가 가장 
 데이터는 실행기에서 입력 장치를 거쳐 FileSink로 갑니다. `socket`에서는 실행기가 컨테이너 포트 `18600 + N`으로 보내며 수신이 느리면 frame을 버리고 그 수를 셉니다. `file`은 실행기의 파일을 읽습니다. 저장 파일은 컨테이너의 `/tmp/session-run/nestdaq/data/`에 run마다 하나씩 있으며 `run000001.dat`와 같은 이름입니다. `docker cp NAME:/tmp/session-run ./session-output`으로 복사한 뒤 호스트의 저장소 맨 위 디렉터리에서 `python3 -m nestdaq_mode.extract session-output/nestdaq/data/run000001.dat OUTDIR`을 실행합니다. msensor마다 msraw stream을 OUTDIR의 별도 파일에 쓰고 JSON 요약을 출력합니다. Extract는 완전한 데이터에 0, 불완전하거나 누락된 frame에 3, 형식이나 입출력 오류에 2를 반환합니다. 호스트의 Python 3, 버전 3.9 이상으로 실행하며 추가 패키지가 필요하지 않습니다.
 
 msraw stream에는 헤더와 다섯 레코드 종류 `TILE_DATA`, `TRIGGER`, `TICK`, `TILE_STATUS`, `END`가 있으며 `TICK`이 frame을 끝냅니다. 메시지는 SubTimeFrame 헤더와 `META`, frame, `END` 데이터를 담습니다.
+
+trigger 보드를 쓰면 run은 보드 stream도 저장하며, `extract`가 이를 `TRIGGERBOARD_0_runN.msraw`로 씁니다. 이 stream은 msraw stream의 컨테이너를 쓰며, 메타데이터 형식은 `msraw-board-metadata-1`, plane은 1000입니다. 레코드는 `PERIODIC`(주기 trigger 번호와 보드 시계), `PHYSICS`(물리 trigger 번호, 보드 시계, 그 앞의 마지막 주기 trigger 번호, 그 trigger 또는 run 시작 이후의 시계 사이클 수, n번 비트가 채널 n인 scintillator 패턴), `TICK`, `END`입니다. 보드 시계는 run 시작부터 100.5 MHz 사이클을 세며, `TICK`은 `frame_ms` 길이의 frame을 끝냅니다. 주기 trigger는 아직 없는 frame builder가 쓸 논리적 frame 경계이며, 모든 stream의 frame은 지금도 각자의 `TICK`에서 끝납니다. `python3 -m msensor.boardstream verify FILE`은 보드 stream을 검사하며 완전하면 0, 불완전하면 2, 손상되었으면 3을 반환합니다. DQM은 보드를 보여 주지 않습니다.
 
 ## 끝내기
 

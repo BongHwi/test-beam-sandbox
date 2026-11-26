@@ -24,7 +24,7 @@ Linux コンテナーを実行する Docker が動いている Linux または m
 |---|---|---|
 | セットアップファイル | `[run] daq = eudaq`（既定） | `[run] daq = nestdaq` |
 | イメージ | `scripts/build_session.sh` | さらに `scripts/build_session.sh --nestdaq` |
-| `configs/setups/` のセットアップ例 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini` |
+| `configs/setups/` のセットアップ例 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | 読むデバイス | ALPIDE 基準面、msensor、trigger ボード | msensor; ALPIDE 面はビーム中の物質として残ります |
 | Trigger | シンチレーターとセットアップファイルの trigger 条件 | 模擬ビームラインの trigger; シンチレーターと trigger ボードはありません |
 | Run 制御 | 公開 RunControl 画面と `scripts/session_control.sh` | daq-webctl と `scripts/session_control.sh NAME nestdaq` |

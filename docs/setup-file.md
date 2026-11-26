@@ -17,7 +17,7 @@ A setup file describes one session: which devices sit where, their settings, the
  `--scintillators 0` omits the plates; `--scintillators 2` (default) adds the two default plates.
 
 
-For nestDAQ, set `[run] daq = nestdaq` and choose `[nestdaq] input = file | socket`, `frame_ms` and `send_buffer_mb`. `send_buffer_mb` applies only to socket input. Each `[msensor N]` can also set its own clock with `clock_offset_ns` and `clock_drift_ppm`, the triggers it misses with `missed_triggers`, and noise hits with `noise`; see [nestDAQ mode](nestdaq.md).
+For nestDAQ, set `[run] daq = nestdaq` and choose `[nestdaq] input = file | socket`, `frame_ms` and `send_buffer_mb`. `send_buffer_mb` applies only to socket input. Each `[msensor N]` can also set its own clock with `clock_offset_ns` and `clock_drift_ppm`, the triggers it misses with `missed_triggers`, and noise hits with `noise`; `trigger_board = on` with `periodic_clk` (in cycles of the 100.5 MHz board clock) adds the virtual trigger board; see [nestDAQ mode](nestdaq.md).
 
 ## Items
 

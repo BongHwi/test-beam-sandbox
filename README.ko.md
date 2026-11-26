@@ -24,7 +24,7 @@ Linux 컨테이너를 실행하는 Docker가 동작하는 Linux 또는 macOS, Py
 |---|---|---|
 | 셋업 파일 | `[run] daq = eudaq` (기본값) | `[run] daq = nestdaq` |
 | 이미지 | `scripts/build_session.sh` | 추가로 `scripts/build_session.sh --nestdaq` |
-| `configs/setups/`의 예제 셋업 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini` |
+| `configs/setups/`의 예제 셋업 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | 읽는 장치 | ALPIDE 기준면, msensor와 trigger 보드 | msensor; ALPIDE 평면은 빔 안에 물질로 남습니다 |
 | Trigger | 신틸레이터와 셋업 파일의 trigger 조건 | 모의 빔라인의 trigger; 신틸레이터와 trigger 보드는 없습니다 |
 | Run 제어 | 공개 RunControl 화면과 `scripts/session_control.sh` | daq-webctl과 `scripts/session_control.sh NAME nestdaq` |

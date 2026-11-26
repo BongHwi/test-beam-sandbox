@@ -17,7 +17,7 @@
  `--scintillators 0`은 판을 빼고 `--scintillators 2`(기본)는 기본 판 두 개를 넣습니다.
 
 
-nestDAQ에서는 `[run] daq = nestdaq`을 설정하고 `[nestdaq] input = file | socket`, `frame_ms`, `send_buffer_mb`를 선택합니다. `send_buffer_mb`는 socket 입력에만 적용됩니다. 각 `[msensor N]`은 `clock_offset_ns`와 `clock_drift_ppm`으로 자기 시계를, `missed_triggers`로 놓치는 trigger를, `noise`로 노이즈 hit를 설정할 수도 있습니다. [nestDAQ 모드](nestdaq.md)를 참조합니다.
+nestDAQ에서는 `[run] daq = nestdaq`을 설정하고 `[nestdaq] input = file | socket`, `frame_ms`, `send_buffer_mb`를 선택합니다. `send_buffer_mb`는 socket 입력에만 적용됩니다. 각 `[msensor N]`은 `clock_offset_ns`와 `clock_drift_ppm`으로 자기 시계를, `missed_triggers`로 놓치는 trigger를, `noise`로 노이즈 hit를 설정할 수도 있습니다. `trigger_board = on`과 `periodic_clk`(100.5 MHz 보드 시계의 사이클 수)는 가상 trigger 보드를 더합니다. [nestDAQ 모드](nestdaq.md)를 참조합니다.
 
 ## 항목
 

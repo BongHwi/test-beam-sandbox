@@ -17,7 +17,7 @@
  `--scintillators 0` は板なし、`--scintillators 2`（既定）は既定の板二枚です。
 
 
-nestDAQ では `[run] daq = nestdaq` を設定し、`[nestdaq] input = file | socket`、`frame_ms`、`send_buffer_mb` を選びます。`send_buffer_mb` は socket 入力にのみ適用されます。各 `[msensor N]` は `clock_offset_ns` と `clock_drift_ppm` で自分の時計を、`missed_triggers` で取りこぼす trigger を、`noise` でノイズヒット を設定することもできます。[nestDAQ モード](nestdaq.md)を参照します。
+nestDAQ では `[run] daq = nestdaq` を設定し、`[nestdaq] input = file | socket`、`frame_ms`、`send_buffer_mb` を選びます。`send_buffer_mb` は socket 入力にのみ適用されます。各 `[msensor N]` は `clock_offset_ns` と `clock_drift_ppm` で自分の時計を、`missed_triggers` で取りこぼす trigger を、`noise` でノイズヒット を設定することもできます。`trigger_board = on` と `periodic_clk`（100.5 MHz のボード時計のサイクル数）は仮想 trigger ボードを追加します。[nestDAQ モード](nestdaq.md)を参照します。
 
 ## 項目
 

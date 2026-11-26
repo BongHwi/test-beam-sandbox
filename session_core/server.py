@@ -68,6 +68,9 @@ class Session:
         self.hist_next = 0
         self.hist_previous = 0
         self.hist_pulses = deque()
+        self.board_enabled = bool(geometry.get('trigger_board', False))
+        self.board_log = []
+        self.board_base = 0
 
     def _record(self, kind, serial):
         if self.event_log is not None:
@@ -140,6 +143,8 @@ class Session:
             self.hist_next = 0
             self.hist_pulses.clear()
             self.clients = {}
+            self.board_log = []
+            self.board_base = 0
             self.transport = None
             self.started = None
             self.last_completed_clock_ps = self.clock_ps
@@ -239,8 +244,11 @@ class Session:
     def _store_crossings(self):
         self.extra_crossings.extend(self.transport.extra_crossings)
         self.transport.extra_crossings.clear()
+        fired_masks = {}
         for particle in self.transport.particle_truth:
             mask = sum(1 << channel for channel in particle['fired'])
+            if particle['trigger']:
+                fired_masks[particle['trigger_number']] = mask
             if mask:
                 cycle = clock_cycle(particle['time_ps'])
                 if self.hist_pulses and self.hist_pulses[-1][0] == cycle:
@@ -253,6 +261,8 @@ class Session:
         self.transport.particle_truth.clear()
         for trigger, planes, enabled in self.transport.crossings[self.crossing_cursor:]:
             if enabled:
+                if self.board_enabled: self.board_log.append((trigger.physical_trigger_id, trigger.origin_ps,
+                                       fired_masks.get(trigger.physical_trigger_id, 0)))
                 self.crossings[trigger.physical_trigger_id] = (trigger, planes)
                 self.active_ids.append(trigger.physical_trigger_id)
                 if self.truth_spool:
@@ -542,6 +552,30 @@ class Session:
              'time_ps': trigger.origin_ps + int(mc['global_time_ns'] * 1000)}
             for mc in planes[detector]['mc']]
 
+    def board_next(self, req):
+        """Accepted physics triggers of one run for a read-only trigger board stream.
+
+        The board is not a participant: it only reads the triggers the session has
+        issued, with the scintillator pattern of each, up to the session clock.
+        """
+        run, cursor = req.get('run'), req.get('cursor', 0)
+        if type(run) is not int or type(cursor) is not int or cursor < 0:
+            raise ValueError('invalid board request')
+        mine = [c for c in self.clients.values() if c['run'] == run]
+        if self.transport is None or not mine:
+            return {'kind': 'wait', 'watermark_ps': 0}
+        self._advance()
+        if not self.board_enabled or cursor < self.board_base:
+            raise ValueError('board not enabled or records already released')
+        # The board is the only reader, so what it has read can be released.
+        del self.board_log[:cursor - self.board_base]
+        self.board_base = cursor
+        records = self.board_log[:512]
+        finished = (self.boundary is not None and not self.board_log[len(records):]
+                    and all(c['released'] or c['lost'] for c in self.clients.values()))
+        return {'kind': 'board', 'records': [list(r) for r in records], 'next': cursor + len(records),
+                'watermark_ps': self.clock_ps, 'finished': finished}
+
     def request(self, req):
         with self.lock:
             op = req.get('op')
@@ -567,6 +601,7 @@ class Session:
                     with (self.truth_dir / 'trigger-counts.jsonl').open('a', encoding='utf-8') as out:
                         out.write(json.dumps(result, separators=(',', ':')) + '\n')
                 return result
+            if op == 'board_next': return self.board_next(req)
             if op == 'beam': return self.beam.request(req.get('action'), req.get('origin', 'socket'), self.committed_ps, req.get('id'))
             if op in ('sink_begin', 'sink_progress'): return self.sink_message(req)
             if op == 'join': return self.join(req)
