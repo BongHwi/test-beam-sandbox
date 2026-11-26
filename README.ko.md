@@ -6,7 +6,7 @@
 
 세션은 셋업 파일에서 고른 두 공개 데이터 취득 프레임워크 중 하나로 데이터를 취득합니다:
 - EUDAQ (`[run] daq = eudaq`, 기본값)는 공개 EUDAQ로 가상 ALPIDE 기준면, msensor와 가상 trigger 보드를 읽습니다. ALPIDE producer, trigger producer와 data collector는 그대로 사용하고 RunControl은 이 저장소의 상태·제어 확장과 함께 실행합니다. [공식 저장소](https://gitlab.cern.ch/corryvreckan/corryvreckan)의 master commit `22fca3e43ceec7ba6263a5cf179cd57d5fff42fe`에서 빌드한 공개 분석 소프트웨어 Corryvreckan은 평면을 정렬하고 입자의 track을 재구성하며 DUT가 이를 얼마나 효율적으로 검출하는지 측정합니다.
-- nestDAQ (`[run] daq = nestdaq`)는 nestDAQ 장치로 모든 msensor를 continuous 또는 triggered stream으로 읽습니다. msensor마다 입력 장치가 있고 FileSink가 frame을 저장하며 모니터(DQM)가 hit map을 채우고 msensor의 trigger를 짝짓습니다. daq-webctl은 run을 제어하고 SlowDash는 시계열을 보여 줍니다.
+- nestDAQ (`[run] daq = nestdaq`)는 nestDAQ 장치로 모든 msensor를 continuous 또는 triggered stream으로 읽습니다. msensor마다 입력 장치가 있고 FileSink가 frame을 저장하며 모니터(DQM)가 hit map을 채우고 msensor의 trigger를 짝짓습니다. daq-webctl은 run을 제어하고 SlowDash는 시계열을 보여 줍니다. 가상 trigger 보드(`trigger_board = on`, 선택 사항)는 모든 msensor에 주기 trigger를 보내 시간 frame의 경계를 표시하고, 빔라인의 물리 trigger는 별도의 보드 stream에 기록합니다.
 
 사람이 취득과 분석 절차를 익히거나, 취득을 조작하는 자동화 프로그램을 개발하고 시험할 때 사용할 수 있습니다. 모든 응답은 합성값이며 실제 장비의 측정값이 아닙니다.
 
@@ -14,7 +14,7 @@
 
 ## 필요한 것
 
-Linux 컨테이너를 실행하는 Docker가 동작하는 Linux 또는 macOS, Python 3와 40 GiB 이상의 여유 공간이 필요합니다. 빌드에는 인터넷이 필요하며 세션은 network 없이 실행합니다. 빌드는 Docker daemon의 아키텍처(arm64 또는 amd64)를 선택하며 최대 4개 작업과 8 GiB 메모리를 사용합니다. 호스트에서는 Python 3.9 이상으로 추가 패키지 없이 결과 페이지와 nestDAQ 모드의 추출 도구를 실행합니다. macOS에서 처음 `python3`을 실행할 때 명령줄 개발자 도구 설치를 요청할 수 있습니다.
+Linux 컨테이너를 실행하는 Docker가 동작하는 Linux 또는 macOS, Python 3와 40 GiB 이상의 여유 공간이 필요합니다. 빌드에는 인터넷이 필요하며 세션은 network 없이 실행합니다. 빌드는 Docker daemon의 아키텍처(arm64 또는 amd64)를 선택하며 최대 4개 작업과 8 GiB 메모리를 사용합니다. 호스트에서는 Python 3.9 이상으로 추가 패키지 없이 결과 페이지와 nestDAQ 모드의 추출 도구 및 frame builder를 실행합니다. macOS에서 처음 `python3`을 실행할 때 명령줄 개발자 도구 설치를 요청할 수 있습니다.
 
 ## DAQ 모드
 
@@ -128,6 +128,8 @@ scripts/session_control.sh public-session on
 scripts/session_control.sh public-session nestdaq start
 ```
 
+가상 trigger 보드를 더하려면 `configs/setups/nestdaq-board.ini`로 시작하거나 `[nestdaq]`에 `trigger_board = on`과 `periodic_clk`를 설정합니다. 그러면 모든 msensor가 100.5 MHz 보드 시계로 `periodic_clk` 사이클마다 주기 trigger를 받고, `TRIGGERBOARD_0` 실행기가 주기 trigger와 물리 trigger를 각각의 신틸레이터 패턴과 함께 별도의 stream에 저장합니다. 이 설정이 없으면 세션은 이전과 똑같이 동작합니다.
+
 #### 2. 모니터링
 
 상태는 run, 장치와 msensor마다 보낸 frame 및 버린 DQM 사본을 보여 줍니다. 페이지의 nestDAQ 탭은 이것과 실행기마다 쓴 frame을 보여 주고 daq-webctl, SlowDash와 DQM 링크를 제공합니다. `scripts/qa_page.sh public-session`으로 페이지를 엽니다. `nestdaq qa`는 DQM의 숫자를 출력하고 페이지의 QA 탭도 이를 보여 줍니다. DQM hit map과 trigger 짝짓기는 [nestDAQ 모드](docs/ko/nestdaq.md)에 설명되어 있습니다.
@@ -144,7 +146,7 @@ scripts/session_control.sh public-session nestdaq qa
 
 #### 3. 끝내기
 
-run을 멈추면 남은 데이터가 run이 멈추기 전에 저장되며 다음 `nestdaq start`는 새 run을 시작합니다. 출력을 복사하고 컨테이너를 지운 뒤 이 컴퓨터에서 msensor마다 msraw stream을 추출합니다. 도구는 JSON 요약을 출력합니다.
+run을 멈추면 남은 데이터가 run이 멈추기 전에 저장되며 다음 `nestdaq start`는 새 run을 시작합니다. 출력을 복사하고 컨테이너를 지운 뒤 이 컴퓨터에서 각 msensor와 trigger 보드의 msraw stream을 추출합니다. trigger 보드를 사용한 경우 시간 frame도 만듭니다. 각 도구는 JSON 요약을 출력합니다.
 
 ```sh
 # run을 멈춥니다.
@@ -156,8 +158,11 @@ docker cp public-session:/tmp/session-run ./session-output
 # 세션 컨테이너와 그 안의 모든 것을 지웁니다.
 docker rm -f public-session
 
-# run 1에서 msensor마다 msraw stream을 추출합니다.
+# run 1에서 각 msensor와 trigger 보드의 msraw stream을 추출합니다.
 python3 -m nestdaq_mode.extract session-output/nestdaq/data/run000001.dat extracted
+
+# trigger 보드를 사용한 경우: 주기 trigger마다 시간 frame을 만듭니다. frame당 JSON 한 줄입니다.
+python3 -m nestdaq_mode.framebuilder --dir extracted --out frames.jsonl
 ```
 
 `terminate`와 `T`, `Q` 키는 EUDAQ RunControl에 속하며 nestDAQ 세션은 `terminate`를 거부합니다. 셋업 항목, run, 화면, 데이터와 한계는 [nestDAQ 모드](docs/ko/nestdaq.md)에 있습니다.
@@ -178,7 +183,7 @@ EUDAQ 세션:
 5. 같은 카드에서 "출력 복사" (`docker cp public-session:/tmp/session-run outputs/public-session-UTCTIME`), 그다음 "컨테이너 지우기" (`docker rm -f public-session`)를 누릅니다. DAQ 화면 탭에서도 같은 단계를 진행할 수 있습니다.
 nestDAQ 세션:
 
-1. 셋업 탭에서 `nestdaq.ini`를 고르고 "세션 시작"을 누릅니다 (`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`).
+1. 셋업 탭에서 `nestdaq.ini`를 고르고(trigger 보드를 사용하려면 `nestdaq-board.ini`) "세션 시작"을 누릅니다 (`scripts/start_session.sh --setup configs/setups/nestdaq.ini --name public-session --no-attach`).
 2. 실험 탭에서 "빔 켜기"를 누릅니다 (`scripts/session_control.sh public-session on --id page-on`).
 3. nestDAQ 탭에서 "Start"를 누릅니다 (`scripts/session_control.sh public-session nestdaq start`). 화면 링크는 daq-webctl, SlowDash와 DQM을 엽니다. run을 끝내려면 "Stop"을 누릅니다 (`scripts/session_control.sh public-session nestdaq stop`).
 4. 실험 탭에서 EUDAQ 세션과 같이 "출력 복사", 그다음 "컨테이너 지우기"를 누릅니다.
@@ -203,7 +208,7 @@ nestDAQ 세션:
 |---|---|---|---|
 | 이미지 | `scripts/build_session.sh`(실행되는 것은 없습니다) | | 다시 빌드할 때까지 남습니다 |
 | 세션: 모의 빔과 셋업 파일의 DAQ가 든 컨테이너 하나; EUDAQ 모드에서는 RunControl, producer, data collector | `scripts/start_session.sh` | `docker rm -f NAME` | 지우기 전에 `docker cp`로 꺼내지 않은 출력은 없어집니다 |
-| nestDAQ 모드의 nestDAQ 프로세스: 컨테이너의 `NESTDAQ` tmux 세션에 있는 Redis, daq-webctl, SlowDash, msensor 실행기, 입력 장치, FileSink와 DQM | `scripts/start_session.sh` | `docker rm -f NAME` | 컨테이너의 `/tmp/session-run/nestdaq/data/`에 저장된 파일은 복사하지 않으면 함께 없어집니다 |
+| nestDAQ 모드의 nestDAQ 프로세스: 컨테이너의 `NESTDAQ` tmux 세션에 있는 Redis, daq-webctl, SlowDash, msensor 실행기, trigger 보드 실행기(`trigger_board = on`일 때), 입력 장치, FileSink와 DQM | `scripts/start_session.sh` | `docker rm -f NAME` | 컨테이너의 `/tmp/session-run/nestdaq/data/`에 저장된 파일은 복사하지 않으면 함께 없어집니다 |
 | nestDAQ run | `scripts/session_control.sh NAME nestdaq start` | `scripts/session_control.sh NAME nestdaq stop` | |
 | 빔 | `scripts/session_control.sh NAME on`(세션은 빔이 꺼진 채 시작합니다) | `scripts/session_control.sh NAME off` | |
 | 페이지 서버: 컨테이너 밖, 이 컴퓨터의 프로세스 | `scripts/qa_page.sh` | `scripts/qa_page.sh --stop` | 세션을 지워도 계속 돕니다 |
@@ -222,7 +227,8 @@ nestDAQ 세션:
 | 빔과 run | `scripts/session_control.sh` | 빔을 켜고 끄며 상태를 보여 줍니다; EUDAQ 모드에서는 run을 멈추고 되풀이하고 끝내고 다음 run의 설정을 바꾸고 응답하지 않는 producer를 끝냅니다; nestDAQ 모드에서는 run을 시작하고 멈추며 DQM 숫자를 출력합니다 |
 | 분석 | `scripts/align_session.sh` | 분석 geometry를 데이터에 맞춥니다(EUDAQ 모드) |
 | 분석 | `scripts/analyze_session.sh` | 현재 run이나 닫힌 run의 QA를 합니다(EUDAQ 모드) |
-| 데이터 | `python3 -m nestdaq_mode.extract` | nestDAQ 모드에서 저장한 파일에서 msensor마다 msraw stream을 추출합니다 |
+| 데이터 | `python3 -m nestdaq_mode.extract` | nestDAQ 모드에서 저장한 파일에서 각 msensor와 trigger 보드의 msraw stream을 추출합니다 |
+| 데이터 | `python3 -m nestdaq_mode.framebuilder` | 추출한 stream이나 저장한 파일에서 주기 trigger마다 시간 frame을 만듭니다(trigger 보드) |
 | 결과 페이지 | `scripts/qa_page.sh` | 페이지 서버를 켜고 끕니다 |
 | 자동화 | `scripts/wait_session.sh` | 유한 예제가 끝나거나 세션이 끝날 때까지 기다립니다 |
 
@@ -266,6 +272,8 @@ flowchart TB
 
     subgraph NDQ["nestDAQ 모드: 공개 nestDAQ를 이용한 데이터 취득"]
         ru["msensor 실행기<br/>msensor마다 stream 하나"]
+        br["trigger 보드 실행기<br/>선택: 주기 trigger와 물리 trigger"]
+        bsrc["보드 입력 장치<br/>파일, DQM 사본 없음"]
         src["입력 장치<br/>파일 또는 TCP, msensor마다 하나"]
         fs(["FileSink<br/>공개판 그대로 사용"])
         dqm["msensor DQM<br/>hit map과 trigger 짝짓기"]
@@ -273,7 +281,8 @@ flowchart TB
     end
 
     frames[("msraw frame")]
-    ext["추출 도구<br/>msensor마다 msraw stream 하나"]
+    ext["추출 도구<br/>각 msensor와 보드의 msraw stream 하나씩"]
+    fb["frame builder<br/>주기 trigger마다 시간 frame"]
 
     op -. "빔 on / off" .-> bc
     op -. "시작, 상태, 중지" .-> rc
@@ -304,6 +313,10 @@ flowchart TB
     corry --> res
     ms --> ru
     ru --> src
+    core -- "받아들인 trigger" --> br
+    br --> bsrc
+    bsrc --> fs
+    wc -. "run 명령" .-> bsrc
     wc -. "run 명령" .-> src
     wc -. "run 명령" .-> fs
     wc -. "run 명령" .-> dqm
@@ -311,6 +324,7 @@ flowchart TB
     src --> dqm
     fs --> frames
     frames --> ext
+    ext --> fb
 ```
 
 사각형은 이 저장소의 구성 요소이고, 둥근 상자는 그대로 사용하는 공개 소프트웨어입니다. 실선은 데이터의 흐름을, 점선은 제어를 나타냅니다. 셋업 파일에 따라 세션은 EUDAQ 상자나 nestDAQ 상자를 사용하며 빔라인, 장치와 결과 페이지는 둘 다 같습니다. 결과 페이지는 선택 사항입니다. 상태와 결과를 보여 주고 터미널과 같은 명령을 실행하며, 셋업 파일도 셋업 도구와 같은 확인을 거쳐 고칩니다.
@@ -326,7 +340,7 @@ flowchart TB
 - `virtual_alpide/`: 가상 ALPIDE 보드.
 - `virtual_trigger/`: 가상 trigger 보드.
 - `msensor/`: msensor 장치, producer와 실행기.
-- `nestdaq_mode/`: nestDAQ 모드의 세션 시작, run 제어, 입력 장치, DQM과 추출 도구.
+- `nestdaq_mode/`: nestDAQ 모드의 세션 시작, run 제어, 입력 장치, trigger 보드 실행기, DQM, 추출 도구와 frame builder.
 - `runcontrol/`: RunControl 확장과 EUDAQ에 적용하는 patch.
 - `eudaq_module/`: EUDAQ용 msensor 변환기.
 - `integration/`: 배치와 Corryvreckan 모듈.
@@ -341,7 +355,7 @@ flowchart TB
 
 - [운영 화면](docs/ko/operator-screen.md): 창과 키, 빔과 run 명령, QA 출력과 결과 파일.
 - [셋업 파일](docs/ko/setup-file.md): 장치, 설정, run 길이, 빔과 `scripts/setup_session.sh`.
-- [nestDAQ 모드](docs/ko/nestdaq.md): nestDAQ로 msensor를 읽는 세션의 셋업, run, 화면, 데이터와 한계.
+- [nestDAQ 모드](docs/ko/nestdaq.md): nestDAQ로 msensor를 읽는 세션의 셋업, trigger 보드(선택 사항), run, 화면, 데이터, frame builder와 한계.
 - [정렬](docs/ko/alignment.md): 장치의 위치를 왜, 어떻게 찾는지.
 - [결과 페이지](docs/ko/qa-page.md): 브라우저 페이지.
 - [trigger](docs/ko/trigger.md): trigger 신틸레이터와 trigger 조건.
