@@ -17,4 +17,5 @@ if python3 -m session_setup.setupfile prepare "$work/offset.ini" "$work/offset-l
     echo "setup with a large clock offset was accepted" >&2; exit 1
 fi
 grep -q "less than half of the periodic trigger period" "$work/offset.err"
+python3 tests/e2e/board_backlog_check.py
 python3 tests/e2e/nestdaq_board_check.py configs/setups/nestdaq-board.ini "$work" "${1:-6}" "${2:-0}"

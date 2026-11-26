@@ -52,6 +52,7 @@ class BoardRunner(Runner):
         counts = self.raw.counts if self.raw else {}
         return dict(name=self.c['name'], state=self.state, run=self.run, pid=os.getpid(), time_ns=self.watermark_ns,
                     frames_written=self.raw.frame if self.raw else 0,
+                    last_tick=({'frame': self.raw.frame - 1, 'time_ns': min(self.raw.frame * self.c['frame_ns'], self.watermark_ns)} if self.raw and self.raw.frame else None),
                     records={'periodic': counts.get('periodic', 0), 'physics': counts.get('physics', 0)},
                     file=({'path': str(self.path), 'bytes': self.path.stat().st_size} if self.path and self.path.exists() else None),
                     socket=None, last_error=self.last_error, last_run_result=self.last_run_result, updated_ns=time.time_ns())
