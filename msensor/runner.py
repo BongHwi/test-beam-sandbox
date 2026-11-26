@@ -46,7 +46,7 @@ def integer(v, lo, hi):
 def configuration(path):
     try:
         c = json.loads(Path(path).read_text())
-        if not isinstance(c, dict) or not KEYS <= set(c) or set(c) - KEYS - {'clock', 'missed_triggers', 'noise'}: raise ValueError('invalid configuration keys')
+        if not isinstance(c, dict) or not KEYS <= set(c) or set(c) - KEYS - {'clock', 'missed_triggers', 'noise', 'periodic_clk'}: raise ValueError('invalid configuration keys')
         if c['format'] != 'msensor-runner-config-1': raise ValueError('invalid format')
         if not isinstance(c['name'], str) or not re.fullmatch(r'MSENSOR_[0-9]+', c['name']): raise ValueError('invalid name')
     except SyntaxError:
@@ -65,12 +65,14 @@ def configuration(path):
                 or any(a >= b for a, b in zip(missed, missed[1:]))):
             raise ValueError('invalid missed triggers')
     if 'noise' in c and c['noise'] != 'fast': raise ValueError('invalid noise')
+    if 'periodic_clk' in c and not integer(c['periodic_clk'], 1000, 1_005_000_000): raise ValueError('invalid periodic trigger')
     d = c['device']
     if not isinstance(d, dict): raise ValueError('invalid device')
     if set(d) & (SOURCE_KEYS | {'stream_dir', 'EUDAQ_DC', 'EUDAQ_ID'}): raise ValueError('forbidden device setting')
     mode=d.get('readout_mode')
     if d.get('source') != 'session' or d.get('clock_mode') != 'virtual' or mode not in ('continuous','triggered'): raise ValueError('invalid device mode')
     if not integer(c['frame_ns'], 10_000_000, 1_000_000_000): raise ValueError('invalid frame settings')
+    if 'periodic_clk' in c and mode != 'continuous': raise ValueError('invalid periodic trigger')
     if mode == 'continuous':
         w = d.get('window_length_ns')
         if not integer(c['anchor_windows'],16,32768) or not integer(w,1000,10_000_000) or c['frame_ns'] % w or c['frame_ns']//w > 65536: raise ValueError('invalid frame settings')
@@ -268,6 +270,9 @@ class Runner:
     device_class = RunnerDevice
 
     def make_source(self):
+        if self.c.get('periodic_clk'):
+            from .periodic import PeriodicSource
+            return PeriodicSource(self.device.config,self.c['name'],self.c.get('clock'),self.c.get('missed_triggers'),self.c['periodic_clk'])
         return RunnerSource(self.device.config,self.c['name'],self.c.get('clock'),self.c.get('missed_triggers'))
 
     def __init__(self,c,device):

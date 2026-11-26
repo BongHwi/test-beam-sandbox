@@ -73,7 +73,7 @@ SETUPS = ROOT / 'configs/setups'
 ALIGNMENTS = ROOT / 'configs/alignments'
 OUTPUTS = ROOT / 'outputs'
 # The setup files of the repository; the page saves edits of them under another name.
-PROTECTED = ('default.ini', 'small-msensor.ini', 'msensor-telescope.ini', 'nestdaq.ini', 'nestdaq-clocks.ini', 'nestdaq-missed.ini', 'nestdaq-telescope.ini')
+PROTECTED = ('default.ini', 'small-msensor.ini', 'msensor-telescope.ini', 'nestdaq.ini', 'nestdaq-clocks.ini', 'nestdaq-missed.ini', 'nestdaq-telescope.ini', 'nestdaq-board.ini')
 SETUP_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,63}\.ini$')
 ALIGNMENT_NAME = re.compile(r'^[A-Za-z0-9][A-Za-z0-9_-]{0,63}\.json$')
 

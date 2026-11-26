@@ -21,12 +21,12 @@ function render() {
   const run = val(states.includes('RUNNING') ? c.latest_run_number : (c.run_number ?? 1));
   node('nd-run').textContent = /^\d+$/.test(run) ? run : '-';
   node('nd-input').textContent = val(data.input);
-  table('nd-devices', ['nd_device', 'nd_role', 'nd_state'], [...devices].sort((a,b) => a.service.localeCompare(b.service)).map(d => ({values:[d.service, d.service.startsWith('msensor-source-') ? t('nd_input') : d.service === 'FileSink' ? t('nd_sink') : d.service === 'MSensorDqm' ? 'DQM' : '-', d.state]})));
+  table('nd-devices', ['nd_device', 'nd_role', 'nd_state'], [...devices].sort((a,b) => a.service.localeCompare(b.service)).map(d => ({values:[d.service, /^(msensor|board)-source-/.test(d.service) ? t('nd_input') : d.service === 'FileSink' ? t('nd_sink') : d.service === 'MSensorDqm' ? 'DQM' : '-', d.state]})));
   const socket = data.input === 'socket';
   const headers = ['nd_msensor','nd_runner_state','nd_run','nd_frames_written','nd_last_frame','nd_frames_sent','nd_dqm_dropped','nd_reason'];
   if (socket) headers.push('nd_frames_missing','nd_reconnects','nd_dropped_frames');
   table('nd-streams', headers, (data.runners || []).map(r => {
-    const s = sources.find(x => x.member.split(':')[0] === 'msensor-source-' + r.name) || {};
+    const s = sources.find(x => [(x.member.split(':')[0])].some(v => v === 'msensor-source-' + r.name || v === 'board-source-' + r.name)) || {};
     const values = [r.name,r.state,r.run,r.frames_written,r.last_tick?.frame,s.frames_sent,s.dqm_dropped,s.reason];
     if (socket) values.push(s.frames_missing,r.socket?.reconnects,r.socket?.dropped_frames);
     return {values};

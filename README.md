@@ -24,13 +24,13 @@ Both modes use the same simulated beam, setup files, scripts and result page. Th
 |---|---|---|
 | Setup file | `[run] daq = eudaq` (the default) | `[run] daq = nestdaq` |
 | Images | `scripts/build_session.sh` | also `scripts/build_session.sh --nestdaq` |
-| Example setups in `configs/setups/` | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini` |
+| Example setups in `configs/setups/` | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | Devices read | ALPIDE reference planes, msensors and the trigger board | msensors; the ALPIDE planes stay in the beam as material |
-| Trigger | scintillators and the trigger condition of the setup file | the triggers of the simulated beamline; no scintillators or trigger board |
+| Trigger | scintillators and the trigger condition of the setup file | the triggers of the simulated beamline; scintillators and `[trigger]` with `trigger_board = on`, which adds a virtual trigger board with periodic triggers |
 | Run control | public RunControl screen and `scripts/session_control.sh` | daq-webctl and `scripts/session_control.sh NAME nestdaq` |
 | Monitoring | RunControl screen; Experiment and DAQ screen tabs of the page | DQM and SlowDash; nestDAQ and QA tabs of the page |
-| Stored data | EUDAQ raw files | msraw frames in FileSink files; `python3 -m nestdaq_mode.extract` writes the msraw stream of each msensor to its own file |
-| Analysis | alignment and QA with Corryvreckan | not available yet; the DQM shows hit maps, correlations and the trigger pairing, and `nestdaq qa` and the QA tab print its numbers |
+| Stored data | EUDAQ raw files | msraw frames in FileSink files; `python3 -m nestdaq_mode.extract` writes the msraw stream of each msensor, and of the trigger board, to its own file |
+| Analysis | alignment and QA with Corryvreckan | no alignment yet; `python3 -m nestdaq_mode.framebuilder` builds time frames offline at the periodic triggers; the DQM shows hit maps, correlations and the trigger pairing, and `nestdaq qa` and the QA tab print its numbers |
 
 ## Quick start
 

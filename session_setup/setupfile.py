@@ -102,9 +102,11 @@ NESTDAQ = {
     'input': Item('choice', 'file', 'how the msensor data reach nestDAQ', choices=('file', 'socket')),
     'frame_ms': Item('int', 100, 'length of one msensor stream frame in ms', 10, 1000),
     'send_buffer_mb': Item('int', 64, 'TCP send queue limit of each msensor runner in MB (input = socket)', 1, 1024),
+    'trigger_board': Item('choice', 'off', 'add a virtual trigger board: every msensor then gets a periodic trigger instead of one for each particle, a board stream records the periodic and the physics triggers, and scintillators and [trigger] become available; off keeps the msensor triggers of each particle', choices=('off', 'on')),
+    'periodic_clk': Item('int', 1005000, 'period of the periodic trigger in cycles of the 100.5 MHz board clock (1005000 is 10 ms); only with trigger_board = on', 10000, 1005000000),
     'generator_mb_s': Item('number', 0, 'load test of the data path: above 0, every msensor runner is replaced by a generator that writes valid frames at about this many MB/s per msensor, without the beam simulation; 0 runs the simulation', 0, 500, render=False),
 }
-NESTDAQ_NOTE = 'nestDAQ mode: the msensor data go to nestDAQ; events is ignored, the operator starts and stops runs; QA, alignment and analysis are not available in this mode.'
+NESTDAQ_NOTE = 'nestDAQ mode: the msensor data go to nestDAQ; events is ignored, the operator starts and stops runs; QA, alignment and analysis are not available in this mode; scintillators and [trigger] need trigger_board = on.'
 BEAM = {
     'particle': Item('choice', BEAM_DEFAULTS['particle'], 'beam particle; the session core simulates electrons only',
                      choices=('e-',)),
@@ -293,14 +295,32 @@ def load_text(text, path):
             if parser.has_option('nestdaq', 'send_buffer_mb'):
                 errors.append('[nestdaq] send_buffer_mb: only for input = socket')
             setup['nestdaq'].pop('send_buffer_mb')
+        if setup['nestdaq']['trigger_board'] == 'off':
+            if parser.has_option('nestdaq', 'periodic_clk'):
+                errors.append('[nestdaq] periodic_clk: only with trigger_board = on')
+            setup['nestdaq'].pop('trigger_board')
+            setup['nestdaq'].pop('periodic_clk')
+        else:
+            if setup['nestdaq']['generator_mb_s'] > 0:
+                errors.append('[nestdaq] trigger_board = on: not together with generator_mb_s')
+            if any(d['kind'] == 'msensor' and d['readout'] != 'continuous' for d in setup['devices']):
+                errors.append('[nestdaq] trigger_board = on: needs continuous readout for every msensor')
+            for d in setup['devices']:
+                w = d.get('window_length_ns')
+                if d['kind'] == 'msensor' and d['readout'] == 'continuous' and isinstance(w, int) and setup['nestdaq']['periodic_clk'] * 2000000 < w * 201 * 1000:
+                    errors.append(f'[msensor {d["number"]}] window_length_ns = {w}: with trigger_board = on, periodic_clk must make a period of at least one window')
+            for d in setup['devices']:
+                offset = d.get('clock_offset_ns', 0)
+                if d['kind'] == 'msensor' and isinstance(offset, int) and offset * 2 * 100500000 >= setup['nestdaq']['periodic_clk'] * 1000000000:
+                    errors.append(f'[msensor {d["number"]}] clock_offset_ns = {offset}: with trigger_board = on, the offset must be less than half of the periodic trigger period, or the periodic triggers cannot be matched to the board')
         if setup['nestdaq']['generator_mb_s'] == 0:
             setup['nestdaq'].pop('generator_mb_s')
         elif any(d['kind'] == 'msensor' and d['readout'] != 'continuous' for d in setup['devices']):
             errors.append('[nestdaq] generator_mb_s: needs continuous readout for every msensor')
         if not any(d['kind'] == 'msensor' for d in setup['devices']):
             errors.append('[run] daq = nestdaq: needs at least one [msensor N] section')
-        if setup['scintillators'] or setup['trigger'] is not None:
-            errors.append('[run] daq = nestdaq: scintillators and [trigger] are not available in the nestDAQ mode; remove those sections (scripts/setup_session.sh new --scintillators 0 writes a setup without them)')
+        if (setup['scintillators'] or setup['trigger'] is not None) and 'trigger_board' not in setup['nestdaq']:
+            errors.append('[run] daq = nestdaq: scintillators and [trigger] are only available with [nestdaq] trigger_board = on; otherwise remove those sections (scripts/setup_session.sh new --scintillators 0 writes a setup without them)')
         frame = setup['nestdaq']['frame_ms'] * 1000000
         for d in setup['devices']:
             if d['kind'] == 'msensor' and d['readout'] == 'continuous':
@@ -776,6 +796,8 @@ def show(setup):
     b = setup['beam']
     if setup.get('nestdaq'):
         out.append(f'Run: nestDAQ mode, input {setup["nestdaq"]["input"]}, frame {setup["nestdaq"]["frame_ms"]} ms; the operator starts and stops runs')
+        if setup['nestdaq'].get('trigger_board') == 'on':
+            out.append(f'Trigger board: periodic trigger every {setup["nestdaq"]["periodic_clk"]} cycles (100.5 MHz)')
     else:
         out.append(f'Run: {setup["run"]["events"]} events per run')
     m = setup['positions']['offset_max_mm']

@@ -8,7 +8,7 @@
 
 독립 세션 코어는 참여 장치에 공유 시계와 source를 제공합니다. `configs/session/geometry.json`은 예시입니다. source seed와 빔 조건은 공개 geometry나 출력이 아니라 `SESSION_SOURCE_CONFIG_JSON`으로 전달합니다. launcher는 `--session-geometry`와 `--session-socket`으로 코어를 시작하거나 재사용하며 RunControl에 run 명령을 보내지 않습니다. 장치 참여, event, ack, 종료는 Unix socket의 줄 단위 JSON을 사용합니다.
 
-시각 단위는 ps입니다. msensor는 ns로, 보드는 80 MHz tick으로 내림합니다. gate 또는 crossing guard가 90 ms를 넘는 참여 장치의 요청은 거절합니다. 보드 source socket은 3초, 종료 drain은 12초에 시간 초과됩니다. 응답 parameter는 각 run에서 고정됩니다. source 연결 단절은 빈 event가 아니라 오류입니다.
+시각 단위는 ps입니다. msensor는 ns로, 보드는 80 MHz tick으로 내림합니다. gate 또는 crossing guard가 90 ms를 넘는 참여 장치의 요청은 거절합니다. 보드 source socket은 3초, 종료 drain은 12초에 시간 초과됩니다. 응답 parameter는 각 run에서 고정됩니다. source 연결 단절은 빈 event가 아니라 오류입니다. `trigger_board = on`이면 읽기 전용 `board_next` 요청이 세션이 받아들인 물리 trigger를 신틸레이터 패턴과 함께 한 번에 512개까지 돌려주며, 응답의 시계는 아직 돌려주지 않은 첫 레코드를 넘지 않습니다.
 
 멈출 때는 설정된 모든 collector가 `DataEventN`으로 마지막 trigger까지 event를 조립했다고 보고할 때까지 장치 연결을 유지합니다. 확인이 없으면 성공으로 종료하지 않고 오류를 냅니다. RunControl hook은 collector 진행 상황을 세션 source에 전달하며 source는 run 명령을 보내지 않습니다.
 

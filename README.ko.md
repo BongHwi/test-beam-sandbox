@@ -24,13 +24,13 @@ Linux 컨테이너를 실행하는 Docker가 동작하는 Linux 또는 macOS, Py
 |---|---|---|
 | 셋업 파일 | `[run] daq = eudaq` (기본값) | `[run] daq = nestdaq` |
 | 이미지 | `scripts/build_session.sh` | 추가로 `scripts/build_session.sh --nestdaq` |
-| `configs/setups/`의 예제 셋업 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini` |
+| `configs/setups/`의 예제 셋업 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | 읽는 장치 | ALPIDE 기준면, msensor와 trigger 보드 | msensor; ALPIDE 평면은 빔 안에 물질로 남습니다 |
-| Trigger | 신틸레이터와 셋업 파일의 trigger 조건 | 모의 빔라인의 trigger; 신틸레이터와 trigger 보드는 없습니다 |
+| Trigger | 신틸레이터와 셋업 파일의 trigger 조건 | 모의 빔라인의 trigger; `trigger_board = on`이면 신틸레이터와 `[trigger]`를 쓰고, 주기 trigger를 내는 가상 trigger 보드가 더해집니다 |
 | Run 제어 | 공개 RunControl 화면과 `scripts/session_control.sh` | daq-webctl과 `scripts/session_control.sh NAME nestdaq` |
 | 모니터링 | RunControl 화면; 페이지의 실험 및 DAQ 화면 탭 | DQM과 SlowDash; 페이지의 nestDAQ와 QA 탭 |
-| 저장 데이터 | EUDAQ raw 파일 | FileSink 파일의 msraw frame; `python3 -m nestdaq_mode.extract`가 msensor마다 msraw stream을 별도 파일에 씁니다 |
-| 분석 | Corryvreckan으로 정렬과 QA | 아직 사용할 수 없습니다; DQM은 hit map, correlation과 trigger 짝짓기를 보여 주며 `nestdaq qa`와 QA 탭은 그 숫자를 출력합니다 |
+| 저장 데이터 | EUDAQ raw 파일 | FileSink 파일의 msraw frame; `python3 -m nestdaq_mode.extract`가 msensor마다, 그리고 trigger 보드의 msraw stream을 별도 파일에 씁니다 |
+| 분석 | Corryvreckan으로 정렬과 QA | 정렬은 아직 없습니다; `python3 -m nestdaq_mode.framebuilder`가 주기 trigger마다 시간 frame을 오프라인으로 만듭니다; DQM은 hit map, correlation과 trigger 짝짓기를 보여 주며 `nestdaq qa`와 QA 탭은 그 숫자를 출력합니다 |
 
 ## 빠른 시작
 

@@ -9,7 +9,7 @@ In the nestDAQ mode a session reads every msensor with nestDAQ instead of EUDAQ.
 Compared with the EUDAQ mode:
 
 - Only the msensors are read; the ALPIDE planes remain in the beamline as material.
-- Scintillators, `[trigger]` and `--example` are unavailable, and `events` is ignored.
+- Scintillators and `[trigger]` are available only with `trigger_board = on`, `--example` is unavailable, and `events` is ignored.
 - Alignment and analysis are not available yet. For QA, the DQM shows hit maps, correlations and the trigger pairing, `nestdaq qa` and the QA tab of the page print its numbers, and the extraction tool writes the msraw stream of each msensor to its own file.
 
 ## Build
@@ -26,12 +26,13 @@ The example setups are in `configs/setups/`, next to those of the EUDAQ mode, an
 | `nestdaq-clocks.ini` | an msensor that runs on its own clock |
 | `nestdaq-missed.ini` | msensors that miss some triggers |
 | `nestdaq-telescope.ini` | a telescope of six reference msensors and one DUT msensor |
+| `nestdaq-board.ini` | two msensors with the virtual trigger board: periodic triggers and a board stream |
 
 Set `[run] daq = nestdaq`; `[nestdaq] input = file | socket` chooses input, `frame_ms` configures frames, and `send_buffer_mb` applies only to socket input. See the [setup file reference](setup-file.md) for all items.
 
 Each msensor can run on its own clock. In its `[msensor N]` section, `clock_offset_ns` sets the reading of the msensor clock when the session clock reads 0, and `clock_drift_ppm` sets how much faster that clock runs, in parts per million. Both are only for `daq = nestdaq` and default to 0, a clock shared with the session. The msensor then counts windows, frames and trigger times in its own clock, so window numbers of different msensors no longer match; the trigger number stays common to all of them. See `configs/setups/nestdaq-clocks.ini` for an example.
 
-An msensor can also miss triggers on purpose: its `[msensor N]` section can list in `missed_triggers` the session trigger numbers, counted from 0 in every run, that this msensor does not see. It then writes no trigger record for them and numbers its later triggers one lower for each missed trigger, as a sensor that counts triggers itself would, so from its first missed trigger on its trigger numbers no longer match those of the other msensors. This is only for `daq = nestdaq`. See `configs/setups/nestdaq-missed.ini` for an example.
+An msensor can also miss triggers on purpose: its `[msensor N]` section can list in `missed_triggers` the session trigger numbers, counted from 0 in every run, that this msensor does not see. It then writes no trigger record for them and numbers its later triggers one lower for each missed trigger, as a sensor that counts triggers itself would, so from its first missed trigger on its trigger numbers no longer match those of the other msensors. This is only for `daq = nestdaq`. With the trigger board on (see below), the numbers are those of the periodic triggers. See `configs/setups/nestdaq-missed.ini` for an example.
 
 In nestDAQ mode an msensor can also produce noise hits: its `[msensor N]` section can set `noise = on`, which uses the default response of the msensor; its noise rate grows as `threshold_dac` is lowered. The default, `noise = off`, gives no noise hits, as in the EUDAQ mode.
 
@@ -39,9 +40,11 @@ For a load test of the data path, the `[nestdaq]` section can set `generator_mb_
 
 In the telescope of `configs/setups/nestdaq-telescope.ini` every msensor except the most upstream one runs on its own clock. Every msensor has its own runner and its own input device, and all of them feed the same FileSink and DQM; the DQM pairs each msensor with the most upstream one.
 
+The `[nestdaq]` section can also add a virtual trigger board with `trigger_board = on`. The default `off` keeps everything above unchanged. With the board on, every msensor receives a periodic trigger instead of one trigger for each particle: periodic trigger k, counted from 0 in every run, comes (k + 1) × `periodic_clk` cycles of the 100.5 MHz board clock after the start of the run. `periodic_clk` is 10000 to 1005000000 and defaults to 1005000, which is 10 ms; the period must be at least one window of every msensor. Hits still come from every particle. Each msensor writes the periodic triggers as TRIGGER records in its own clock, so periodic triggers with the same number have different times when the clocks differ. Every msensor must use continuous readout, and `generator_mb_s` cannot be used with the board. Scintillators and `[trigger]` are available in this mode; they decide which particles are physics triggers, and without scintillators every particle is a physics trigger with pattern 0. The board runner `TRIGGERBOARD_0` reads the physics triggers that the session accepts and writes them with the periodic triggers as a board stream. The stream reaches FileSink through its own input device, without a DQM copy. See `configs/setups/nestdaq-board.ini` for an example.
+
 ## Start a session
 
-Start with `scripts/start_session.sh --setup FILE --name public-session`; the image is selected automatically. With `--no-attach` the terminal stays free, as in the README. The `NESTDAQ` tmux session has seven windows: `redis` for Redis, `webctl` for run control, `slowdash` for time series, `runners` for msensor runners, `sources` for input devices, `sink` for FileSink and `dqm` for monitoring. `scripts/attach_session.sh public-session` attaches to `NESTDAQ:runners`; `Ctrl-b` and then `d` leaves it. A runner that exits restarts after 2 seconds.
+Start with `scripts/start_session.sh --setup FILE --name public-session`; the image is selected automatically. With `--no-attach` the terminal stays free, as in the README. The `NESTDAQ` tmux session has seven windows: `redis` for Redis, `webctl` for run control, `slowdash` for time series, `runners` for msensor and trigger board runners, `sources` for input devices, `sink` for FileSink and `dqm` for monitoring. `scripts/attach_session.sh public-session` attaches to `NESTDAQ:runners`; `Ctrl-b` and then `d` leaves it. A runner that exits restarts after 2 seconds.
 
 ## Runs
 
@@ -68,6 +71,10 @@ The screens run inside the container, which has no network; the page server rela
 Data flows from runner to input device to FileSink. With `socket`, the runner sends to container port `18600 + N`; if the receiver is slow, frames are dropped and counted. `file` reads the runner's file. Saved files are under `/tmp/session-run/nestdaq/data/` in the container, one file for each run, such as `run000001.dat`. Copy them with `docker cp NAME:/tmp/session-run ./session-output`, then run `python3 -m nestdaq_mode.extract session-output/nestdaq/data/run000001.dat OUTDIR` from the repository root on the host. It writes the msraw stream of each msensor to its own file in OUTDIR and prints a summary in JSON. Extract returns 0 for complete data, 3 for incomplete or missing frames, and 2 for format or I/O errors. It runs with the Python 3 of the host, version 3.9 or later, and needs no further packages.
 
 The msraw stream has a header and five record types: `TILE_DATA`, `TRIGGER`, `TICK`, `TILE_STATUS` and `END`; `TICK` closes a frame. Messages contain a SubTimeFrame header and carry `META`, frame and `END` data.
+
+With the trigger board, the run also stores a board stream, which `extract` writes to `TRIGGERBOARD_0_runN.msraw`. It has the container of the msraw stream, with metadata format `msraw-board-metadata-1` and plane 1000, and the records `PERIODIC` (periodic trigger number and board clock), `PHYSICS` (physics trigger number, board clock, number of the last periodic trigger before it, clock cycles since that trigger or since the start of the run, and the scintillator pattern with bit n for channel n), `TICK` and `END`. The board clock counts cycles of 100.5 MHz from the start of the run; a `TICK` closes a frame of `frame_ms`. The periodic triggers are the logical frame border for the offline frame builder below; the frames of all streams still end at their `TICK`. `python3 -m msensor.boardstream verify FILE` checks a board stream and returns 0 for complete, 2 for incomplete and 3 for corrupt streams. The DQM does not show the board.
+
+The offline frame builder joins the streams of one run into time frames: `python3 -m nestdaq_mode.framebuilder --dir DIR --out frames.jsonl`, where DIR holds the extracted `*.msraw` files, or `--dat FILE --work DIR` to extract a FileSink run file first. Frame f covers the board cycles from f × `periodic_clk` up to (f + 1) × `periodic_clk` and ends at periodic trigger f. Each line of the output is one frame with its physics triggers and, for every msensor, the number of windows, tiles and hits; `--hits` adds the hits. A window of an msensor belongs to the frame of its start time, read in the clock of that msensor from its TRIGGER records, so clock offset and drift do not move data between frames. A periodic trigger that an msensor missed is matched by time and its border is interpolated; the frame is then marked `estimated_border`. Data after the last periodic trigger goes into one last frame marked `partial`, which has no closing periodic trigger. The setup tool refuses a `clock_offset_ns` of half a period or more with the board on, because a sensor trigger could then not be matched to the right periodic trigger. The exit status is 0 for complete streams, 2 for unusable input and 3 for incomplete streams.
 
 ## Finish
 
