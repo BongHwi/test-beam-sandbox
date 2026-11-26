@@ -71,7 +71,9 @@ DQM は、ほかの msensor ごとにその trigger を最も上流の msensor�
 
 msraw stream にはヘッダーと五つのレコード種別 `TILE_DATA`、`TRIGGER`、`TICK`、`TILE_STATUS`、`END` があり、`TICK` が frame を終了します。メッセージは SubTimeFrame ヘッダーと `META`、frame、`END` データを含みます。
 
-trigger ボードを使うと、run はボード stream も保存し、`extract` が `TRIGGERBOARD_0_runN.msraw` に書き出します。この stream は msraw stream のコンテナーを使い、メタデータ形式は `msraw-board-metadata-1`、plane は 1000 です。レコードは `PERIODIC`（周期 trigger 番号とボード時計）、`PHYSICS`（物理 trigger 番号、ボード時計、その直前の最後の周期 trigger の番号、その trigger または run 開始からの時計サイクル数、n ビット目がチャンネル n の scintillator パターン）、`TICK`、`END` です。ボード時計は run 開始から 100.5 MHz のサイクルを数え、`TICK` は `frame_ms` の長さの frame を終了します。周期 trigger は、まだ存在しない frame builder が使う論理的な frame 境界で、すべての stream の frame は今も各自の `TICK` で終わります。`python3 -m msensor.boardstream verify FILE` はボード stream を検査し、完全なら 0、不完全なら 2、破損していれば 3 を返します。DQM はボードを表示しません。
+trigger ボードを使うと、run はボード stream も保存し、`extract` が `TRIGGERBOARD_0_runN.msraw` に書き出します。この stream は msraw stream のコンテナーを使い、メタデータ形式は `msraw-board-metadata-1`、plane は 1000 です。レコードは `PERIODIC`（周期 trigger 番号とボード時計）、`PHYSICS`（物理 trigger 番号、ボード時計、その直前の最後の周期 trigger の番号、その trigger または run 開始からの時計サイクル数、n ビット目がチャンネル n の scintillator パターン）、`TICK`、`END` です。ボード時計は run 開始から 100.5 MHz のサイクルを数え、`TICK` は `frame_ms` の長さの frame を終了します。周期 trigger は、下記のオフライン frame builder が使う論理的な frame 境界で、すべての stream の frame は今も各自の `TICK` で終わります。`python3 -m msensor.boardstream verify FILE` はボード stream を検査し、完全なら 0、不完全なら 2、破損していれば 3 を返します。DQM はボードを表示しません。
+
+オフライン frame builder は、一つの run の stream を時間 frame にまとめます。`python3 -m nestdaq_mode.framebuilder --dir DIR --out frames.jsonl` で実行し、DIR には抽出済みの `*.msraw` ファイルを置きます。FileSink の run ファイルは、`--dat FILE --work DIR` で先に抽出できます。frame f はボードのサイクル f × `periodic_clk` から (f + 1) × `periodic_clk` までで、f 番目の周期 trigger で終わります。出力の各行が一つの frame で、その物理 trigger と、msensor ごとの window、tile、hit の数を含みます。`--hits` を付けると hit も書きます。msensor の window は、その msensor の TRIGGER レコードから分かる自身の時計での開始時刻の frame に属するため、時計のオフセットや drift でデータが別の frame に移ることはありません。msensor が取りこぼした周期 trigger は時刻で対応付け、その境界を補間し、その frame には `estimated_border` が付きます。時計のオフセットは周期の半分より小さい必要があります。最後の周期 trigger より後のデータは、標準出力の要約で数えるだけで書きません。終了コードは、完全なら 0、入力が使えなければ 2、不完全なら 3 です。
 
 ## 終了
 

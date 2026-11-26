@@ -74,7 +74,39 @@ def verify(n, setup, period_clk):
         assert got[:len(expected)] == [(i, t) for i, (k, t) in enumerate(expected)][:len(got)], name + ' trigger times'
         assert abs(len(got) - len(expected)) <= 1, f'{name} has {len(got)} triggers, expected {len(expected)}'
         out['sensors'][name] = len(got)
+    out['frames'] = build_frames(n, setup, periodic, physics, period_clk)
     return out
+
+
+def build_frames(n, setup, periodic, physics, period_clk):
+    """Build the time frames offline and compare them with the streams."""
+    from msensor import rawstream
+    from nestdaq_mode import framebuilder
+    frames_file = n / 'frames.jsonl'
+    if frames_file.exists(): frames_file.unlink()
+    board, sensors = framebuilder.classify(str(p) for p in n.glob('*.msraw'))
+    summary = framebuilder.build(board, sensors, str(frames_file), hits=True)
+    assert summary['complete'], summary
+    frames = [json.loads(line) for line in frames_file.read_text().splitlines()]
+    assert [f['frame'] for f in frames] == list(range(len(periodic))), 'frame numbers'
+    assert sum(len(f['physics']) for f in frames) + summary['physics']['after_last_periodic'] == len(physics), 'physics in frames'
+    assert summary['physics']['inconsistent'] == 0, 'physics frame vs last periodic'
+    for dev in setup['devices']:
+        if dev['kind'] != 'msensor': continue
+        name = 'MSENSOR_' + str(dev['number'])
+        raw = rawstream.read(n / (name + '_run1.msraw'))
+        tiles = sum(1 for r in raw['records'] if r['kind'] == 'TILE_DATA')
+        s = summary['sensors'][name]
+        assert sum(f['sensors'][name]['tiles'] for f in frames) + s['windows_after_last_periodic'] == tiles, name + ' tile data lost'
+        assert sum(f['sensors'][name]['hits'] for f in frames) > 0, name + ' no hits'
+        missed = sorted(dev.get('missed_triggers', []))
+        # a missed trigger is a border that the builder has to estimate; it marks the frame it closes and the next one
+        want = sorted({k for m in missed for k in (m, m + 1) if k < len(frames)})
+        got = [f['frame'] for f in frames if f['sensors'][name]['estimated_border']]
+        assert all(k in got for k in want), f'{name} estimated frames {got}, missed {missed}'
+        assert s['estimated_borders'] >= len([m for m in missed if m < len(frames)]) , name + ' estimated borders'
+        assert s['worst_residual_ns'] < 1e6, name + ' border residual'
+    return {'frames': len(frames), 'physics_in_frames': summary['physics']['in_frames'], 'sensors': summary['sensors']}
 
 
 def main():
