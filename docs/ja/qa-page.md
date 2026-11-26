@@ -55,7 +55,7 @@
 
 `R` と `T` は `scripts/session_control.sh public-session repeat --id page-repeat` と `terminate --id page-terminate` を実行し、制御 socket で RunControl の要求を送ります。`Q` は `docker exec public-session tmux send-keys -t ITS3:rc Q` で RunControl ウィンドウにキーを送ります。`R` は現在の設定を繰り返し、`T` はシーケンスを終了し、`Q` は終了後に抜けます。各ボタンは実行するコマンドを表示し、`T` と `Q` はページ上で確認を求めます。
 
-セッションを終えるときは README の順番に従います: `T`、`Q`、次に "出力をコピー"。これは `docker cp public-session:/tmp/session-run outputs/public-session-TIME` でリポジトリの `outputs/` の下の新しいディレクトリにコピーします（TIME は UTC 時刻）。次に "コンテナーを削除"。これはページ内で確認した後に `docker rm -f public-session` を実行します。削除できるのはこのリポジトリのセッションコンテナーだけです。その後ページはセットアップタブに戻ります。
+セッションを終えるときは [ウォークスルー](walkthrough.md)の順番に従います: `T`、`Q`、次に "出力をコピー"。これは `docker cp public-session:/tmp/session-run outputs/public-session-TIME` でリポジトリの `outputs/` の下の新しいディレクトリにコピーします（TIME は UTC 時刻）。次に "コンテナーを削除"。これはページ内で確認した後に `docker rm -f public-session` を実行します。削除できるのはこのリポジトリのセッションコンテナーだけです。その後ページはセットアップタブに戻ります。
 
 ## 操作
 

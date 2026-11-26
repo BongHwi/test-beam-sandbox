@@ -55,7 +55,7 @@
 
 `R`과 `T`는 `scripts/session_control.sh public-session repeat --id page-repeat`와 `terminate --id page-terminate`를 실행해 제어 socket으로 RunControl 요청을 보냅니다. `Q`는 `docker exec public-session tmux send-keys -t ITS3:rc Q`로 RunControl 창에 키를 보냅니다. `R`은 현재 설정을 되풀이하고 `T`는 시퀀스를 끝내며 `Q`는 끝난 뒤 나갑니다. 버튼마다 실행하는 명령을 보여 주고, `T`와 `Q`는 페이지에서 한 번 더 확인합니다.
 
-세션을 끝낼 때는 README의 순서를 따릅니다: `T`, `Q`, 그다음 "출력 복사", 이것은 `docker cp public-session:/tmp/session-run outputs/public-session-TIME`으로 저장소의 `outputs/` 아래 새 디렉터리에 복사합니다(TIME은 UTC 시각). 그다음 "컨테이너 지우기", 이것은 페이지 안에서 확인한 뒤 `docker rm -f public-session`을 실행합니다. 지울 수 있는 것은 이 저장소의 세션 컨테이너뿐입니다. 그 뒤 페이지는 셋업 탭으로 돌아갑니다.
+세션을 끝낼 때는 [따라 하기](walkthrough.md)의 순서를 따릅니다: `T`, `Q`, 그다음 "출력 복사", 이것은 `docker cp public-session:/tmp/session-run outputs/public-session-TIME`으로 저장소의 `outputs/` 아래 새 디렉터리에 복사합니다(TIME은 UTC 시각). 그다음 "컨테이너 지우기", 이것은 페이지 안에서 확인한 뒤 `docker rm -f public-session`을 실행합니다. 지울 수 있는 것은 이 저장소의 세션 컨테이너뿐입니다. 그 뒤 페이지는 셋업 탭으로 돌아갑니다.
 
 ## 조작
 

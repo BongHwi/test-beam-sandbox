@@ -12,7 +12,7 @@
 
 ## 取得と解析
 
-ビルド、起動、取得、停止、解析には[開始ガイド](../../README.ja.md)のコマンドを使います。セッションのビームは最初はオフです。解析には公開 EUDAQ 変換器、EventLoaderEUDAQ2、clustering、tracking、DUT association、efficiency、出力モジュールを使います。固定した Corryvreckan revision では補助の 30 µm ピッチヒストグラムで ROOT bin の警告が 1 回出る場合があります。他の変換エラーは失敗です。データイベントのない raw ファイルは解析しないでください。
+ビルド、起動、取得、停止、解析には[ウォークスルー](walkthrough.md)のコマンドを使います。セッションのビームは最初はオフです。解析には公開 EUDAQ 変換器、EventLoaderEUDAQ2、clustering、tracking、DUT association、efficiency、出力モジュールを使います。固定した Corryvreckan revision では補助の 30 µm ピッチヒストグラムで ROOT bin の警告が 1 回出る場合があります。他の変換エラーは失敗です。データイベントのない raw ファイルは解析しないでください。
 
 ![ターミナルで実行中のセッションをアライメントし解析します。](../images/terminal-analysis.png)
 

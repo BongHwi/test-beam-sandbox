@@ -12,7 +12,7 @@ A setup file becomes these files when a session starts with `scripts/start_sessi
 
 ## Acquisition and analysis
 
-Follow the commands in the [main guide](../README.md) to build, start, acquire, stop, and analyze a run. The session starts with the beam off. Analysis uses public EUDAQ converters, EventLoaderEUDAQ2, clustering, tracking, DUT association, efficiency and output modules. The pinned Corryvreckan revision can emit a ROOT histogram bin warning for the auxiliary 30 µm pitch plot 1 time; other conversion errors are failures. Do not analyze a raw file with no data events.
+Follow the commands in the [walkthrough](walkthrough.md) to build, start, acquire, stop, and analyze a run. The session starts with the beam off. Analysis uses public EUDAQ converters, EventLoaderEUDAQ2, clustering, tracking, DUT association, efficiency and output modules. The pinned Corryvreckan revision can emit a ROOT histogram bin warning for the auxiliary 30 µm pitch plot 1 time; other conversion errors are failures. Do not analyze a raw file with no data events.
 
 ![Alignment and analysis of a running session in a terminal.](images/terminal-analysis.png)
 
