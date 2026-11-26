@@ -106,7 +106,7 @@ NESTDAQ = {
     'periodic_clk': Item('int', 1005000, 'period of the periodic trigger in cycles of the 100.5 MHz board clock (1005000 is 10 ms); only with trigger_board = on', 10000, 1005000000),
     'generator_mb_s': Item('number', 0, 'load test of the data path: above 0, every msensor runner is replaced by a generator that writes valid frames at about this many MB/s per msensor, without the beam simulation; 0 runs the simulation', 0, 500, render=False),
 }
-NESTDAQ_NOTE = 'nestDAQ mode: the msensor data go to nestDAQ; events is ignored, the operator starts and stops runs; QA, alignment and analysis are not available in this mode.'
+NESTDAQ_NOTE = 'nestDAQ mode: the msensor data go to nestDAQ; events is ignored, the operator starts and stops runs; QA, alignment and analysis are not available in this mode; scintillators and [trigger] need trigger_board = on.'
 BEAM = {
     'particle': Item('choice', BEAM_DEFAULTS['particle'], 'beam particle; the session core simulates electrons only',
                      choices=('e-',)),
@@ -309,6 +309,10 @@ def load_text(text, path):
                 w = d.get('window_length_ns')
                 if d['kind'] == 'msensor' and d['readout'] == 'continuous' and isinstance(w, int) and setup['nestdaq']['periodic_clk'] * 2000000 < w * 201 * 1000:
                     errors.append(f'[msensor {d["number"]}] window_length_ns = {w}: with trigger_board = on, periodic_clk must make a period of at least one window')
+            for d in setup['devices']:
+                offset = d.get('clock_offset_ns', 0)
+                if d['kind'] == 'msensor' and isinstance(offset, int) and offset * 2 * 100500000 >= setup['nestdaq']['periodic_clk'] * 1000000000:
+                    errors.append(f'[msensor {d["number"]}] clock_offset_ns = {offset}: with trigger_board = on, the offset must be less than half of the periodic trigger period, or the periodic triggers cannot be matched to the board')
         if setup['nestdaq']['generator_mb_s'] == 0:
             setup['nestdaq'].pop('generator_mb_s')
         elif any(d['kind'] == 'msensor' and d['readout'] != 'continuous' for d in setup['devices']):

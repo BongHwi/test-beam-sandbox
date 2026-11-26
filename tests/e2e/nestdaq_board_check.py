@@ -4,12 +4,12 @@
 The driver plays the part of the nestDAQ input devices: it starts and drains every
 runner through its control socket, then checks the files they wrote. It needs
 only Python 3 with numpy, no Docker.
-Usage: python3 tests/e2e/nestdaq_board_check.py SETUP.ini WORKDIR [SECONDS]
+Usage: python3 tests/e2e/nestdaq_board_check.py SETUP.ini WORKDIR [SECONDS [BOARD_DELAY_SECONDS]]
+A board delay starts the board runner late, so that more than 512 physics triggers wait for it.
 """
 import json
 import os
 from pathlib import Path
-import secrets
 import socket
 import subprocess
 import sys
@@ -72,7 +72,7 @@ def verify(n, setup, period_clk):
         # the msensor may have received one more trigger than the board wrote at the end of the run
         got = [(r['trigger_number'], r['time_ns']) for r in triggers]
         assert got[:len(expected)] == [(i, t) for i, (k, t) in enumerate(expected)][:len(got)], name + ' trigger times'
-        assert abs(len(got) - len(expected)) <= 1, f'{name} has {len(got)} triggers, expected {len(expected)}'
+        assert len(got) == len(expected), f'{name} has {len(got)} triggers, expected {len(expected)}'
         out['sensors'][name] = len(got)
     out['frames'] = build_frames(n, setup, periodic, physics, period_clk)
     return out
@@ -88,8 +88,10 @@ def build_frames(n, setup, periodic, physics, period_clk):
     summary = framebuilder.build(board, sensors, str(frames_file), hits=True)
     assert summary['complete'], summary
     frames = [json.loads(line) for line in frames_file.read_text().splitlines()]
-    assert [f['frame'] for f in frames] == list(range(len(periodic))), 'frame numbers'
-    assert sum(len(f['physics']) for f in frames) + summary['physics']['after_last_periodic'] == len(physics), 'physics in frames'
+    assert [f['frame'] for f in frames][:len(periodic)] == list(range(len(periodic))), 'frame numbers'
+    assert len(frames) - len(periodic) == int(summary['partial_frame']), 'frame count'
+    assert sum(len(f['physics']) for f in frames) == len(physics), 'physics in frames'
+    assert [f['frame'] for f in frames if f.get('partial')] in ([], [len(periodic)]), 'partial frame'
     assert summary['physics']['inconsistent'] == 0, 'physics frame vs last periodic'
     for dev in setup['devices']:
         if dev['kind'] != 'msensor': continue
@@ -97,14 +99,15 @@ def build_frames(n, setup, periodic, physics, period_clk):
         raw = rawstream.read(n / (name + '_run1.msraw'))
         tiles = sum(1 for r in raw['records'] if r['kind'] == 'TILE_DATA')
         s = summary['sensors'][name]
-        assert sum(f['sensors'][name]['tiles'] for f in frames) + s['windows_after_last_periodic'] == tiles, name + ' tile data lost'
+        assert sum(f['sensors'][name]['tiles'] for f in frames) == tiles, name + ' tile data lost'
         assert sum(f['sensors'][name]['hits'] for f in frames) > 0, name + ' no hits'
+        assert all(f['sensors'][name]['hits'] == 0 for f in frames if not f['sensors'][name]['tiles']), name + ' hits without tiles'
         missed = sorted(dev.get('missed_triggers', []))
         # a missed trigger is a border that the builder has to estimate; it marks the frame it closes and the next one
         want = sorted({k for m in missed for k in (m, m + 1) if k < len(frames)})
         got = [f['frame'] for f in frames if f['sensors'][name]['estimated_border']]
-        assert all(k in got for k in want), f'{name} estimated frames {got}, missed {missed}'
-        assert s['estimated_borders'] >= len([m for m in missed if m < len(frames)]) , name + ' estimated borders'
+        assert got == want, f'{name} estimated frames {got}, missed {missed}'
+        assert s['estimated_borders'] == len([m for m in missed if m < len(periodic)]), name + ' estimated borders'
         assert s['worst_residual_ns'] < 1e6, name + ' border residual'
     return {'frames': len(frames), 'physics_in_frames': summary['physics']['in_frames'], 'sensors': summary['sensors']}
 
@@ -112,6 +115,7 @@ def build_frames(n, setup, periodic, physics, period_clk):
 def main():
     setup_file, work = sys.argv[1], Path(sys.argv[2]).resolve()
     seconds = float(sys.argv[3]) if len(sys.argv) > 3 else 6
+    board_delay = float(sys.argv[4]) if len(sys.argv) > 4 else 0
     work.mkdir(parents=True, exist_ok=True)
     layout = work / 'layout'
     subprocess.run([sys.executable, '-m', 'session_setup.setupfile', 'prepare', setup_file, str(layout)],
@@ -161,12 +165,18 @@ def main():
         results = {}
         def do(r, request):
             results[r['name']] = control(r['control'], request)
-        def all_do(request):
-            threads = [threading.Thread(target=do, args=(r, request)) for r in all_runners]
+        def all_do(request, only=None):
+            threads = [threading.Thread(target=do, args=(r, request)) for r in all_runners if only is None or only(r)]
             for t in threads: t.start()
             for t in threads: t.join()
             return dict(results)
-        started = all_do({'op': 'start', 'run': 1})
+        is_board = lambda r: r['readout_mode'] == 'board'
+        if board_delay:
+            started = all_do({'op': 'start', 'run': 1}, lambda r: not is_board(r))
+            time.sleep(board_delay)
+            started.update(all_do({'op': 'start', 'run': 1}, is_board))
+        else:
+            started = all_do({'op': 'start', 'run': 1})
         print('start', started)
         time.sleep(seconds)
         drained = all_do({'op': 'drain'})

@@ -9,7 +9,7 @@ nestDAQ モードではセッションが EUDAQ の代わりに nestDAQ です�
 EUDAQ モードと比べると:
 
 - msensor のみを読み、ALPIDE 面はビームラインの物質として残ります。
-- シンチレーター、`[trigger]`、`--example` は使えず、`events` は無視されます。
+- シンチレーターと `[trigger]` は `trigger_board = on` のときだけ使え、`--example` は使えず、`events` は無視されます。
 - アライメントと解析はまだ使えません。QA のために DQM は hit map、correlation、trigger の対応づけを表示し、`nestdaq qa` とページの QA タブはその数値を表示し、抽出ツールは msensor ごとの msraw stream を別のファイルに書きます。
 
 ## ビルド
@@ -39,11 +39,11 @@ nestDAQ モードでは msensor にノイズ hit も出させることができ�
 データ経路の負荷試験には、`[nestdaq]` セクションの `generator_mb_s` を使います。0 より大きいと、すべての msensor 実行器を発生器に置き換え、発生器はビームのシミュレーションなしに周期的な trigger とともに msensor あたりおおよそその値の MB/s で正しい msensor raw frame を書きます。すべての msensor は continuous readout でなければなりません。データに物理的な意味はないため、このモードでは DQM の correlation は意味を持ちません。
 `configs/setups/nestdaq-telescope.ini` の telescope では最も上流の msensor 以外はそれぞれ自分の時計で動きます。 msensor ごとに自分の実行器と入力デバイスがあり、すべて同じ FileSink と DQM にデータを送ります。DQM は msensor ごとに最も上流の msensor と対応づけます。
 
-`[nestdaq]` セクションに `trigger_board = on` を書くと、仮想 trigger ボードを追加できます。既定値の `off` では上記の内容はすべてそのままです。ボードを有効にすると、すべての msensor は粒子ごとに一つ受け取っていた trigger の代わりに周期 trigger を受け取ります。run ごとに 0 から数える k 番目の周期 trigger は、run 開始から 100.5 MHz のボード時計で (k + 1) × `periodic_clk` サイクル後に来ます。`periodic_clk` は 10000 から 1005000000 までで、既定値 1005000 は 10 ms です。周期はすべての msensor の window 一つ以上でなければなりません。hit は引き続きすべての粒子から出ます。各 msensor は周期 trigger を自分の時計で TRIGGER レコードに書くため、時計が異なると番号が同じ周期 trigger でも時刻が異なります。すべての msensor は continuous readout でなければならず、`generator_mb_s` はボードと併用できません。このモードでは scintillator と `[trigger]` を使え、どの粒子が物理 trigger になるかはこれらが決めます。scintillator がなければすべての粒子がパターン 0 の物理 trigger です。ボード実行器 `TRIGGERBOARD_0` は、セッションが受理した物理 trigger を読み、周期 trigger とともにボード stream として書きます。この stream は専用の入力デバイスを経て、DQM へのコピーなしで FileSink に届きます。例は `configs/setups/nestdaq-board.ini` にあります。
+`[nestdaq]` セクションに `trigger_board = on` を書くと、仮想 trigger ボードを追加できます。既定値の `off` では上記の内容はすべてそのままです。ボードを有効にすると、すべての msensor は粒子ごとに一つ受け取っていた trigger の代わりに周期 trigger を受け取ります。run ごとに 0 から数える k 番目の周期 trigger は、run 開始から 100.5 MHz のボード時計で (k + 1) × `periodic_clk` サイクル後に来ます。`periodic_clk` は 10000 から 1005000000 までで、既定値 1005000 は 10 ms です。周期はすべての msensor の window 一つ以上でなければなりません。hit は引き続きすべての粒子から出ます。各 msensor は周期 trigger を自分の時計で TRIGGER レコードに書くため、時計が異なると番号が同じ周期 trigger でも時刻が異なります。すべての msensor は continuous readout でなければならず、`generator_mb_s` はボードと併用できません。このモードでは シンチレーターと `[trigger]` を使え、どの粒子が物理 trigger になるかはこれらが決めます。シンチレーターがなければすべての粒子がパターン 0 の物理 trigger です。ボード実行器 `TRIGGERBOARD_0` は、セッションが受理した物理 trigger を読み、周期 trigger とともにボード stream として書きます。この stream は専用の入力デバイスを経て、DQM へのコピーなしで FileSink に届きます。例は `configs/setups/nestdaq-board.ini` にあります。
 
 ## セッションの開始
 
-`scripts/start_session.sh --setup FILE --name public-session` で開始するとイメージが自動で選ばれます。`--no-attach` を使うと README のようにターミナルをそのまま使えます。tmux の `NESTDAQ` には七つのウィンドウがあります。`redis` は Redis、`webctl` は run 制御、`slowdash` は時系列、`runners` は msensor 実行器、`sources` は入力デバイス、`sink` は FileSink、`dqm` は監視を担当します。`scripts/attach_session.sh public-session` は `NESTDAQ:runners` に接続します。`Ctrl-b`、次に `d` を押すと離れます。実行器が終了すると 2 秒後に再起動します。
+`scripts/start_session.sh --setup FILE --name public-session` で開始するとイメージが自動で選ばれます。`--no-attach` を使うと README のようにターミナルをそのまま使えます。tmux の `NESTDAQ` には七つのウィンドウがあります。`redis` は Redis、`webctl` は run 制御、`slowdash` は時系列、`runners` は msensor と trigger ボードの実行器、`sources` は入力デバイス、`sink` は FileSink、`dqm` は監視を担当します。`scripts/attach_session.sh public-session` は `NESTDAQ:runners` に接続します。`Ctrl-b`、次に `d` を押すと離れます。実行器が終了すると 2 秒後に再起動します。
 
 ## Run
 
@@ -71,9 +71,9 @@ DQM は、ほかの msensor ごとにその trigger を最も上流の msensor�
 
 msraw stream にはヘッダーと五つのレコード種別 `TILE_DATA`、`TRIGGER`、`TICK`、`TILE_STATUS`、`END` があり、`TICK` が frame を終了します。メッセージは SubTimeFrame ヘッダーと `META`、frame、`END` データを含みます。
 
-trigger ボードを使うと、run はボード stream も保存し、`extract` が `TRIGGERBOARD_0_runN.msraw` に書き出します。この stream は msraw stream のコンテナーを使い、メタデータ形式は `msraw-board-metadata-1`、plane は 1000 です。レコードは `PERIODIC`（周期 trigger 番号とボード時計）、`PHYSICS`（物理 trigger 番号、ボード時計、その直前の最後の周期 trigger の番号、その trigger または run 開始からの時計サイクル数、n ビット目がチャンネル n の scintillator パターン）、`TICK`、`END` です。ボード時計は run 開始から 100.5 MHz のサイクルを数え、`TICK` は `frame_ms` の長さの frame を終了します。周期 trigger は、下記のオフライン frame builder が使う論理的な frame 境界で、すべての stream の frame は今も各自の `TICK` で終わります。`python3 -m msensor.boardstream verify FILE` はボード stream を検査し、完全なら 0、不完全なら 2、破損していれば 3 を返します。DQM はボードを表示しません。
+trigger ボードを使うと、run はボード stream も保存し、`extract` が `TRIGGERBOARD_0_runN.msraw` に書き出します。この stream は msraw stream のコンテナーを使い、メタデータ形式は `msraw-board-metadata-1`、plane は 1000 です。レコードは `PERIODIC`（周期 trigger 番号とボード時計）、`PHYSICS`（物理 trigger 番号、ボード時計、その直前の最後の周期 trigger の番号、その trigger または run 開始からの時計サイクル数、n ビット目がチャンネル n のシンチレーターパターン）、`TICK`、`END` です。ボード時計は run 開始から 100.5 MHz のサイクルを数え、`TICK` は `frame_ms` の長さの frame を終了します。周期 trigger は、下記のオフライン frame builder が使う論理的な frame 境界で、すべての stream の frame は今も各自の `TICK` で終わります。`python3 -m msensor.boardstream verify FILE` はボード stream を検査し、完全なら 0、不完全なら 2、破損していれば 3 を返します。DQM はボードを表示しません。
 
-オフライン frame builder は、一つの run の stream を時間 frame にまとめます。`python3 -m nestdaq_mode.framebuilder --dir DIR --out frames.jsonl` で実行し、DIR には抽出済みの `*.msraw` ファイルを置きます。FileSink の run ファイルは、`--dat FILE --work DIR` で先に抽出できます。frame f はボードのサイクル f × `periodic_clk` から (f + 1) × `periodic_clk` までで、f 番目の周期 trigger で終わります。出力の各行が一つの frame で、その物理 trigger と、msensor ごとの window、tile、hit の数を含みます。`--hits` を付けると hit も書きます。msensor の window は、その msensor の TRIGGER レコードから分かる自身の時計での開始時刻の frame に属するため、時計のオフセットや drift でデータが別の frame に移ることはありません。msensor が取りこぼした周期 trigger は時刻で対応付け、その境界を補間し、その frame には `estimated_border` が付きます。時計のオフセットは周期の半分より小さい必要があります。最後の周期 trigger より後のデータは、標準出力の要約で数えるだけで書きません。終了コードは、完全なら 0、入力が使えなければ 2、不完全なら 3 です。
+オフライン frame builder は、一つの run の stream を時間 frame にまとめます。`python3 -m nestdaq_mode.framebuilder --dir DIR --out frames.jsonl` で実行し、DIR には抽出済みの `*.msraw` ファイルを置きます。FileSink の run ファイルは、`--dat FILE --work DIR` で先に抽出できます。frame f はボードのサイクル f × `periodic_clk` から (f + 1) × `periodic_clk` までで、f 番目の周期 trigger で終わります。出力の各行が一つの frame で、その物理 trigger と、msensor ごとの window、tile、hit の数を含みます。`--hits` を付けると hit も書きます。msensor の window は、その msensor の TRIGGER レコードから分かる自身の時計での開始時刻の frame に属するため、時計のオフセットや drift でデータが別の frame に移ることはありません。msensor が取りこぼした周期 trigger は時刻で対応付け、その境界を補間し、その frame には `estimated_border` が付きます。最後の周期 trigger より後のデータは、閉じる周期 trigger のない最後の frame 一つに `partial` を付けて書きます。ボードを有効にした setup で `clock_offset_ns` が周期の半分以上なら setup ツールが拒否します。センサーの trigger を正しい周期 trigger に対応付けられなくなるためです。終了コードは、完全なら 0、入力が使えなければ 2、不完全なら 3 です。
 
 ## 終了
 

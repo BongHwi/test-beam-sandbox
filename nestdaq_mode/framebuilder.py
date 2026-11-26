@@ -11,8 +11,8 @@ The physics triggers of the board are put in the frame of their clock.
 A trigger that an msensor missed is matched by time, not by number: the border of
 that sensor is then interpolated or extrapolated from its neighbours and the frame
 is marked "estimated" for it. Matching needs the clock offset of a sensor to be
-smaller than half a period. Data after the last periodic trigger is not in any frame
-and is only counted.
+smaller than half a period. Data after the last periodic trigger goes into one last frame
+marked "partial", which has no closing periodic trigger.
 
 Input is a directory of extracted *.msraw files or a FileSink run file. Output is
 one JSON object per frame (JSON Lines) and a summary on standard output.
@@ -114,55 +114,64 @@ def build(board_path, sensor_paths, out, hits=False):
     board_ns = [r['clock'] * 1e9 / CLOCK_HZ for r in periodic]
     period_ns = period * 1e9 / CLOCK_HZ
     n = len(periodic)
-    frames = [{'frame': f, 'begin_clk': f * period, 'end_clk': (f + 1) * period, 'physics': [], 'sensors': {}} for f in range(n)]
-    summary = {'frames': n, 'period_clk': period, 'physics': {'in_frames': 0, 'after_last_periodic': 0, 'inconsistent': 0},
+    run = board['metadata']['run_number']
+    # frame n has no closing periodic trigger; it is written as partial when it holds data
+    frames = [{'frame': f, 'begin_clk': f * period, 'end_clk': (f + 1) * period, 'physics': [], 'sensors': {}} for f in range(n + 1)]
+    summary = {'run': run, 'frames': n, 'partial_frame': False, 'period_clk': period,
+               'physics': {'in_frames': 0, 'in_partial_frame': 0, 'inconsistent': 0},
                'sensors': {}, 'complete': board['complete']}
     for r in physics:
         f = r['clock'] // period
         expected = 0 if r['last_periodic'] is None else r['last_periodic'] + 1
         if f != expected:
             summary['physics']['inconsistent'] += 1
-        if f >= n:
-            summary['physics']['after_last_periodic'] += 1
-            continue
+        f = min(f, n)
         frames[f]['physics'].append({'number': r['number'], 'clock': r['clock'], 'since': r['since'], 'pattern': r['pattern']})
-        summary['physics']['in_frames'] += 1
+        summary['physics']['in_partial_frame' if f == n else 'in_frames'] += 1
     for path in sensor_paths:
         raw = rawstream.read(path)
         m = raw['metadata']
         if m is None or m['readout_mode'] != 'continuous':
             raise ValueError(f'{path}: not a continuous msensor stream')
         name = m['device']
+        if m['run_number'] != run:
+            raise ValueError(f'{path}: run {m["run_number"]}, the board stream is run {run}')
+        if name in summary['sensors']:
+            raise ValueError(f'two streams of {name}')
         triggers = [r['time_ns'] for r in raw['records'] if r['kind'] == 'TRIGGER']
         local, estimated, matched, worst = match_borders(triggers, board_ns, period_ns)
         width = m['window_length_ns']
         tail = 0
-        for f in range(n):
-            frames[f]['sensors'][name] = {'tiles': 0, 'hits': 0, 'estimated_border': estimated[f] or (f > 0 and estimated[f - 1]),
-                                          'data': [] if hits else None}
-        windows = [set() for _ in range(n)]
+        for f in range(n + 1):
+            frames[f]['sensors'][name] = {'tiles': 0, 'hits': 0, 'data': [] if hits else None,
+                                          'estimated_border': (f < n and estimated[f]) or (f > 0 and estimated[f - 1])}
+        windows = [set() for _ in range(n + 1)]
         for r in raw['records']:
             if r['kind'] != 'TILE_DATA':
                 continue
             f = bisect.bisect_right(local, r['window_index'] * width)
-            if f >= n:
-                tail += 1
-                continue
+            tail += f == n
             entry = frames[f]['sensors'][name]
             entry['tiles'] += 1
             entry['hits'] += r['hit_count']
             windows[f].add(r['window_index'])
             if hits:
                 entry['data'].append({'window': r['window_index'], 'tile': r['tile'], 'hits': r['hits']})
-        for f in range(n):
+        for f in range(n + 1):
             entry = frames[f]['sensors'][name]
             entry['windows'] = len(windows[f])
             if not hits:
                 del entry['data']
         summary['sensors'][name] = {'triggers': len(triggers), 'matched': matched, 'estimated_borders': sum(estimated),
-                                    'windows_after_last_periodic': tail, 'worst_residual_ns': round(worst, 1),
+                                    'tiles_in_partial_frame': tail, 'worst_residual_ns': round(worst, 1),
                                     'status': raw['status']}
         summary['complete'] = summary['complete'] and raw['status'] == 'closed_clean'
+    last = frames[n]
+    if last['physics'] or any(x['tiles'] for x in last['sensors'].values()):
+        last['partial'] = True
+        summary['partial_frame'] = True
+    else:
+        frames.pop()
     with open(out, 'w') as f:
         for frame in frames:
             f.write(json.dumps(frame, separators=(',', ':')) + '\n')
@@ -181,12 +190,15 @@ def main():
         if bool(args.dir) == bool(args.dat):
             raise ValueError('give exactly one of --dir and --dat')
         directory = args.dir
+        incomplete = False
         if args.dat:
             if not args.work:
                 raise ValueError('--dat needs --work')
             from .extract import extract
-            extract(args.dat, args.work)
+            extracted = extract(args.dat, args.work)
             directory = args.work
+            if not all(x['complete'] and x['missing_frames'] == 0 for x in extracted['devices']):
+                incomplete = True
         board, sensors = classify(str(p) for p in Path(directory).glob('*.msraw'))
         if Path(args.out).exists():
             raise ValueError(f'output exists: {args.out}')
@@ -195,7 +207,7 @@ def main():
         print(str(exc).replace('\n', ' '), file=sys.stderr)
         return 2
     print(json.dumps(summary, separators=(',', ':')))
-    return 0 if summary['complete'] else 3
+    return 0 if summary['complete'] and not incomplete else 3
 
 
 if __name__ == '__main__':

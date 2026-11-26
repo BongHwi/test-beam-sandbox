@@ -571,10 +571,15 @@ class Session:
         del self.board_log[:cursor - self.board_base]
         self.board_base = cursor
         records = self.board_log[:512]
-        finished = (self.boundary is not None and not self.board_log[len(records):]
-                    and all(c['released'] or c['lost'] for c in self.clients.values()))
+        rest = self.board_log[len(records):]
+        # A reply that does not hold every record must not promise the clock: the board closes
+        # its frames up to the watermark, so it stops before the first record it has not got.
+        watermark = min([self.clock_ps] + [r[1] for r in rest])
+        # The run is over for the board once the boundary is frozen and everything is read,
+        # whatever the msensors still do.
+        finished = self.boundary is not None and not rest
         return {'kind': 'board', 'records': [list(r) for r in records], 'next': cursor + len(records),
-                'watermark_ps': self.clock_ps, 'finished': finished}
+                'watermark_ps': watermark, 'finished': finished}
 
     def request(self, req):
         with self.lock:

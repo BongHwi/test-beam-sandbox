@@ -26,11 +26,11 @@ Linux コンテナーを実行する Docker が動いている Linux または m
 | イメージ | `scripts/build_session.sh` | さらに `scripts/build_session.sh --nestdaq` |
 | `configs/setups/` のセットアップ例 | `default.ini`, `small-msensor.ini`, `msensor-telescope.ini` | `nestdaq.ini`, `nestdaq-clocks.ini`, `nestdaq-missed.ini`, `nestdaq-telescope.ini`, `nestdaq-board.ini` |
 | 読むデバイス | ALPIDE 基準面、msensor、trigger ボード | msensor; ALPIDE 面はビーム中の物質として残ります |
-| Trigger | シンチレーターとセットアップファイルの trigger 条件 | 模擬ビームラインの trigger; シンチレーターと trigger ボードはありません |
+| Trigger | シンチレーターとセットアップファイルの trigger 条件 | 模擬ビームラインの trigger; `trigger_board = on` ではシンチレーターと `[trigger]` を使え、周期 trigger を出す仮想 trigger ボードが加わります |
 | Run 制御 | 公開 RunControl 画面と `scripts/session_control.sh` | daq-webctl と `scripts/session_control.sh NAME nestdaq` |
 | 監視 | RunControl 画面; ページの実験と DAQ 画面タブ | DQM と SlowDash; ページの nestDAQ と QA タブ |
-| 保存データ | EUDAQ raw ファイル | FileSink ファイルの msraw frame; `python3 -m nestdaq_mode.extract` が msensor ごとの msraw stream を別ファイルに書きます |
-| 解析 | Corryvreckan によるアライメントと QA | まだ使えません; DQM は hit map、correlation、trigger の対応づけを示し、`nestdaq qa` と QA タブはその数値を表示します |
+| 保存データ | EUDAQ raw ファイル | FileSink ファイルの msraw frame; `python3 -m nestdaq_mode.extract` が msensor ごと、および trigger ボードの msraw stream を別ファイルに書きます |
+| 解析 | Corryvreckan によるアライメントと QA | アライメントはまだありません; `python3 -m nestdaq_mode.framebuilder` が周期 trigger ごとの時間 frame をオフラインで作ります; DQM は hit map、correlation、trigger の対応づけを示し、`nestdaq qa` と QA タブはその数値を表示します |
 
 ## クイックスタート
 

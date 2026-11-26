@@ -33,7 +33,7 @@ INT     := 0 – 1000000000000
 
 Whitespace is ignored. For each particle while the beam is on, `trgN` indicates whether the particle crosses the active part of channel N; `ntrg` counts fired channels. `dt_trg` and `dt_veto` are the numbers of 100.5 MHz clock cycles (9.95 ns per cycle) since the previous accepted trigger and veto, or `2**62` when absent. `bsy` is true until the longest participating device gate has elapsed since the previous trigger. The trigger expression is evaluated first, then the veto expression; a particle cannot veto its own trigger. An empty veto expression disables veto. The default requires both plates, more than 10000 clock cycles (99.5 µs) since a trigger, more than 5000 clock cycles (49.75 µs) since any plate signal, and not busy.
 
-The virtual board described here is this sandbox's model. Its simplifications are a one-cycle input pulse, evaluation per particle, and `bsy` as the longest device gate. It does not create accidental coincidences between separate particles within two cycles.
+The virtual board described here is this sandbox's model. Its simplifications are a one-cycle input pulse, evaluation per particle, and `bsy` as the longest device gate. It does not create accidental coincidences between separate particles within two cycles. In nestDAQ mode with `trigger_board = on`, the accepted triggers are physics triggers only: the msensors get periodic triggers, and `bsy` has no effect because the trigger board runner reports no gate; see [nestDAQ mode](nestdaq.md).
 
 ## Trigger producer
 
